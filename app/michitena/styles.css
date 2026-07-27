@@ -278,7 +278,7 @@ select:focus, input:focus {
 .btn--ghost:hover { color: var(--text); border-color: var(--line-strong); }
 .save-message { margin: 7px 2px 0; color: var(--text-secondary); font-size: 14px; font-weight: 600; }
 .tool-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.tool-row .btn { flex: 1; }
+.tool-row .btn { width: 100%; }
 
 /* Cases */
 .cases { margin-top: 26px; }

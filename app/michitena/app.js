@@ -2,7 +2,6 @@
   "use strict";
 
   const STORE_KEY = "michitena.cases.v1";
-  const PUBLIC_APP_URL = "https://tools.ishimoto-legal.com/michitena/";
 
   const TYPE_LABELS = {
     merger: "合併・会社分割",
@@ -175,7 +174,6 @@
     label: $("f-label"),
     add: $("f-add"),
     saveMessage: $("save-message"),
-    shareUrl: $("share-url"),
     printBtn: $("print-btn"),
     alertBanner: $("alert-banner"),
     caseFilter: $("case-filter"),
@@ -390,6 +388,219 @@
     }
   }
 
+  function drawRoundRect(ctx, x, y, width, height, radius) {
+    const r = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+    ctx.lineTo(x + r, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+    const paragraphs = String(text).split("\n");
+    let currentY = y;
+    for (const paragraph of paragraphs) {
+      if (!paragraph) {
+        currentY += lineHeight;
+        continue;
+      }
+      let line = "";
+      for (const char of paragraph) {
+        const next = line + char;
+        if (line && ctx.measureText(next).width > maxWidth) {
+          ctx.fillText(line, x, currentY);
+          currentY += lineHeight;
+          line = char;
+        } else {
+          line = next;
+        }
+      }
+      if (line) {
+        ctx.fillText(line, x, currentY);
+        currentY += lineHeight;
+      }
+    }
+    return currentY;
+  }
+
+  function drawPdfTextRow(ctx, label, value, x, y, width) {
+    ctx.fillStyle = "#6e6e73";
+    ctx.font = '600 24px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    ctx.fillText(label, x, y);
+    ctx.fillStyle = "#1d1d1f";
+    ctx.font = '650 30px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    return drawWrappedText(ctx, value, x + 210, y, width - 210, 38);
+  }
+
+  function drawPdfTile(ctx, caption, dateText, x, y, width, height, tone) {
+    const palette = tone === "ready"
+      ? { bg: "#edf4e4", border: "#a4be83", caption: "#4d6b32", text: "#4d6b32" }
+      : tone === "deadline"
+        ? { bg: "#fffaf0", border: "#ead39c", caption: "#8a6416", text: "#1d1d1f" }
+        : { bg: "#f7f7f9", border: "#e1e1e4", caption: "#6e6e73", text: "#1d1d1f" };
+    drawRoundRect(ctx, x, y, width, height, 24);
+    ctx.fillStyle = palette.bg;
+    ctx.fill();
+    ctx.strokeStyle = palette.border;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = palette.caption;
+    ctx.font = '700 23px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    ctx.fillText(caption, x + 28, y + 42);
+    ctx.fillStyle = palette.text;
+    ctx.font = `${tone === "ready" ? "760 42px" : "700 34px"} "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif`;
+    ctx.fillText(dateText, x + 28, y + 92);
+  }
+
+  function bytesFromDataUrl(dataUrl) {
+    const base64 = dataUrl.split(",")[1] || "";
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  function concatBytes(parts) {
+    const total = parts.reduce((sum, part) => sum + part.length, 0);
+    const output = new Uint8Array(total);
+    let offset = 0;
+    for (const part of parts) {
+      output.set(part, offset);
+      offset += part.length;
+    }
+    return output;
+  }
+
+  function singlePageJpegPdf(jpegBytes, imageWidth, imageHeight) {
+    const encoder = new TextEncoder();
+    const chunks = [];
+    const offsets = [0];
+    let offset = 0;
+    const addString = (value) => {
+      const bytes = encoder.encode(value);
+      chunks.push(bytes);
+      offset += bytes.length;
+    };
+    const addBytes = (bytes) => {
+      chunks.push(bytes);
+      offset += bytes.length;
+    };
+    const addObjectStart = (id) => {
+      offsets[id] = offset;
+      addString(`${id} 0 obj\n`);
+    };
+    const pageWidth = 595.28;
+    const pageHeight = 841.89;
+    addString("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+    addObjectStart(1);
+    addString("<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+    addObjectStart(2);
+    addString("<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+    addObjectStart(3);
+    addString(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`);
+    addObjectStart(4);
+    addString(`<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`);
+    addBytes(jpegBytes);
+    addString("\nendstream\nendobj\n");
+    const content = `q\n${pageWidth} 0 0 ${pageHeight} 0 0 cm\n/Im0 Do\nQ\n`;
+    addObjectStart(5);
+    addString(`<< /Length ${encoder.encode(content).length} >>\nstream\n${content}endstream\nendobj\n`);
+    const xrefOffset = offset;
+    addString(`xref\n0 6\n0000000000 65535 f \n`);
+    for (let id = 1; id <= 5; id += 1) addString(`${String(offsets[id]).padStart(10, "0")} 00000 n \n`);
+    addString(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+    return concatBytes(chunks);
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function resultPdfBlob(params, schedule) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1240;
+    canvas.height = 1754;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("PDF canvas is unavailable");
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#9eca45";
+    drawRoundRect(ctx, 78, 76, 82, 82, 22);
+    ctx.fill();
+    ctx.strokeStyle = "#648b31";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.fillStyle = "#1d1d1f";
+    ctx.font = '760 48px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    ctx.fillText("法定公告スケジュール 計算結果", 184, 116);
+    ctx.fillStyle = "#6e6e73";
+    ctx.font = '500 24px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    ctx.fillText(`ミチテナ / 作成日 ${fmtJP(new Date())}`, 184, 154);
+
+    ctx.fillStyle = "#ffffff";
+    drawRoundRect(ctx, 78, 208, 1084, 310, 26);
+    ctx.fill();
+    ctx.strokeStyle = "#e1e1e4";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    let y = 264;
+    const label = el.label.value.trim() || "（未入力）";
+    y = Math.max(y + 42, drawPdfTextRow(ctx, "案件名", label, 118, y, 1004));
+    y = Math.max(y + 42, drawPdfTextRow(ctx, "公告内容", params.noticeType === "custom" ? `個別設定（${params.months}ヶ月）` : TYPE_LABELS[params.noticeType], 118, y, 1004));
+    y = Math.max(y + 42, drawPdfTextRow(ctx, "公告方式", METHOD_LABELS[params.method], 118, y, 1004));
+    drawPdfTextRow(ctx, "掲載予定日", fmtJP(parseISO(params.plannedDate)), 118, y, 1004);
+
+    drawPdfTile(ctx, "公告掲載日", fmtJP(schedule.actualStart), 78, 570, 1084, 132, "normal");
+    drawPdfTile(ctx, "期間起算日", fmtJP(schedule.calcStart), 78, 726, 1084, 132, "deadline");
+    drawPdfTile(ctx, "異議申述期限（期間満了）", fmtJP(schedule.expiry), 78, 882, 1084, 132, "normal");
+    drawPdfTile(ctx, "最短の登記申請可能日", fmtJP(schedule.effective), 78, 1038, 1084, 150, "ready");
+
+    ctx.fillStyle = "#1d1d1f";
+    ctx.font = '650 25px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    ctx.fillText("備考", 78, 1260);
+    ctx.fillStyle = "#6e6e73";
+    ctx.font = '500 22px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    drawWrappedText(ctx, "公告期間満了日の翌日を、最短の登記申請可能日として表示しています。日程は現時点の目安です。官報休刊日、公告内容、管轄法務局の取扱い等により変更となる場合があります。", 78, 1304, 1084, 34);
+
+    ctx.fillStyle = "#8e8e93";
+    ctx.font = '500 18px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
+    drawWrappedText(ctx, "本算出結果はシミュレーションであり、正確性を保証するものではありません。登記申請、公告の詳細は、必ず管轄法務局、弁護士、司法書士、または官報販売所にご確認ください。", 78, 1594, 1084, 28);
+
+    const jpegBytes = bytesFromDataUrl(canvas.toDataURL("image/jpeg", 0.92));
+    return new Blob([singlePageJpegPdf(jpegBytes, canvas.width, canvas.height)], { type: "application/pdf" });
+  }
+
+  async function saveResultsPdf() {
+    const p = currentParams();
+    if (!isISODate(p.plannedDate)) {
+      showMessage("掲載予定日を入力してください");
+      return;
+    }
+    const s = computeSchedule(p);
+    try {
+      const blob = await resultPdfBlob(p, s);
+      downloadBlob(blob, `michitena-${p.plannedDate}.pdf`);
+      showMessage("計算結果PDFを保存しました");
+    } catch {
+      window.print();
+      showMessage("PDF生成に失敗したため、印刷画面を開きました");
+    }
+  }
   let messageTimer = null;
   function showMessage(text) {
     el.saveMessage.textContent = text;
@@ -468,15 +679,7 @@
     document.querySelector(".cases").scrollIntoView({ behavior: "smooth" });
   });
 
-  /* ===== URL共有 ===== */
-  function conditionShareUrl(query) {
-    const base = location.protocol === "file:" ? PUBLIC_APP_URL : location.href;
-    const url = new URL(base);
-    url.hash = "";
-    url.search = query.toString();
-    if (/\/index\.html$/.test(url.pathname)) url.pathname = url.pathname.replace(/index\.html$/, "");
-    return url.href;
-  }
+  /* ===== URLパラメータ復元 ===== */
   function applyUrlParams() {
     const q = new URLSearchParams(window.location.search);
     if (q.get("type") && TYPE_LABELS[q.get("type")]) el.type.value = q.get("type");
@@ -489,18 +692,7 @@
     }
     if (isISODate(q.get("date"))) el.date.value = q.get("date");
   }
-
-  el.shareUrl.addEventListener("click", async () => {
-    const p = currentParams();
-    const q = new URLSearchParams({ type: p.noticeType, method: p.method });
-    if (p.noticeType === "custom") q.set("months", String(p.months));
-    if (isISODate(p.plannedDate)) q.set("date", p.plannedDate);
-    const url = conditionShareUrl(q);
-    const ok = await copyText(url);
-    showMessage(ok ? "この条件を開くURLをコピーしました" : "コピーできませんでした");
-  });
-
-  el.printBtn.addEventListener("click", () => window.print());
+  el.printBtn.addEventListener("click", () => saveResultsPdf());
 
   /* ===== 初期化 ===== */
   ["input", "change"].forEach((ev) => {
@@ -524,7 +716,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v3", { updateViaCache: "none" })
+        .register("./sw.js?v=20260727-v4", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
