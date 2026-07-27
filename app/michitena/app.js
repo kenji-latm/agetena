@@ -7,9 +7,9 @@
     merger: "合併・会社分割",
     reduction: "資本金の額の減少",
     dissolution: "解散",
-    custom: "その他",
   };
   const TYPE_MONTHS = { merger: 1, reduction: 1, dissolution: 2 };
+  const TYPE_PERIOD_LABELS = { merger: "1か月以上", reduction: "1か月以上", dissolution: "2か月以上" };
   const METHOD_LABELS = {
     normal: "官報公告（初日不算入）",
     electronic: "電子公告（0時開始・初日算入）",
@@ -131,11 +131,8 @@
     if (!item || typeof item !== "object") return null;
     const plannedDate = isISODate(item.plannedDate) ? item.plannedDate : null;
     if (!plannedDate) return null;
-    const noticeType = TYPE_LABELS[item.noticeType] ? item.noticeType : "custom";
-    const parsedMonths = Number(item.months);
-    const months = Number.isInteger(parsedMonths) && parsedMonths >= 1 && parsedMonths <= 120
-      ? parsedMonths
-      : (TYPE_MONTHS[noticeType] || 1);
+    const noticeType = TYPE_LABELS[item.noticeType] ? item.noticeType : "merger";
+    const months = TYPE_MONTHS[noticeType];
     return {
       id: typeof item.id === "string" && /^c_[a-z0-9]+_[a-z0-9]+$/i.test(item.id) ? item.id : uid(),
       label: typeof item.label === "string" ? item.label : "",
@@ -165,8 +162,7 @@
   const $ = (id) => document.getElementById(id);
   const el = {
     type: $("f-type"),
-    monthsRow: $("custom-months-row"),
-    months: $("f-months"),
+    periodNote: $("period-note"),
     date: $("f-date"),
     slideNotice: $("slide-notice"),
     methodNote: $("method-note"),
@@ -187,10 +183,6 @@
     return document.querySelector('input[name="notice-method"]:checked').value;
   }
   function currentMonths() {
-    if (el.type.value === "custom") {
-      const n = parseInt(el.months.value, 10);
-      return Number.isInteger(n) && n >= 1 ? Math.min(n, 120) : 1;
-    }
     return TYPE_MONTHS[el.type.value] || 1;
   }
   function currentParams() {
@@ -202,13 +194,16 @@
     };
   }
   function typeDisplay(c) {
-    return c.noticeType === "custom" ? `個別設定（${c.months}ヶ月）` : TYPE_LABELS[c.noticeType];
+    return TYPE_LABELS[c.noticeType] || TYPE_LABELS.merger;
+  }
+  function periodDisplay(c) {
+    return TYPE_PERIOD_LABELS[c.noticeType] || TYPE_PERIOD_LABELS.merger;
   }
 
   /* ===== 計算結果の描画 ===== */
   function renderResults() {
     const p = currentParams();
-    el.monthsRow.hidden = p.noticeType !== "custom";
+    el.periodNote.textContent = `公告期間：${periodDisplay(p)}（自動反映）`;
     if (!p.plannedDate || !isISODate(p.plannedDate)) {
       el.results.innerHTML = "";
       return;
@@ -247,7 +242,7 @@
         <div class="tile__hint">※公告期間満了日の翌日から手続きが可能です。</div>
       </div>`;
 
-    el.printType.textContent = p.noticeType === "custom" ? `個別設定（${p.months}ヶ月）` : TYPE_LABELS[p.noticeType];
+    el.printType.textContent = `${typeDisplay(p)}（公告期間 ${periodDisplay(p)}）`;
     el.printMethod.textContent = METHOD_LABELS[p.method];
     el.printReportDate.textContent = fmtJP(new Date());
   }
@@ -338,6 +333,7 @@
     const title = `${c.label ? `${c.label} ` : ""}${typeDisplay(c)}公告 登記申請可能日`;
     const details = [
       `公告の種類：${typeDisplay(c)}`,
+      `公告期間：${periodDisplay(c)}`,
       `公告方式：${METHOD_LABELS[c.method]}`,
       `公告掲載日：${fmtJP(s.actualStart)}`,
       `期間起算日：${fmtJP(s.calcStart)}`,
@@ -364,6 +360,7 @@
       `${subject}に伴う債権者保護手続の公告スケジュールは、下記のとおりです。`,
       "",
       `公告方式：${METHOD_LABELS[c.method]}`,
+      `公告期間：${periodDisplay(c)}`,
       `公告掲載日：${fmtJP(s.actualStart)}`,
       `期間起算日：${fmtJP(s.calcStart)}`,
       `異議申述期限（期間満了）：${fmtJP(s.expiry)}`,
@@ -593,8 +590,9 @@
     let y = 264;
     const label = el.label.value.trim() || "（未入力）";
     y = Math.max(y + 42, drawPdfTextRow(ctx, "案件名", label, 118, y, 1004));
-    y = Math.max(y + 42, drawPdfTextRow(ctx, "公告内容", params.noticeType === "custom" ? `個別設定（${params.months}ヶ月）` : TYPE_LABELS[params.noticeType], 118, y, 1004));
+    y = Math.max(y + 42, drawPdfTextRow(ctx, "公告内容", typeDisplay(params), 118, y, 1004));
     y = Math.max(y + 42, drawPdfTextRow(ctx, "公告方式", METHOD_LABELS[params.method], 118, y, 1004));
+    y = Math.max(y + 42, drawPdfTextRow(ctx, "公告期間", periodDisplay(params), 118, y, 1004));
     drawPdfTextRow(ctx, "掲載予定日", fmtJP(parseISO(params.plannedDate)), 118, y, 1004);
 
     drawPdfTile(ctx, "公告掲載日", fmtJP(schedule.actualStart), 78, 570, 1084, 132, "normal");
@@ -659,8 +657,7 @@
 
     switch (button.dataset.act) {
       case "open": {
-        el.type.value = c.noticeType;
-        if (c.noticeType === "custom") el.months.value = String(c.months);
+        el.type.value = TYPE_LABELS[c.noticeType] ? c.noticeType : "merger";
         document.querySelector(`input[name="notice-method"][value="${c.method}"]`).checked = true;
         el.date.value = c.plannedDate;
         el.label.value = c.label;
@@ -724,10 +721,6 @@
   function applyUrlParams() {
     const q = new URLSearchParams(window.location.search);
     if (q.get("type") && TYPE_LABELS[q.get("type")]) el.type.value = q.get("type");
-    if (q.get("months") && el.type.value === "custom") {
-      const n = Number(q.get("months"));
-      if (Number.isInteger(n) && n >= 1 && n <= 120) el.months.value = String(n);
-    }
     if (q.get("method") === "electronic" || q.get("method") === "normal") {
       document.querySelector(`input[name="notice-method"][value="${q.get("method")}"]`).checked = true;
     }
@@ -738,7 +731,6 @@
   /* ===== 初期化 ===== */
   ["input", "change"].forEach((ev) => {
     el.type.addEventListener(ev, renderResults);
-    el.months.addEventListener(ev, renderResults);
     el.date.addEventListener(ev, renderResults);
     document.querySelectorAll('input[name="notice-method"]').forEach((r) => r.addEventListener(ev, renderResults));
   });
@@ -757,7 +749,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v7", { updateViaCache: "none" })
+        .register("./sw.js?v=20260727-v8", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });

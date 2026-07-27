@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "michitena-";
-const CACHE_NAME = `${CACHE_PREFIX}20260727-v7`;
+const CACHE_NAME = `${CACHE_PREFIX}20260727-v8`;
 const ASSETS = [
   "./",
   "index.html",
