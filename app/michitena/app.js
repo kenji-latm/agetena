@@ -270,24 +270,28 @@
   };
 
   function renderCases() {
+    const activeCases = cases.filter((c) => c.status !== "done");
+    if (activeCases.length < 4) el.caseFilter.value = "";
     const filter = (el.caseFilter.value || "").trim().toLowerCase();
-    el.caseFilter.hidden = cases.length < 4;
+    el.caseFilter.hidden = activeCases.length < 4;
 
-    if (!cases.length) {
+    if (!activeCases.length) {
       el.alertBanner.hidden = true;
-      el.caseList.innerHTML = '<div class="cases__empty">計算した公告スケジュールを「一覧に保存」すると、ここに案件として表示されます。</div>';
+      el.caseList.innerHTML = cases.length
+        ? '<div class="cases__empty">未完了の保存案件はありません。完了にした案件は一覧から非表示になります。</div>'
+        : '<div class="cases__empty">計算した公告スケジュールを「一覧に保存」すると、ここに案件として表示されます。</div>';
       return;
     }
 
-    const readyCount = cases.filter((c) => caseStage(c) === "ready").length;
+    const readyCount = activeCases.filter((c) => caseStage(c) === "ready").length;
     el.alertBanner.hidden = readyCount === 0;
     if (readyCount > 0) {
       el.alertBanner.textContent = `公告期間が満了し、登記申請が可能になった案件が ${readyCount} 件あります`;
     }
 
-    const visible = cases.filter((c) => !filter || (c.label || "").toLowerCase().includes(filter));
-    const stages = ["ready", "waiting", "before", "done"];
-    const groupTitles = { ready: "申請可能", waiting: "公告期間中", before: "掲載待ち", done: "完了した案件" };
+    const visible = activeCases.filter((c) => !filter || (c.label || "").toLowerCase().includes(filter));
+    const stages = ["ready", "waiting", "before"];
+    const groupTitles = { ready: "申請可能", waiting: "公告期間中", before: "掲載待ち" };
 
     const bySchedule = (a, b) => toISO(computeSchedule(a).effective).localeCompare(toISO(computeSchedule(b).effective));
 
@@ -312,7 +316,7 @@
             <div class="case-item__actions">
               <button type="button" data-act="calendar">カレンダーに登録</button>
               <button type="button" data-act="copy">報告文をコピー</button>
-              <button type="button" data-act="toggle">${c.status === "done" ? "未完了に戻す" : "完了にする"}</button>
+              <button type="button" data-act="toggle">完了にする</button>
               <button type="button" data-act="delete" class="danger">削除</button>
             </div>
           </div>`;
@@ -519,15 +523,32 @@
     return concatBytes(chunks);
   }
 
-  function pdfFilename(plannedDate) {
-    const fallback = "法定公告スケジュール";
-    const name = (el.label.value.trim() || fallback)
+  function cleanFilenamePart(value) {
+    return String(value || "")
       .replace(/[\\/:*?"<>|]/g, "")
       .replace(/[\u0000-\u001f]/g, "")
       .replace(/\s+/g, " ")
       .trim()
-      .slice(0, 80) || fallback;
-    return `${name}_${plannedDate}.pdf`;
+      .slice(0, 80);
+  }
+
+  function pdfLabel() {
+    const current = el.label.value.trim();
+    if (current) return current;
+    const entered = window.prompt("PDF保存用の案件名を入力してください。", "");
+    const label = String(entered || "").trim();
+    if (!label) {
+      showMessage("PDF保存には案件名を入力してください");
+      el.label.focus();
+      return "";
+    }
+    el.label.value = label;
+    return label;
+  }
+
+  function pdfFilename(label, date) {
+    const name = cleanFilenamePart(label);
+    return name ? `${name}_${date}.pdf` : "";
   }
 
   function downloadBlob(blob, filename) {
@@ -603,9 +624,17 @@
       return;
     }
     const s = computeSchedule(p);
+    const label = pdfLabel();
+    if (!label) return;
+    const filename = pdfFilename(label, toISO(s.effective));
+    if (!filename) {
+      showMessage("PDF保存に使える案件名を入力してください");
+      el.label.focus();
+      return;
+    }
     try {
       const blob = await resultPdfBlob(p, s);
-      downloadBlob(blob, pdfFilename(p.plannedDate));
+      downloadBlob(blob, filename);
       showMessage("計算結果PDFを保存しました");
     } catch {
       window.print();
@@ -727,7 +756,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v5", { updateViaCache: "none" })
+        .register("./sw.js?v=20260727-v6", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
