@@ -562,7 +562,7 @@
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  async function resultPdfBlob(params, schedule) {
+  async function resultPdfBlob(params, schedule, generatedDate) {
     const canvas = document.createElement("canvas");
     canvas.width = 1240;
     canvas.height = 1754;
@@ -582,7 +582,7 @@
     ctx.fillText("法定公告スケジュール 計算結果", 184, 116);
     ctx.fillStyle = "#6e6e73";
     ctx.font = '500 24px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
-    ctx.fillText(`作成日：${toISO(new Date())}`, 184, 154);
+    ctx.fillText(`作成日：${generatedDate}`, 184, 154);
 
     ctx.fillStyle = "#ffffff";
     drawRoundRect(ctx, 78, 208, 1084, 310, 26);
@@ -626,14 +626,15 @@
     const s = computeSchedule(p);
     const label = pdfLabel();
     if (!label) return;
-    const filename = pdfFilename(label, toISO(s.effective));
+    const generatedDate = toISO(new Date());
+    const filename = pdfFilename(label, generatedDate);
     if (!filename) {
       showMessage("PDF保存に使える案件名を入力してください");
       el.label.focus();
       return;
     }
     try {
-      const blob = await resultPdfBlob(p, s);
+      const blob = await resultPdfBlob(p, s, generatedDate);
       downloadBlob(blob, filename);
       showMessage("計算結果PDFを保存しました");
     } catch {
@@ -756,7 +757,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v6", { updateViaCache: "none" })
+        .register("./sw.js?v=20260727-v7", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
