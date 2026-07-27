@@ -519,6 +519,17 @@
     return concatBytes(chunks);
   }
 
+  function pdfFilename(plannedDate) {
+    const fallback = "法定公告スケジュール";
+    const name = (el.label.value.trim() || fallback)
+      .replace(/[\\/:*?"<>|]/g, "")
+      .replace(/[\u0000-\u001f]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 80) || fallback;
+    return `${name}_${plannedDate}.pdf`;
+  }
+
   function downloadBlob(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -550,7 +561,7 @@
     ctx.fillText("法定公告スケジュール 計算結果", 184, 116);
     ctx.fillStyle = "#6e6e73";
     ctx.font = '500 24px "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif';
-    ctx.fillText(`ミチテナ / 作成日 ${fmtJP(new Date())}`, 184, 154);
+    ctx.fillText(`作成日：${toISO(new Date())}`, 184, 154);
 
     ctx.fillStyle = "#ffffff";
     drawRoundRect(ctx, 78, 208, 1084, 310, 26);
@@ -594,7 +605,7 @@
     const s = computeSchedule(p);
     try {
       const blob = await resultPdfBlob(p, s);
-      downloadBlob(blob, `michitena-${p.plannedDate}.pdf`);
+      downloadBlob(blob, pdfFilename(p.plannedDate));
       showMessage("計算結果PDFを保存しました");
     } catch {
       window.print();
@@ -716,7 +727,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v4", { updateViaCache: "none" })
+        .register("./sw.js?v=20260727-v5", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });
