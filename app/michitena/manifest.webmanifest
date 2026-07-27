@@ -1,0 +1,19 @@
+{
+  "name": "ミチテナ｜法定公告 満了日計算",
+  "short_name": "ミチテナ",
+  "description": "債権者保護手続・法定公告のスケジュールを自動計算し、案件を一覧管理できるツール",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#718260",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

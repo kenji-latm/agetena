@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ミチテナ・公告満了日のチェック">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="52" x2="438" y2="462" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b9df67"/>
+      <stop offset="0.58" stop-color="#9eca45"/>
+      <stop offset="1" stop-color="#648b31"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="155" y1="114" x2="368" y2="344" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#f4d27b"/>
+    </linearGradient>
+  </defs>
+  <rect x="36" y="36" width="440" height="440" rx="112" fill="url(#bg)"/>
+  <path d="M154 150h204c24 0 44 20 44 44v132c0 24-20 44-44 44H154c-24 0-44-20-44-44V194c0-24 20-44 44-44Z" fill="none" stroke="#ffffff" stroke-width="32" stroke-linejoin="round"/>
+  <path d="M156 210h200" fill="none" stroke="#eef8dc" stroke-width="28" stroke-linecap="round"/>
+  <path d="M174 122v58M338 122v58" fill="none" stroke="#ffffff" stroke-width="34" stroke-linecap="round"/>
+  <circle cx="256" cy="292" r="58" fill="url(#warm)"/>
+  <path d="M256 234a58 58 0 1 0 42 98 72 72 0 0 1-42-98Z" fill="#ffffff" opacity="0.9"/>
+  <path d="M224 303l28 28 50-66" fill="none" stroke="#415d28" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

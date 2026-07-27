@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="ミチテナ" />
+  <title>ミチテナ｜法定公告 満了日計算</title>
+  <link rel="manifest" href="manifest.webmanifest?v=20260727-v3" />
+  <link rel="icon" href="favicon.svg?v=20260727-v3" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css?v=20260727-v3" />
+</head>
+<body>
+  <header class="appbar no-print">
+    <div class="appbar__inner">
+      <img class="appbar__logo" src="favicon.svg?v=20260727-v3" alt="" />
+      <div class="appbar__wordmark">
+        <h1 class="appbar__title">ミチテナ</h1>
+        <span class="appbar__tagline">公告満了を、ひと目で。</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 申請可能アラート（保存案件が申請可能になったときだけ表示） -->
+    <button id="alert-banner" class="alert-banner" type="button" hidden></button>
+
+    <!-- 印刷時ヘッダー -->
+    <div class="print-only print-header">
+      <h1>法定公告スケジュール 計算結果報告書</h1>
+      <p>算出基準日: <span id="print-report-date"></span></p>
+    </div>
+
+    <!-- 計算フォーム（主役） -->
+    <section class="checker" aria-label="公告満了日を計算する">
+      <div class="checker__inputs no-print">
+        <label class="field">
+          <span class="field__label"><span class="step">1</span>公告の種類</span>
+          <select id="f-type">
+            <option value="merger" data-months="1">合併・会社分割（1か月以上）</option>
+            <option value="reduction" data-months="1">資本金の額の減少（1か月以上）</option>
+            <option value="dissolution" data-months="2">解散（2か月以上）</option>
+            <option value="custom">その他（期間を指定）</option>
+          </select>
+        </label>
+
+        <div id="custom-months-row" class="field custom-months" hidden>
+          <label for="f-months" class="field__label">公告期間（月数）</label>
+          <div class="custom-months__row">
+            <input id="f-months" type="number" value="1" min="1" max="120" />
+            <span>ヶ月間</span>
+          </div>
+        </div>
+
+        <fieldset class="field method-field">
+          <legend class="field__label"><span class="step">2</span>公告方式</legend>
+          <div class="method-switch">
+            <label>
+              <input type="radio" name="notice-method" value="normal" checked />
+              <span>官報公告<small>初日不算入</small></span>
+            </label>
+            <label>
+              <input type="radio" name="notice-method" value="electronic" />
+              <span>電子公告<small>0時開始・初日算入</small></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label class="field">
+          <span class="field__label"><span class="step">3</span>掲載予定日</span>
+          <input id="f-date" type="date" />
+        </label>
+
+        <p id="slide-notice" class="slide-notice" hidden></p>
+      </div>
+
+      <div id="method-note" class="notice notice--method no-print" role="note"></div>
+
+      <!-- 印刷時の条件表示 -->
+      <div class="print-only print-conditions">
+        <div><span>公告内容</span><strong id="print-type"></strong></div>
+        <div><span>公告方式</span><strong id="print-method"></strong></div>
+      </div>
+
+      <!-- 結果（常時表示・自動更新） -->
+      <div id="results" class="results" aria-live="polite"></div>
+
+      <!-- 保存（補助動作） -->
+      <div class="save-row no-print">
+        <input id="f-label" type="text" placeholder="会社名・案件名・メモ（任意）" autocomplete="off" />
+        <button id="f-add" class="btn btn--primary" type="button">一覧に保存</button>
+      </div>
+      <p id="save-message" class="save-message no-print" hidden></p>
+
+      <div class="tool-row no-print">
+        <button id="share-url" class="btn btn--ghost" type="button">この条件のURLをコピー</button>
+        <button id="print-btn" class="btn btn--dark" type="button">計算結果を印刷 / PDF保存</button>
+      </div>
+    </section>
+
+    <!-- 保存案件一覧 -->
+    <section class="cases no-print" aria-label="保存した案件">
+      <div class="cases__head">
+        <h2>保存した案件</h2>
+        <input id="case-filter" type="search" placeholder="案件名で絞り込み" hidden />
+      </div>
+      <p class="cases__privacy">保存した案件はこの端末のブラウザ内にだけ保存され、サーバーには送信されません。</p>
+      <div id="case-list"></div>
+    </section>
+
+    <!-- 法的根拠 -->
+    <section class="legal-basis no-print">
+      <h3>Legal Logic Reference</h3>
+      <div class="legal-basis__grid">
+        <div><strong>民法 第140条</strong>初日不算入の原則に基づき、掲載日の翌日から期間を起算します（電子公告は0時開始のため初日算入）。</div>
+        <div><strong>民法 第141条</strong>期間はその末日の終了をもって満了することを考慮しています。</div>
+        <div><strong>民法 第142条</strong>期間の末日が休日の場合、その翌営業日をもって満了とします。</div>
+      </div>
+    </section>
+
+    <!-- 免責事項 -->
+    <section class="disclaimer">
+      <h4>Disclaimer</h4>
+      <p>本算出結果はシミュレーションであり、正確性を保証するものではありません。登記申請、公告の詳細は、必ず管轄法務局、弁護士、司法書士、または官報販売所にご確認ください。本ツールの利用により生じたいかなる損害についても責任を負いかねます。</p>
+    </section>
+
+    <!-- お問い合わせ -->
+    <section class="inquiry no-print">
+      <p class="inquiry__label">Support &amp; Inquiry</p>
+      <a href="https://www.ishimoto-legal.com/" target="_blank" rel="noopener">Ishimoto Legal 公式サイト</a>
+    </section>
+  </main>
+
+  <footer class="footer no-print">
+    <p class="footer__brand">Created by <strong>Ishimoto Legal</strong></p>
+    <p class="footer__sub">MICHITENA — LEGAL NOTICE CALCULATOR</p>
+  </footer>
+
+  <!-- 印刷用フッター -->
+  <div class="print-only print-footer">
+    <p>Ishimoto Legal Solutions</p>
+    <p>© Michitena — Legal Notice Calculator. Created by Ishimoto Legal. For Professional Use Only.</p>
+  </div>
+
+  <script src="app.js?v=20260727-v3"></script>
+</body>
+</html>
