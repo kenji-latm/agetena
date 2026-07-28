@@ -767,6 +767,263 @@
     .pdf-detail summary:hover {
       text-decoration: underline;
     }
+
+    .pdf-expected {
+      margin-top: 16px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fbfbfd;
+      padding: 14px;
+    }
+
+    .pdf-expected label {
+      margin-bottom: 6px;
+    }
+
+    .pdf-expected input {
+      min-height: 46px;
+      background: #fff;
+    }
+
+    .pdf-expected-hint {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .pdf-roster {
+      border: 1px solid rgba(85, 115, 27, 0.28);
+      border-radius: 8px;
+      background: #fcfdf8;
+      padding: 18px;
+    }
+
+    .pdf-roster h3 {
+      margin: 0 0 4px;
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .pdf-roster-lead {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .pdf-roster-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pdf-roster-item {
+      display: grid;
+      gap: 4px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px 14px;
+    }
+
+    .pdf-roster-item .who {
+      font-size: 18px;
+      font-weight: 750;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .pdf-roster-item .who.unknown {
+      font-size: 16px;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    .pdf-roster-item .sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .pdf-props {
+      border: 1px solid rgba(85, 115, 27, 0.28);
+      border-radius: 8px;
+      background: #fcfdf8;
+      padding: 16px;
+      margin: 14px 0 4px;
+    }
+
+    .pdf-props-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .pdf-props-head h4 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .pdf-props-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pdf-props-block + .pdf-props-block {
+      margin-top: 14px;
+    }
+
+    .pdf-props-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .pdf-signer-main {
+      display: grid;
+      gap: 5px;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+      padding: 13px 15px;
+    }
+
+    .pdf-signer-main .who {
+      font-size: 22px;
+      font-weight: 750;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .pdf-signer-main .who.unknown {
+      font-size: 17px;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    .pdf-signer-main .src {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .pdf-name-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pdf-name-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 4px 12px;
+      align-items: start;
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px 12px;
+    }
+
+    .pdf-name-item.hit {
+      border-color: rgba(85, 115, 27, 0.4);
+      background: #f6fbec;
+    }
+
+    .pdf-name-item .value {
+      font-size: 16px;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .pdf-name-item .origin {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .pdf-flag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      background: #f1f1f4;
+      color: #515154;
+    }
+
+    .pdf-flag.ok {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+    }
+
+    .pdf-flag.cert {
+      background: #eaf1f5;
+      color: #31566d;
+    }
+
+    .pdf-flag.self {
+      background: #fff7dc;
+      color: var(--amber);
+    }
+
+    .pdf-cert-role {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 9px;
+      margin-left: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      vertical-align: 2px;
+      background: #f1f1f4;
+      color: #515154;
+    }
+
+    .pdf-cert-role.signer {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+    }
+
+    .pdf-cert.signer {
+      border-color: rgba(85, 115, 27, 0.34);
+      background: #f8fbf1;
+    }
+
+    .pdf-subdetail {
+      margin-top: 10px;
+    }
+
+    .pdf-subdetail summary {
+      cursor: pointer;
+      color: var(--link);
+      font-size: 14px;
+      font-weight: 650;
+      list-style-position: inside;
+    }
+
+    .pdf-subdetail summary:hover {
+      text-decoration: underline;
+    }
+
+    .pdf-subdetail .pdf-meta-grid {
+      margin-top: 10px;
+    }
+
     @media (max-width: 780px) {
       .topbar {
         align-items: flex-start;
@@ -808,6 +1065,14 @@
 
       .pdf-check-grid {
         grid-template-columns: 1fr;
+      }
+
+      .pdf-name-item {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-name-item .pdf-flag {
+        justify-self: start;
       }
 
       .status-dot {
@@ -872,7 +1137,7 @@
       <div class="pdf-head">
         <div>
           <h2>署名付きPDFチェック β</h2>
-          <p>PDF内の署名情報から、署名者・証明書の発行者・有効期間・文書の整合性を確認し、法務省掲載一覧と照合します。</p>
+          <p>PDF内の署名情報から「誰が署名したか」を取り出します。Adobe Acrobatで署名欄をクリックして開く「署名のプロパティ」と同じ項目（署名者名・証明書の主体・発行者・シリアル番号・有効期間）をブラウザ内で読み取り、法務省掲載一覧と照合します。</p>
         </div>
         <span class="beta-pill">事前確認</span>
       </div>
@@ -883,8 +1148,13 @@
           <span>ファイルはブラウザ内で処理します</span>
         </span>
       </label>
+      <div class="pdf-expected">
+        <label for="expectedSigner">権限のある人として想定する氏名・会社名（任意）</label>
+        <input id="expectedSigner" type="text" autocomplete="off" placeholder="例: 石本 憲史、株式会社〇〇（複数は「、」区切り）">
+        <p class="pdf-expected-hint">申請人・代表者・代理人・委任者など、署名しているはずの人を入力すると、PDFから読み取った署名者名・証明書の名義と突き合わせます。入力内容はブラウザの外に送信しません。</p>
+      </div>
       <div id="pdfStatus" class="pdf-hint">署名付きPDFを選ぶと、ここに確認結果を表示します。</div>
-      <div class="pdf-scope-note"><b>この画面は事前確認です。</b>確認するのは、署名の存在／署名者名の候補／証明書の有効期間／署名対象部分の変更有無（ダイジェスト照合）／法務省掲載一覧との照合までです。署名値そのものの暗号学的検証・証明書の失効確認・信頼チェーンの検証は行っていません。登記申請前の最終確認は、Adobe Acrobat等の署名パネルでも行ってください。</div>
+      <div class="pdf-scope-note"><b>この画面は事前確認です。</b>確認するのは、署名の存在／署名者名の候補／証明書の有効期間／署名対象部分の変更有無（ダイジェスト照合）／法務省掲載一覧との照合までです。署名値そのものの暗号学的検証・証明書の失効確認・信頼チェーンの検証は行っていません。登記申請前の最終確認は、Adobe Acrobat等の署名パネルでも行ってください（署名欄をクリック →「署名のプロパティ」→「署名者の証明書を表示」）。</div>
       <div id="pdfResults" class="pdf-results" aria-live="polite"></div>
     </section>
     <section id="summary" class="summary idle" aria-live="polite" hidden></section>
@@ -1573,6 +1843,7 @@
     const pdfDrop = document.getElementById("pdfDrop");
     const pdfStatus = document.getElementById("pdfStatus");
     const pdfResults = document.getElementById("pdfResults");
+    const expectedSignerInput = document.getElementById("expectedSigner");
 
     if (dataDateEl) {
       dataDateEl.textContent = `データ確認 ${window.MOJ_SIGNATURE_DATA_UPDATED_AT || "2026-06-26"}`;
@@ -1769,11 +2040,19 @@
       }
     }
 
+    // 「/T」が「/Type」に、「/Name」が「/Names」に当たらないよう、キーの直後が
+    // 英数字でないことまで確認したうえで、その値の開始位置を返す。
+    function pdfKeyValueStart(source, key) {
+      const match = new RegExp(`\\/${key}(?![A-Za-z0-9])`).exec(source);
+      if (!match) return -1;
+      let index = match.index + match[0].length;
+      while (index < source.length && /\s/.test(source[index])) index += 1;
+      return index;
+    }
+
     function extractPdfLiteralString(source, key) {
-      const keyIndex = source.indexOf(`/${key}`);
-      if (keyIndex < 0) return "";
-      const open = source.indexOf("(", keyIndex);
-      if (open < 0) return "";
+      const open = pdfKeyValueStart(source, key);
+      if (open < 0 || source[open] !== "(") return "";
       let depth = 0;
       let raw = "";
       for (let i = open; i < source.length; i += 1) {
@@ -1807,7 +2086,9 @@
     }
 
     function extractPdfNameValue(source, key) {
-      const match = source.match(new RegExp(`/${key}\\s*/([^\\s/<>()\\[\\]]+)`));
+      const start = pdfKeyValueStart(source, key);
+      if (start < 0 || source[start] !== "/") return "";
+      const match = source.slice(start, start + 160).match(/^\/([^\s/<>()\[\]]+)/);
       return match ? match[1] : "";
     }
 
@@ -1833,16 +2114,25 @@
       return bytes.slice(0, end);
     }
 
+    // 署名辞書は、直前の endobj から次の endobj までを丸ごと切り出す。
+    // /Contents が /ByteRange より前に置かれるPDF（paperlogic系など）があり、
+    // 直前の「<<」を起点にすると Prop_Build の入れ子辞書に食い込んで
+    // /Contents ごと取りこぼすため。
+    function signatureObjectChunk(text, index) {
+      const previousEnd = text.lastIndexOf("endobj", index);
+      const start = Math.max(0, index - 400000, previousEnd >= 0 ? previousEnd + 6 : 0);
+      const nextEnd = text.indexOf("endobj", index);
+      const end = nextEnd > index ? nextEnd : Math.min(text.length, index + 400000);
+      return text.slice(start, end);
+    }
+
     function extractPdfSignatures(bytes) {
       const text = bytesToBinaryString(bytes);
       const signatures = [];
       const regex = /\/ByteRange\s*\[([^\]]+)\]/g;
       let match;
       while ((match = regex.exec(text))) {
-        const dictStart = Math.max(0, text.lastIndexOf("<<", match.index));
-        const objectEnd = text.indexOf("endobj", match.index);
-        const dictEnd = objectEnd > match.index ? objectEnd : Math.min(text.length, match.index + 180000);
-        const chunk = text.slice(dictStart, dictEnd);
+        const chunk = signatureObjectChunk(text, match.index);
         const contentsMatch = chunk.match(/\/Contents\s*<([0-9a-fA-F\s]+)>/);
         const byteRange = match[1].trim().split(/\s+/).map(Number).filter((n) => Number.isFinite(n));
         const signingDateRaw = extractPdfLiteralString(chunk, "M");
@@ -1851,13 +2141,16 @@
           signerNamePdf: extractPdfLiteralString(chunk, "Name"),
           fieldName: extractPdfLiteralString(chunk, "T"),
           reason: extractPdfLiteralString(chunk, "Reason"),
+          location: extractPdfLiteralString(chunk, "Location"),
+          contactInfo: extractPdfLiteralString(chunk, "ContactInfo"),
           signingDateRaw,
           signingDate: parsePdfDate(signingDateRaw),
+          dictType: extractPdfNameValue(chunk, "Type"),
           filter: extractPdfNameValue(chunk, "Filter"),
           subFilter: extractPdfNameValue(chunk, "SubFilter"),
           contentsBytes: contentsMatch ? hexToBytes(contentsMatch[1]) : new Uint8Array(),
           hasContents: Boolean(contentsMatch),
-          rawChunk: chunk
+          rawChunk: chunk.replace(/<[0-9a-fA-F\s]{64,}>/g, "<>")
         });
       }
       return signatures;
@@ -1940,10 +2233,73 @@
       "2.5.4.6": "C",
       "2.5.4.7": "L",
       "2.5.4.8": "ST",
+      "2.5.4.9": "STREET",
       "2.5.4.10": "O",
       "2.5.4.11": "OU",
+      "2.5.4.12": "title",
+      "2.5.4.13": "description",
+      "2.5.4.15": "businessCategory",
+      "2.5.4.42": "GN",
+      "2.5.4.43": "initials",
+      "2.5.4.46": "dnQualifier",
+      "2.5.4.65": "pseudonym",
+      "2.5.4.97": "organizationIdentifier",
+      "0.9.2342.19200300.100.1.1": "UID",
+      "0.9.2342.19200300.100.1.25": "DC",
       "1.2.840.113549.1.9.1": "emailAddress"
     };
+
+    // 「署名のプロパティ」画面で使う、DN属性の日本語ラベル。
+    const NAME_ATTR_LABELS = {
+      CN: "一般名（CN）",
+      SN: "姓（SN）",
+      GN: "名（GN）",
+      serialNumber: "識別番号（serialNumber）",
+      C: "国（C）",
+      L: "市区町村（L）",
+      ST: "都道府県（ST）",
+      STREET: "所在地（STREET）",
+      O: "組織・会社名（O）",
+      OU: "組織単位（OU）",
+      title: "役職（title）",
+      description: "説明（description）",
+      businessCategory: "事業区分",
+      organizationIdentifier: "組織識別子",
+      emailAddress: "メールアドレス",
+      UID: "利用者ID（UID）",
+      DC: "ドメイン構成要素（DC）"
+    };
+
+    // 氏名・組織名として意味を持つ属性。名前候補の抽出に使う。
+    const NAME_BEARING_ATTRS = ["CN", "O", "OU", "SN", "GN", "title", "emailAddress", "pseudonym"];
+
+    const KEY_USAGE_LABELS = [
+      "デジタル署名",
+      "否認防止（nonRepudiation）",
+      "鍵の暗号化",
+      "データの暗号化",
+      "鍵共有",
+      "証明書への署名",
+      "CRLへの署名",
+      "encipherOnly",
+      "decipherOnly"
+    ];
+
+    const EXT_KEY_USAGE_LABELS = {
+      "1.3.6.1.5.5.7.3.1": "サーバ認証",
+      "1.3.6.1.5.5.7.3.2": "クライアント認証",
+      "1.3.6.1.5.5.7.3.3": "コード署名",
+      "1.3.6.1.5.5.7.3.4": "メール保護",
+      "1.3.6.1.5.5.7.3.8": "タイムスタンプ",
+      "1.3.6.1.5.5.7.3.9": "OCSP署名",
+      "1.2.840.113583.1.1.5": "Adobe文書署名"
+    };
+
+    const OID_TIME_STAMPING = "1.3.6.1.5.5.7.3.8";
+
+    function toHex(bytes) {
+      return Array.from(bytes || [], (b) => b.toString(16).padStart(2, "0")).join("").toUpperCase();
+    }
 
     function parseAsn1Name(bytes, node) {
       const attrs = [];
@@ -1981,6 +2337,66 @@
       return new Date(utc - offset * 60000);
     }
 
+    function parseGeneralNames(bytes, node) {
+      const out = [];
+      for (const gn of node.children || []) {
+        if (gn.cls !== 2) continue;
+        if (gn.tag === 1) out.push({ type: "email", label: "メールアドレス", value: decodeAsn1String(bytes, gn) });
+        else if (gn.tag === 2) out.push({ type: "dns", label: "DNS名", value: decodeAsn1String(bytes, gn) });
+        else if (gn.tag === 6) out.push({ type: "uri", label: "URI", value: decodeAsn1String(bytes, gn) });
+        else if (gn.tag === 4 && gn.children?.[0]) {
+          out.push({ type: "dirname", label: "別名（ディレクトリ名）", value: parseAsn1Name(bytes, gn.children[0]).text });
+        } else if (gn.tag === 0 && gn.children?.length >= 2) {
+          const oid = decodeOid(bytes, gn.children[0]);
+          const holder = gn.children[1];
+          const valueNode = holder.children?.[0] || holder;
+          const key = ASN1_NAME_OIDS[oid];
+          const label = key ? `${NAME_ATTR_LABELS[key] || key}（${oid}）` : `証明書内の属性（${oid}）`;
+          out.push({ type: "other", oid, label, value: decodeAsn1String(bytes, valueNode) });
+        }
+      }
+      return out.filter((item) => item.value);
+    }
+
+    function parseCertificateExtensions(bytes, tbsChildren) {
+      const result = { altNames: [], keyUsage: [], extKeyUsage: [], isCa: false, subjectKeyIdentifier: "" };
+      const holder = (tbsChildren || []).find((child) => child && child.cls === 2 && child.tag === 3 && child.constructed);
+      const list = holder?.children?.[0];
+      for (const ext of list?.children || []) {
+        if (!ext.children || !ext.children.length) continue;
+        const oid = decodeOid(bytes, ext.children[0]);
+        const valueNode = ext.children[ext.children.length - 1];
+        if (!valueNode || valueNode.cls !== 0 || valueNode.tag !== 4) continue;
+        let inner;
+        try {
+          inner = parseAsn1(bytes, valueNode.valueStart, valueNode.valueEnd);
+        } catch {
+          continue;
+        }
+        if (oid === "2.5.29.17") {
+          result.altNames.push(...parseGeneralNames(bytes, inner));
+        } else if (oid === "2.5.29.15" && inner.tag === 3) {
+          const raw = bytes.subarray(inner.valueStart, inner.valueEnd);
+          const bitCount = Math.max(0, (raw.length - 1) * 8 - (raw[0] || 0));
+          for (let i = 0; i < bitCount && i < KEY_USAGE_LABELS.length; i += 1) {
+            if (raw[1 + (i >> 3)] & (0x80 >> (i % 8))) result.keyUsage.push(KEY_USAGE_LABELS[i]);
+          }
+        } else if (oid === "2.5.29.37") {
+          for (const child of inner.children || []) {
+            if (child.cls !== 0 || child.tag !== 6) continue;
+            const usageOid = decodeOid(bytes, child);
+            result.extKeyUsage.push({ oid: usageOid, label: EXT_KEY_USAGE_LABELS[usageOid] || usageOid });
+          }
+        } else if (oid === "2.5.29.19") {
+          const flag = (inner.children || []).find((child) => child.cls === 0 && child.tag === 1);
+          result.isCa = Boolean(flag && bytes[flag.valueStart] !== 0);
+        } else if (oid === "2.5.29.14" && inner.tag === 4) {
+          result.subjectKeyIdentifier = toHex(bytes.subarray(inner.valueStart, inner.valueEnd));
+        }
+      }
+      return result;
+    }
+
     function parseCertificate(bytes, node) {
       if (!node || node.cls !== 0 || node.tag !== 16 || !node.children || node.children.length < 3) return null;
       const [tbs, signatureAlgorithm, signatureValue] = node.children;
@@ -1994,12 +2410,17 @@
       const validityNode = tbsChildren[i++];
       const subjectNode = tbsChildren[i++];
       if (!issuerNode || !validityNode || !subjectNode || !validityNode.children || validityNode.children.length < 2) return null;
+      let extensions = { altNames: [], keyUsage: [], extKeyUsage: [], isCa: false, subjectKeyIdentifier: "" };
+      try {
+        extensions = parseCertificateExtensions(bytes, tbsChildren.slice(i));
+      } catch {}
       return {
-        serial: serialNode ? Array.from(bytes.subarray(serialNode.valueStart, serialNode.valueEnd), (b) => b.toString(16).padStart(2, "0")).join("").toUpperCase() : "",
+        serial: serialNode ? toHex(bytes.subarray(serialNode.valueStart, serialNode.valueEnd)) : "",
         issuer: parseAsn1Name(bytes, issuerNode),
         subject: parseAsn1Name(bytes, subjectNode),
         notBefore: parseAsn1Time(bytes, validityNode.children[0]),
-        notAfter: parseAsn1Time(bytes, validityNode.children[1])
+        notAfter: parseAsn1Time(bytes, validityNode.children[1]),
+        ...extensions
       };
     }
 
@@ -2047,6 +2468,57 @@
       return uniqueCertificates(certs);
     }
 
+    const OID_SIGNED_DATA = "1.2.840.113549.1.7.2";
+    const OID_SIGNING_TIME = "1.2.840.113549.1.9.5";
+
+    function findSignedDataNode(bytes, root) {
+      if (!root || root.cls !== 0 || root.tag !== 16 || !root.children || root.children.length < 2) return null;
+      const [typeNode, contentNode] = root.children;
+      if (!typeNode || typeNode.cls !== 0 || typeNode.tag !== 6) return null;
+      if (decodeOid(bytes, typeNode) !== OID_SIGNED_DATA) return null;
+      if (!contentNode || contentNode.cls !== 2 || !contentNode.children?.length) return null;
+      const signedData = contentNode.children[0];
+      return signedData && signedData.cls === 0 && signedData.tag === 16 ? signedData : null;
+    }
+
+    function signedAttributeTime(bytes, signerInfoNode) {
+      const attrs = (signerInfoNode.children || []).find((child) => child.cls === 2 && child.tag === 0 && child.constructed);
+      for (const attr of attrs?.children || []) {
+        if (!attr.children || attr.children.length < 2) continue;
+        const oidNode = attr.children[0];
+        if (oidNode.cls !== 0 || oidNode.tag !== 6 || decodeOid(bytes, oidNode) !== OID_SIGNING_TIME) continue;
+        const valueNode = attr.children[1].children?.[0];
+        if (valueNode) return parseAsn1Time(bytes, valueNode);
+      }
+      return null;
+    }
+
+    // CMS の SignerInfo から「どの証明書で署名されたか」を特定する。
+    // 埋め込まれたタイムスタンプ局の証明書と署名者の証明書を取り違えないための鍵になる。
+    function parseCmsSignerInfo(bytes) {
+      if (!bytes || bytes.length < 16) return null;
+      let root;
+      try {
+        root = parseAsn1(bytes);
+      } catch {
+        return null;
+      }
+      const signedData = findSignedDataNode(bytes, root);
+      if (!signedData) return null;
+      const sets = (signedData.children || []).filter((child) => child.cls === 0 && child.tag === 17);
+      const signerInfoNode = sets[sets.length - 1]?.children?.[0];
+      if (!signerInfoNode || !signerInfoNode.children || signerInfoNode.children.length < 2) return null;
+      const sid = signerInfoNode.children[1];
+      const info = { issuerText: "", serial: "", subjectKeyIdentifier: "", signingTime: signedAttributeTime(bytes, signerInfoNode) };
+      if (sid.cls === 0 && sid.tag === 16 && sid.children?.length >= 2) {
+        info.issuerText = parseAsn1Name(bytes, sid.children[0]).text;
+        info.serial = toHex(bytes.subarray(sid.children[1].valueStart, sid.children[1].valueEnd));
+      } else if (sid.cls === 2 && sid.tag === 0) {
+        info.subjectKeyIdentifier = toHex(bytes.subarray(sid.valueStart, sid.valueEnd));
+      }
+      return info;
+    }
+
     function findDescendantOctetString(bytes, node) {
       if (node.cls === 0 && node.tag === 4) return bytes.slice(node.valueStart, node.valueEnd);
       for (const child of node.children || []) {
@@ -2068,6 +2540,45 @@
         if (found) return found;
       }
       return null;
+    }
+
+    const OID_TST_INFO = "1.2.840.113549.1.9.16.1.4";
+
+    // 文書タイムスタンプ（DocTimeStamp）の /Contents は TimeStampToken で、
+    // PDF本体のダイジェストは CMS の messageDigest ではなく TSTInfo の
+    // messageImprint に入っている。ここを見ないと整合性を誤ってNG判定してしまう。
+    function parseTimestampInfo(bytes) {
+      if (!bytes || bytes.length < 16) return null;
+      let root;
+      try {
+        root = parseAsn1(bytes);
+      } catch {
+        return null;
+      }
+      const signedData = findSignedDataNode(bytes, root);
+      const encap = signedData?.children?.[2];
+      if (!encap || encap.cls !== 0 || encap.tag !== 16 || !encap.children?.length) return null;
+      const typeNode = encap.children[0];
+      if (!typeNode || typeNode.cls !== 0 || typeNode.tag !== 6) return null;
+      if (decodeOid(bytes, typeNode) !== OID_TST_INFO) return null;
+      const octet = encap.children[1]?.children?.[0];
+      if (!octet || octet.cls !== 0 || octet.tag !== 4) return null;
+      let info;
+      try {
+        info = parseAsn1(bytes, octet.valueStart, octet.valueEnd);
+      } catch {
+        return null;
+      }
+      const hashNode = info.children?.[2]?.children?.[1];
+      const genTimeNode = info.children?.[4];
+      return {
+        hashedMessage: hashNode && hashNode.cls === 0 && hashNode.tag === 4
+          ? bytes.slice(hashNode.valueStart, hashNode.valueEnd)
+          : null,
+        genTime: genTimeNode && genTimeNode.cls === 0 && genTimeNode.tag === 24
+          ? parseAsn1Time(bytes, genTimeNode)
+          : null
+      };
     }
 
     function digestAlgorithmForLength(length) {
@@ -2108,11 +2619,15 @@
       if (!sig.contentsBytes?.length) {
         return { state: "warn", label: "要確認", title: "署名データを読めません", text: "PDF内の署名データを抽出できませんでした。" };
       }
-      let expectedDigest;
-      try {
-        const root = parseAsn1(sig.contentsBytes);
-        expectedDigest = findCmsMessageDigest(sig.contentsBytes, root);
-      } catch {}
+      const timestampInfo = parseTimestampInfo(sig.contentsBytes);
+      let expectedDigest = timestampInfo?.hashedMessage || null;
+      const isTimestampToken = Boolean(expectedDigest);
+      if (!expectedDigest) {
+        try {
+          const root = parseAsn1(sig.contentsBytes);
+          expectedDigest = findCmsMessageDigest(sig.contentsBytes, root);
+        } catch {}
+      }
       if (!expectedDigest) {
         return { state: "warn", label: "要確認", title: "文書の整合性を判定できません", text: "この署名形式から文書ダイジェストを読み取れませんでした。Adobe Acrobat等でも確認してください。" };
       }
@@ -2126,13 +2641,14 @@
         if (!equalBytes(actualDigest, expectedDigest)) {
           return { state: "no", label: "NG", title: "署名データと文書が一致しません", text: "署名対象部分のダイジェストが一致しません。署名後の変更または読取不良の可能性があります。" };
         }
+        const subject = isTimestampToken ? "タイムスタンプの対象部分" : "署名対象部分";
         return {
           state: "ok",
           label: "OK候補",
-          title: "署名対象部分は変更なし",
+          title: `${subject}は変更なし`,
           text: signed.coversWholeRevision
-            ? "署名対象部分と署名データのダイジェストが一致しました。"
-            : "署名対象部分は一致しています。この署名の後に別の署名や追記が追加されています。"
+            ? `${subject}と署名データのダイジェストが一致しました。`
+            : `${subject}は一致しています。この署名の後に別の署名や追記が追加されています。`
         };
       } catch {
         return { state: "warn", label: "要確認", title: "文書の整合性を判定できません", text: "ブラウザでのダイジェスト照合に失敗しました。Adobe Acrobat等でも確認してください。" };
@@ -2261,22 +2777,46 @@
         || nValue.includes("signaturecertificationauthority");
     }
 
-    function signatureKind(sig, certs) {
+    const TIMESTAMP_KIND = {
+      type: "timestamp",
+      label: "タイムスタンプ/技術署名の可能性",
+      description: "PDFの時刻証明や検証用の署名と思われます。登記用の本人署名とは別枠で確認してください。"
+    };
+
+    // 署名の種類は、まず SubFilter と /Type で確定させる。
+    // 確定できないときだけ、署名者の証明書（＝リーフ）を見て推定する。
+    // CMS に埋め込まれたタイムスタンプ局の証明書まで判定材料にすると、
+    // 本人署名をタイムスタンプと誤判定するため、証明書は署名者のものだけを見る。
+    function signatureKind(sig, certs, signerCert) {
+      const subFilter = normalize(sig.subFilter);
+      const filter = normalize(sig.filter);
+      if (normalize(sig.dictType) === "doctimestamp" || subFilter.includes("rfc3161") || subFilter.includes("doctimestamp") || filter.includes("doctimestamp")) {
+        return {
+          type: "timestamp",
+          label: "文書タイムスタンプ",
+          description: "署名形式（SubFilter/Type）が時刻証明用です。人が行った電子署名ではありません。"
+        };
+      }
+      const target = signerCert || signerCertificate(certs);
+      if (target?.extKeyUsage?.some((item) => item.oid === OID_TIME_STAMPING)) {
+        return {
+          type: "timestamp",
+          label: "タイムスタンプ用証明書による署名",
+          description: "署名者の証明書の拡張鍵用途がタイムスタンプ専用です。人が行った電子署名ではありません。"
+        };
+      }
       const values = [
         sig.signerNamePdf,
         sig.fieldName,
         sig.reason,
         sig.filter,
         sig.subFilter,
-        sig.rawChunk,
-        ...certs.flatMap((cert) => [
-          cert.subject?.cn,
-          cert.subject?.o,
-          cert.subject?.text,
-          cert.issuer?.cn,
-          cert.issuer?.o,
-          cert.issuer?.text
-        ])
+        target?.subject?.cn,
+        target?.subject?.o,
+        target?.subject?.text,
+        target?.issuer?.cn,
+        target?.issuer?.o,
+        target?.issuer?.text
       ].filter(Boolean);
       const normalized = values.map(normalize).join(" ");
       const raw = values.map((value) => String(value).toLowerCase()).join(" ");
@@ -2292,13 +2832,7 @@
         || raw.includes("time stamp")
         || raw.includes("time-stamp")
         || raw.includes("タイムスタンプ");
-      if (isTimestamp) {
-        return {
-          type: "timestamp",
-          label: "タイムスタンプ/技術署名の可能性",
-          description: "PDFの時刻証明や検証用の署名と思われます。登記用の本人署名とは別枠で確認してください。"
-        };
-      }
+      if (isTimestamp) return TIMESTAMP_KIND;
       return {
         type: "signature",
         label: "電子署名",
@@ -2318,30 +2852,56 @@
       return /bengo4|弁護士ドットコム|cloudsign|クラウドサイン|gmo|globalsign|グローバルサイン|secom|セコム|cybertrust|サイバートラスト|digicert|adobe|contractcross|contractcube|btobプラットフォーム|認証局|証明書|certificateauthority|timestamp|timestamper|tsa/.test(nValue);
     }
 
-    function signerNameFromReason(reason) {
-      const text = String(reason || "").replace(/\s+/g, " ").trim();
+    // 電子契約サービスは「◯◯によって署名されました」「◯◯[mail]が2024/12/13に承認しました」など、
+    // 署名者名を文章のかたちで /Reason や /Name に入れてくる。そこから氏名部分だけを取り出す。
+    const SIGNER_SENTENCE_PATTERNS = [
+      /^(.+?)\s*によって(?:署名|証明書入力|承認|合意|作成|送信|$)/,
+      /^(.+?)\s*[（(][^()（）]*@[^()（）]*[)）]\s*[（(](?:Eメール|メール|SMS|アクセスコード)[^()（）]*認証[^()（）]*[)）]/i,
+      /^(.+?)が\s*\d{4}[\/\-年]/,
+      /^(.+?)が(?:承認|署名|同意|合意)しました/
+    ];
+
+    function extractSignerNameFromText(value) {
+      const text = String(value || "").replace(/\s+/g, " ").trim();
       if (!text) return "";
-      const byMatch = text.match(/^(.+?)\s*によって(?:署名|証明書入力|承認|合意|作成|送信|$)/);
-      const authenticatedMatch = text.match(/^(.+?)\s*[（(][^()（）]*@[^()（）]*[)）]\s*[（(](?:Eメール|メール|SMS|アクセスコード)[^()（）]*認証[^()（）]*[)）]/i);
-      let candidate = (byMatch?.[1] || authenticatedMatch?.[1] || "").trim();
+      let candidate = "";
+      for (const pattern of SIGNER_SENTENCE_PATTERNS) {
+        const match = text.match(pattern);
+        if (match?.[1]) {
+          candidate = match[1].trim();
+          break;
+        }
+      }
       if (!candidate) return "";
       candidate = candidate
         .replace(/\s*[（(](?:Eメール|メール|SMS|アクセスコード)[^()（）]*認証[^()（）]*[)）]\s*$/i, "")
-        .replace(/\s*[（(][^()（）]*@[^()（）]*[)）]\s*$/i, "")
+        .replace(/\s*[\[［（(][^\]］）)]*@[^\]］）)]*[\]］）)]\s*$/i, "")
         .trim();
       return humanReadableSigner(candidate);
     }
 
     const SIGNER_NOT_FOUND = "PDF署名からは個人名を特定できません";
 
-    function signerIdentity(sig, certs) {
-      const reasonName = signerNameFromReason(sig.reason);
-      if (reasonName) return { name: reasonName, source: "署名のプロパティ（理由欄）", selfDeclared: true, serviceLike: false };
-      const pdfName = humanReadableSigner(sig.signerNamePdf);
-      if (pdfName) return { name: pdfName, source: "PDF署名名", selfDeclared: true, serviceLike: isServiceOrCertificateProviderName(pdfName) };
-      for (const cert of certs) {
+    function signerIdentity(sig, certs, signerCert) {
+      const reasonName = extractSignerNameFromText(sig.reason);
+      if (reasonName) return { name: reasonName, source: "署名の理由欄（署名時の入力）", selfDeclared: true, serviceLike: isServiceOrCertificateProviderName(reasonName) };
+      const pdfName = extractSignerNameFromText(sig.signerNamePdf) || humanReadableSigner(sig.signerNamePdf);
+      if (pdfName) return { name: pdfName, source: "PDFの署名名（/Name）", selfDeclared: true, serviceLike: isServiceOrCertificateProviderName(pdfName) };
+      const ordered = signerCert ? [signerCert, ...certs.filter((cert) => cert !== signerCert)] : certs;
+      for (const cert of ordered) {
         const cn = humanReadableSigner(cert.subject?.cn);
-        if (cn) return { name: cn, source: "電子証明書の主体名", selfDeclared: false, serviceLike: isServiceOrCertificateProviderName(cn) };
+        if (cn) {
+          return {
+            name: cn,
+            source: cert === signerCert ? "署名者の電子証明書の主体名（CN）" : "電子証明書の主体名（CN）",
+            selfDeclared: false,
+            serviceLike: isServiceOrCertificateProviderName(cn)
+          };
+        }
+      }
+      const org = humanReadableSigner(signerCert?.subject?.o);
+      if (org) {
+        return { name: org, source: "署名者の電子証明書の組織名（O）", selfDeclared: false, serviceLike: isServiceOrCertificateProviderName(org) };
       }
       return { name: SIGNER_NOT_FOUND, source: "特定不可", selfDeclared: false, serviceLike: false };
     }
@@ -2350,13 +2910,169 @@
       if (identity.name === SIGNER_NOT_FOUND) return "";
       if (identity.serviceLike) return "（サービス名・証明書名の可能性があります）";
       if (identity.selfDeclared) return "（署名時の入力情報・本人確認情報ではありません）";
-      return identity.source === "電子証明書の主体名" ? "（電子証明書の記載）" : "";
+      return identity.source.includes("証明書") ? "（電子証明書の記載）" : "";
     }
 
     function signerCertificate(certs) {
       if (!certs.length) return null;
+      const nonCa = certs.filter((cert) => !cert.isCa);
+      const pool = nonCa.length ? nonCa : certs;
       const issuerTexts = new Set(certs.map((cert) => cert.issuer?.text).filter(Boolean));
-      return certs.find((cert) => cert.subject?.text && !issuerTexts.has(cert.subject.text)) || certs[0];
+      return pool.find((cert) => cert.subject?.text && !issuerTexts.has(cert.subject.text)) || pool[0];
+    }
+
+    // SignerInfo が読めればそれを最優先。読めないときだけ、CA でないリーフ証明書を推定する。
+    function resolveSignerCertificate(certs, signerInfo) {
+      if (!certs.length) return null;
+      if (signerInfo?.serial) {
+        const exact = certs.find((cert) => cert.serial === signerInfo.serial && cert.issuer?.text === signerInfo.issuerText);
+        if (exact) return exact;
+        const bySerial = certs.find((cert) => cert.serial === signerInfo.serial);
+        if (bySerial) return bySerial;
+      }
+      if (signerInfo?.subjectKeyIdentifier) {
+        const bySki = certs.find((cert) => cert.subjectKeyIdentifier === signerInfo.subjectKeyIdentifier);
+        if (bySki) return bySki;
+      }
+      return signerCertificate(certs);
+    }
+
+    function certificateRole(cert, signerCert) {
+      if (signerCert && cert === signerCert) return { key: "signer", label: "署名者の証明書" };
+      if (cert.isCa) {
+        return cert.subject?.text && cert.subject.text === cert.issuer?.text
+          ? { key: "root", label: "ルート認証局" }
+          : { key: "ca", label: "中間認証局" };
+      }
+      if (cert.extKeyUsage?.some((item) => item.oid === OID_TIME_STAMPING)) return { key: "tsa", label: "タイムスタンプ用" };
+      return { key: "other", label: "その他の証明書" };
+    }
+
+    // 署名者の証明書の発行者から、証明書の種類と「権限の観点で何が言えるか」を返す。
+    // 断定できない領域なので、ラベルは必ず「可能性」で止める。
+    const ISSUER_PROFILES = [
+      {
+        key: "commercial",
+        label: "商業登記電子証明書（電子認証登記所）の可能性",
+        test: (text) => /商業登記|電子認証登記所|commercialregistr|registryoffice/.test(text),
+        authority: "商業登記電子証明書は、会社・法人の代表者等の資格そのものを証明します。証明書に記載された会社名・代表者の資格・氏名が、申請人の会社と代表者に一致するか確認してください。"
+      },
+      {
+        key: "jpki",
+        label: "公的個人認証サービス（マイナンバーカード）の署名用電子証明書の可能性",
+        test: (text) => /公的個人認証|地方公共団体情報システム機構|japanagencyforlocalauthorityinformationsystems|jpki/.test(text),
+        authority: "個人の氏名・住所等は証明されますが、会社の代表権や委任を受けた代理権までは証明されません。代表者・代理人としての署名であれば、資格証明情報や委任状で権限を別途確認してください。証明書の氏名・住所は下の「証明書の全項目」に記録されています。"
+      },
+      {
+        key: "moj",
+        label: "法務省が発行した証明書（商業登記電子証明書・官職証明書など）の可能性",
+        test: (text) => /ministryofjustice|法務省/.test(text),
+        authority: "法務省系の証明書です。会社の代表者資格を証明する商業登記電子証明書か、登記官等の官職証明書かで意味が変わります。証明書の主体（下の全項目）を確認してください。"
+      },
+      {
+        key: "gpki",
+        label: "政府認証基盤（GPKI）系の証明書の可能性",
+        test: (text) => /governmentpki|gpki|applicationca|japanesegovernment/.test(text),
+        authority: "官職を証明する証明書の可能性があります。署名した官職が、その書面を作成する権限を持つか確認してください。"
+      },
+      {
+        key: "shihoshoshi",
+        label: "司法書士系の電子証明書の可能性",
+        test: (text) => /司法書士|shihoshoshi/.test(text),
+        authority: "司法書士個人の証明書です。代理人本人か、委任状の受任者と一致するか確認してください。"
+      }
+    ];
+
+    function certificateOrigin(signerCert, matches) {
+      if (signerCert?.extKeyUsage?.some((item) => item.oid === OID_TIME_STAMPING)) {
+        return {
+          key: "tsa",
+          label: "タイムスタンプ局の証明書",
+          authority: "時刻を証明するための証明書です。人の権限を証明するものではありません。"
+        };
+      }
+      const text = normalize([signerCert?.issuer?.text, signerCert?.subject?.text].filter(Boolean).join(" "));
+      if (text) {
+        const profile = ISSUER_PROFILES.find((item) => item.test(text));
+        if (profile) return profile;
+      }
+      // 同じ認証局証明書を多くのサービスが使うため、候補が複数のときはサービス名を断定しない。
+      const serviceMatches = matches.filter((item) => item.entry.kind === "添付書面その他");
+      if (serviceMatches.length) {
+        return {
+          key: "service",
+          label: serviceMatches.length === 1
+            ? `${serviceMatches[0].entry.name}（事業者署名型・立会人型の可能性）`
+            : "電子契約サービスの事業者名義（事業者署名型・立会人型の可能性）",
+          authority: "証明書の名義は電子契約サービスの事業者です。証明書からは「誰が署名したか」は分かりません。署名者本人の氏名は、PDF本文・合意締結証明書・サービスの管理画面で確認してください。"
+        };
+      }
+      if (matches.length) {
+        return {
+          key: "listed",
+          label: `${matches[0].entry.name}（照合候補）`,
+          authority: "法務省掲載一覧に一致候補があります。署名した人が、申請人・代表者・代理人・委任者など権限を持つ人か確認してください。"
+        };
+      }
+      return {
+        key: "unknown",
+        label: "証明書の種類を特定できません",
+        authority: "発行者から証明書の種類を特定できませんでした。署名した人が権限を持つ人か、PDF本文や関係書類で確認してください。"
+      };
+    }
+
+    // 「誰が署名したか」の候補を、どこから読み取ったかの根拠つきで集める。
+    function collectSignerNames(sig, signerCert) {
+      const items = [];
+      const push = (value, origin, trust) => {
+        const text = String(value || "").replace(/\s+/g, " ").trim();
+        if (!text || normalize(text).length < 2) return;
+        if (items.some((item) => normalize(item.value) === normalize(text))) return;
+        items.push({ value: text, origin, trust, technical: isTechnicalSignerName(text) });
+      };
+      push(extractSignerNameFromText(sig.reason), "署名の理由欄から抽出（署名時の入力）", "self");
+      push(extractSignerNameFromText(sig.signerNamePdf), "PDFの署名名から抽出（署名時の入力）", "self");
+      push(sig.signerNamePdf, "PDFの署名名 /Name（署名時の入力）", "self");
+      push(sig.reason, "署名の理由 /Reason（署名時の入力）", "self");
+      push(sig.contactInfo, "署名者の連絡先 /ContactInfo（署名時の入力）", "self");
+      for (const attr of signerCert?.subject?.attrs || []) {
+        if (!NAME_BEARING_ATTRS.includes(attr.key)) continue;
+        push(attr.value, `署名者の証明書：${NAME_ATTR_LABELS[attr.key] || attr.key}`, "cert");
+      }
+      for (const alt of signerCert?.altNames || []) {
+        push(alt.value, `署名者の証明書のサブジェクト代替名：${alt.label}`, "cert");
+      }
+      return items;
+    }
+
+    function expectedSignerTerms() {
+      return String(expectedSignerInput?.value || "")
+        .split(/[,、，\/／;；\n]+/)
+        .map((item) => item.trim())
+        .filter((item) => normalize(item).length >= 2);
+    }
+
+    function matchExpectedSigner(nameItems, sig, signerCert) {
+      const wanted = expectedSignerTerms();
+      if (!wanted.length) return { state: "idle", wanted: [], hits: [], missing: [] };
+      const pool = [...nameItems];
+      if (signerCert?.subject?.text) pool.push({ value: signerCert.subject.text, origin: "署名者の証明書：主体の全項目" });
+      if (sig.reason) pool.push({ value: sig.reason, origin: "署名の理由欄（全文）" });
+      if (sig.location) pool.push({ value: sig.location, origin: "署名の場所 /Location" });
+      const hits = [];
+      const missing = [];
+      for (const term of wanted) {
+        const nTerm = normalize(term);
+        const hit = pool.find((item) => {
+          const nValue = normalize(item.value);
+          if (!nValue) return false;
+          return nValue.includes(nTerm) || (nTerm.length >= 4 && nValue.length >= 4 && nTerm.includes(nValue));
+        });
+        if (hit) hits.push({ term, origin: hit.origin, value: hit.value });
+        else missing.push(term);
+      }
+      if (!missing.length) return { state: "ok", wanted, hits, missing };
+      return { state: hits.length ? "partial" : "no", wanted, hits, missing };
     }
 
     function certificateSubjectSummary(certs) {
@@ -2364,15 +3080,10 @@
       return subjects.length ? subjects.join(" / ") : "不明";
     }
 
-    function signerCandidate(sig, certs) {
-      return signerIdentity(sig, certs).name;
-    }
-
-    function signerCaution(sig, certs) {
-      if (signatureKind(sig, certs).type === "timestamp") {
-        return "この署名はタイムスタンプ等の技術署名の可能性があります。PDF内の主たる電子署名の結果もあわせて確認してください。";
+    function signerCaution(kind, identity) {
+      if (kind.type === "timestamp") {
+        return "この署名はタイムスタンプ等の技術署名です。PDF内の主たる電子署名の結果もあわせて確認してください。";
       }
-      const identity = signerIdentity(sig, certs);
       if (identity.serviceLike) {
         return "PDF署名から読めた名義が、サービス名・証明書名の可能性があります。権限者本人の氏名はPDF本文、合意締結証明書、サービス画面でも確認してください。";
       }
@@ -2461,27 +3172,51 @@
       };
     }
 
-    function authorityCheckForSignature(sig, certs, kind) {
+    function authorityCheckForSignature(kind, identity, origin, expected) {
       if (kind.type === "timestamp") {
         return {
           state: "excluded",
           label: "対象外",
           title: "権限者署名ではなく時刻証明",
-          text: "タイムスタンプ機関等による技術署名の可能性が高く、申請人・代表者・代理人・委任者の権限確認対象ではありません。"
+          text: "タイムスタンプ機関等による技術署名です。申請人・代表者・代理人・委任者の権限確認の対象ではありません。"
         };
       }
-      const identity = signerIdentity(sig, certs);
+      if (expected.state === "ok") {
+        const detail = expected.hits.map((hit) => `「${hit.term}」＝${hit.origin}`).join(" / ");
+        return {
+          state: "ok",
+          label: "一致",
+          title: "想定した権限者名と一致しました",
+          text: `${detail}。${origin.authority}`
+        };
+      }
+      if (expected.state === "partial") {
+        return {
+          state: "warn",
+          label: "一部一致",
+          title: "一部の名前だけ一致しました",
+          text: `一致: ${expected.hits.map((hit) => hit.term).join("、")} ／ 見つからない: ${expected.missing.join("、")}。${origin.authority}`
+        };
+      }
+      if (expected.state === "no") {
+        return {
+          state: "no",
+          label: "不一致",
+          title: "想定した権限者名が見つかりません",
+          text: `「${expected.wanted.join("」「")}」は、この署名から読み取れた名義に含まれていません。立会人型の電子契約では、署名者本人の氏名が証明書に入らないことがあります。PDF本文・合意締結証明書・サービス画面でも確認してください。`
+        };
+      }
       const hasSigner = identity.name !== SIGNER_NOT_FOUND;
       const source = identity.source ? `（${identity.source}）` : "";
       return {
         state: "warn",
         label: "要確認",
-        title: "権限者の署名か確認",
+        title: "権限のある人の署名か確認",
         text: hasSigner
           ? (identity.serviceLike
-            ? `PDF署名から「${identity.name}」を読めていますが、サービス名・証明書名の可能性があります。権限者本人の氏名はPDF本文、合意締結証明書、サービス画面で確認してください。`
-            : `署名者表示は「${identity.name}」です${source}。申請人、代表者、代理人、委任者など権限を持つ人と一致するか確認してください。`)
-          : "PDF署名だけでは、申請人・代表者・代理人・委任者など権限を持つ人による署名か判断できません。PDF本文、合意締結証明書、サービス画面で確認してください。"
+            ? `読み取れた名義は「${identity.name}」ですが、サービス名・証明書名の可能性があります。${origin.authority}`
+            : `署名者表示は「${identity.name}」です${source}。申請人・代表者・代理人・委任者など権限を持つ人と一致するか確認してください。${origin.authority}`)
+          : `PDF署名だけでは、権限を持つ人による署名か判断できません。${origin.authority}`
       };
     }
 
@@ -2504,6 +3239,263 @@
       return { state: "warn", text: "掲載候補あり。利用場面は要確認" };
     }
 
+    function dnGrid(name) {
+      if (!name?.attrs?.length) return `<div class="pdf-hint">読み取れませんでした。</div>`;
+      const rows = name.attrs
+        .map((attr) => `<dt>${escapeHtml(NAME_ATTR_LABELS[attr.key] || attr.key)}</dt><dd>${escapeHtml(attr.value)}</dd>`)
+        .join("");
+      return `<dl class="pdf-meta-grid">${rows}</dl>`;
+    }
+
+    function altNameBlock(cert) {
+      if (!cert?.altNames?.length) return "";
+      const rows = cert.altNames
+        .map((alt) => `<dt>${escapeHtml(alt.label)}</dt><dd>${escapeHtml(alt.value)}</dd>`)
+        .join("");
+      return `
+        <p class="pdf-props-label">サブジェクト代替名（証明書に記録された属性）</p>
+        <dl class="pdf-meta-grid">${rows}</dl>
+        <div class="pdf-hint">マイナンバーカードの署名用電子証明書では、氏名・住所・生年月日・性別がこの欄に記録されます。</div>
+      `;
+    }
+
+    function nameListHtml(card) {
+      if (!card.nameItems.length) {
+        return `<div class="pdf-hint">氏名・組織名として読み取れる情報がありませんでした。立会人型の電子契約では、署名者本人の氏名がPDFの署名情報に入らないことがあります。</div>`;
+      }
+      const items = card.nameItems.map((item) => {
+        const hit = card.expected.hits.some((entry) => normalize(entry.value) === normalize(item.value));
+        const flag = hit
+          ? '<span class="pdf-flag ok">想定権限者と一致</span>'
+          : item.trust === "cert"
+            ? '<span class="pdf-flag cert">証明書の記載</span>'
+            : '<span class="pdf-flag self">署名時の入力</span>';
+        const technical = item.technical ? "（技術情報の可能性）" : "";
+        return `
+          <li class="pdf-name-item${hit ? " hit" : ""}">
+            <span class="value">${escapeHtml(item.value)}${escapeHtml(technical)}</span>
+            ${flag}
+            <span class="origin">${escapeHtml(item.origin)}</span>
+          </li>
+        `;
+      }).join("");
+      return `<ul class="pdf-name-list">${items}</ul>`;
+    }
+
+    function renderSignatureProperties(card) {
+      const { sig, signerCert, identity, origin } = card;
+      const unknown = identity.name === SIGNER_NOT_FOUND;
+      const certSummary = signerCert
+        ? `
+          <dl class="pdf-meta-grid">
+            <dt>主体（Subject）</dt><dd>${escapeHtml(signerCert.subject?.text || "不明")}</dd>
+            <dt>発行者（Issuer）</dt><dd>${escapeHtml(signerCert.issuer?.text || "不明")}</dd>
+            <dt>シリアル番号</dt><dd>${escapeHtml(signerCert.serial || "不明")}</dd>
+            <dt>有効期間</dt><dd>${escapeHtml(signerCert.notBefore && signerCert.notAfter ? `${formatDateTime(signerCert.notBefore)} から ${formatDateTime(signerCert.notAfter)}` : "不明")}</dd>
+            <dt>鍵用途</dt><dd>${escapeHtml(signerCert.keyUsage?.length ? signerCert.keyUsage.join("、") : "記載なし")}</dd>
+            <dt>拡張鍵用途</dt><dd>${escapeHtml(signerCert.extKeyUsage?.length ? signerCert.extKeyUsage.map((item) => item.label).join("、") : "記載なし")}</dd>
+            <dt>特定方法</dt><dd>${escapeHtml(card.signerCertSource)}</dd>
+          </dl>
+          <details class="pdf-subdetail">
+            <summary>証明書の全項目を表示</summary>
+            <p class="pdf-props-label">主体（Subject）の全項目</p>
+            ${dnGrid(signerCert.subject)}
+            <p class="pdf-props-label">発行者（Issuer）の全項目</p>
+            ${dnGrid(signerCert.issuer)}
+            ${altNameBlock(signerCert)}
+          </details>
+        `
+        : `<div class="pdf-hint">署名者の証明書を読み取れませんでした。Adobe Acrobatの「署名のプロパティ」→「署名者の証明書を表示」でも確認してください。</div>`;
+
+      return `
+        <div class="pdf-props">
+          <div class="pdf-props-head">
+            <h4>署名のプロパティ（誰が署名したか）</h4>
+            <span>Adobe Acrobatの「署名のプロパティ」に相当する項目です</span>
+          </div>
+          <div class="pdf-props-block">
+            <div class="pdf-signer-main">
+              <span class="who${unknown ? " unknown" : ""}">${escapeHtml(identity.name)}</span>
+              <span class="src">読み取り根拠: ${escapeHtml(identity.source)}${escapeHtml(signerIdentityNote(identity))}</span>
+              <span class="src">証明書の種類: ${escapeHtml(origin.label)}</span>
+            </div>
+          </div>
+          <div class="pdf-props-block">
+            <p class="pdf-props-label">この署名から読み取れた名前（すべて）</p>
+            ${nameListHtml(card)}
+          </div>
+          <div class="pdf-props-block">
+            <p class="pdf-props-label">署名者の証明書</p>
+            ${certSummary}
+          </div>
+          <div class="pdf-props-block">
+            <p class="pdf-props-label">署名の属性</p>
+            <dl class="pdf-meta-grid">
+              <dt>署名日時（/M）</dt><dd>${escapeHtml(sig.signingDate ? formatDateTime(sig.signingDate) : (sig.signingDateRaw || "不明"))}</dd>
+              <dt>署名時刻（署名属性）</dt><dd>${escapeHtml(sig.cmsSignerInfo?.signingTime ? formatDateTime(sig.cmsSignerInfo.signingTime) : "記載なし")}</dd>
+              ${sig.timestampInfo?.genTime ? `<dt>タイムスタンプ時刻</dt><dd>${escapeHtml(formatDateTime(sig.timestampInfo.genTime))}</dd>` : ""}
+              <dt>理由（/Reason）</dt><dd>${escapeHtml(sig.reason || "記載なし")}</dd>
+              <dt>場所（/Location）</dt><dd>${escapeHtml(sig.location || "記載なし")}</dd>
+              <dt>連絡先（/ContactInfo）</dt><dd>${escapeHtml(sig.contactInfo || "記載なし")}</dd>
+              <dt>署名フィールド名</dt><dd>${escapeHtml(sig.fieldName || "不明")}</dd>
+              <dt>形式</dt><dd>${escapeHtml([sig.dictType, sig.filter, sig.subFilter].filter(Boolean).join(" / ") || "不明")}</dd>
+            </dl>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSignerRoster(cards) {
+      const signers = cards.filter((card) => card.kind.type === "signature");
+      if (!signers.length) return "";
+      const timestampCount = cards.length - signers.length;
+      const rows = signers.map((card) => {
+        const unknown = card.identity.name === SIGNER_NOT_FOUND;
+        const flag = card.expected.state === "ok"
+          ? '<span class="pdf-flag ok">想定権限者と一致</span>'
+          : card.expected.state === "partial"
+            ? '<span class="pdf-flag self">一部一致</span>'
+            : card.expected.state === "no"
+              ? '<span class="pdf-flag self">想定権限者と不一致</span>'
+              : "";
+        const when = card.signingDate ? formatDateTime(card.signingDate) : (card.sig.signingDateRaw || "不明");
+        return `
+          <li class="pdf-roster-item">
+            <span class="who${unknown ? " unknown" : ""}">署名${card.index}：${escapeHtml(card.identity.name)} ${flag}</span>
+            <span class="sub">読み取り根拠: ${escapeHtml(card.identity.source)} ／ ${escapeHtml(card.origin.label)} ／ 署名日時: ${escapeHtml(when)}</span>
+          </li>
+        `;
+      }).join("");
+      return `
+        <div class="pdf-roster">
+          <h3>この文書に署名した人（読み取り結果）</h3>
+          <p class="pdf-roster-lead">PDFの署名情報から読み取れた名義です。${timestampCount ? `ほかにタイムスタンプ等の技術署名が${timestampCount}件あります。` : ""}権限のある人の署名かどうかは、各署名の「署名のプロパティ」で証明書の記載まで確認してください。</p>
+          <ol class="pdf-roster-list">${rows}</ol>
+        </div>
+      `;
+    }
+
+    function buildSignatureCard(sig, index) {
+      const certs = sig.certificates || [];
+      const signerCert = resolveSignerCertificate(certs, sig.cmsSignerInfo);
+      const cmsResolved = Boolean(sig.cmsSignerInfo && signerCert && (
+        (sig.cmsSignerInfo.serial && sig.cmsSignerInfo.serial === signerCert.serial)
+        || (sig.cmsSignerInfo.subjectKeyIdentifier && sig.cmsSignerInfo.subjectKeyIdentifier === signerCert.subjectKeyIdentifier)
+      ));
+      const signatureMatches = matchSignatureEntries(sig);
+      const allMatches = [...signatureMatches, ...certs.flatMap((cert) => matchCertificateEntries(cert))];
+      const uniqueMatches = [];
+      const seen = new Set();
+      for (const item of allMatches) {
+        if (seen.has(item.entry.name)) continue;
+        seen.add(item.entry.name);
+        uniqueMatches.push(item);
+      }
+      const signingDate = sig.signingDate || sig.cmsSignerInfo?.signingTime || sig.timestampInfo?.genTime || null;
+      const referenceDate = signingDate || new Date();
+      const kind = signatureKind(sig, certs, signerCert);
+      const identity = signerIdentity(sig, certs, signerCert);
+      const nameItems = collectSignerNames(sig, signerCert);
+      const expected = matchExpectedSigner(nameItems, sig, signerCert);
+      const origin = certificateOrigin(signerCert, signerCert ? matchCertificateEntries(signerCert) : uniqueMatches);
+      return {
+        index: index + 1,
+        sig,
+        certs,
+        signerCert,
+        signerCertSource: signerCert
+          ? (cmsResolved ? "署名データ（SignerInfo）から特定" : "証明書チェーンから推定")
+          : "特定できません",
+        signatureMatches,
+        uniqueMatches,
+        signingDate,
+        referenceDate,
+        kind,
+        identity,
+        nameItems,
+        expected,
+        origin
+      };
+    }
+
+    function renderSignatureCard(card) {
+      const { sig, certs, signerCert, kind, identity, uniqueMatches, signatureMatches, referenceDate, origin, expected } = card;
+      const verdict = kind.type === "timestamp"
+        ? { state: "excluded", text: "タイムスタンプ/技術署名のため、登記利用可否の判定対象外です。" }
+        : pdfVerdict(uniqueMatches);
+      const caution = signerCaution(kind, identity);
+      const certificateValidity = validityCheckForCerts(signerCert ? [signerCert] : certs, referenceDate);
+      const integrity = sig.integrityCheck || {
+        state: "warn",
+        label: "要確認",
+        title: "文書の整合性を未確認",
+        text: "署名対象部分の整合性を確認できませんでした。"
+      };
+      const displayValidity = kind.type === "timestamp"
+        ? "判定対象外（タイムスタンプ）"
+        : signatureValiditySummary(integrity, certificateValidity);
+      const excludedBanner = kind.type === "timestamp"
+        ? '<div class="pdf-excluded-banner"><strong>登記利用可否の判定対象外</strong><span>これは人が行った電子署名ではなく、時刻を証明するためのタイムスタンプ／技術署名です。</span></div>'
+        : "";
+      const checks = [
+        authorityCheckForSignature(kind, identity, origin, expected),
+        issuerCheckForMatches(uniqueMatches, kind),
+        integrity,
+        certificateValidity
+      ];
+      const checksHtml = `<div class="pdf-check-grid">${checks.map(renderCheckCard).join("")}</div>`;
+      const broadMatchHint = uniqueMatches.length >= 4
+        ? `<div class="pdf-hint">同じ認証局証明書を複数サービスが利用しているため、サービス名はPDF本文や合意締結証明書でも確認してください。</div>`
+        : "";
+      const certHtml = certs.length ? certs.map((cert, certIndex) => {
+        const validity = validityLabel(cert, referenceDate);
+        const matches = matchCertificateEntries(cert);
+        const role = certificateRole(cert, signerCert);
+        const matchHtml = matches.length
+          ? `<ul class="pdf-match-list">${matches.slice(0, 6).map((item) => `<li>${escapeHtml(item.entry.name)} <span class="context-badge hit">${escapeHtml(item.entry.kind)}</span></li>`).join("")}</ul>`
+          : `<div class="pdf-hint">この証明書名・発行者では掲載候補を特定できませんでした。</div>`;
+        return `
+          <div class="pdf-cert${role.key === "signer" ? " signer" : ""}">
+            <p class="pdf-cert-title">証明書 ${certIndex + 1}<span class="pdf-cert-role ${role.key}">${escapeHtml(role.label)}</span></p>
+            <dl class="pdf-meta-grid">
+              <dt>証明書主体</dt><dd>${escapeHtml(cert.subject?.text || cert.subject?.cn || "不明")}</dd>
+              <dt>発行者</dt><dd>${escapeHtml(cert.issuer?.text || cert.issuer?.cn || "不明")}</dd>
+              <dt>有効期間</dt><dd><span class="pdf-verdict ${validity.state}">${escapeHtml(validity.text)}</span></dd>
+              <dt>照合候補</dt><dd>${matchHtml}</dd>
+            </dl>
+          </div>
+        `;
+      }).join("") : `<div class="pdf-cert"><p class="pdf-cert-title">証明書を読み取れませんでした</p><div class="pdf-hint">PDFに署名辞書はありますが、証明書情報の抽出はできませんでした。署名データ内の文字列から照合候補を探しています。</div></div>`;
+      const signatureMatchHtml = signatureMatches.length
+        ? `<div class="pdf-cert"><p class="pdf-cert-title">署名データ内の照合候補</p><ul class="pdf-match-list">${signatureMatches.slice(0, 8).map((item) => `<li>${escapeHtml(item.entry.name)} <span class="context-badge hit">${escapeHtml(item.entry.kind)}</span></li>`).join("")}</ul>${broadMatchHint}</div>`
+        : "";
+
+      return `
+        <article class="pdf-signature${kind.type === "timestamp" ? " excluded" : ""}">
+          <h3>署名 ${card.index}</h3>
+          ${excludedBanner}
+          ${checksHtml}
+          ${renderSignatureProperties(card)}
+          <div class="pdf-keyline">
+            <div><b>署名の種類:</b> ${escapeHtml(kind.label)}</div>
+            <div><b>有効性:</b> ${escapeHtml(displayValidity)}</div>
+          </div>
+          ${caution ? `<div class="pdf-hint">${escapeHtml(caution)}</div>` : ""}
+          <details class="pdf-detail">
+            <summary>照合の詳細と証明書チェーンを表示</summary>
+            <div class="pdf-verdict ${verdict.state}">${escapeHtml(verdict.text)}</div>
+            <dl class="pdf-meta-grid">
+              <dt>証明書主体（全件）</dt><dd>${escapeHtml(certificateSubjectSummary(certs))}</dd>
+              <dt>署名種別メモ</dt><dd>${escapeHtml(kind.description)}</dd>
+              <dt>署名データ</dt><dd>${escapeHtml(sig.hasContents ? `${sig.contentsBytes.length.toLocaleString()} bytes` : "未検出")}</dd>
+              <dt>確認範囲</dt><dd>署名の存在、署名者名候補、署名者の証明書と発行者、有効期間、法務省掲載一覧との照合</dd>
+            </dl>
+            <div class="pdf-cert-list">${signatureMatchHtml}${certHtml}</div>
+          </details>
+        </article>
+      `;
+    }
+
     function renderPdfResults(file, signatures) {
       if (!signatures.length) {
         pdfStatus.textContent = `${file.name}：PDF内に署名辞書（ByteRange）は見つかりませんでした。`;
@@ -2511,115 +3503,18 @@
         return;
       }
 
-      pdfStatus.textContent = `${file.name}：${signatures.length}件の署名情報を検出しました。`;
-      pdfResults.innerHTML = signatures.map((sig, index) => {
-        const certs = sig.certificates || [];
-        const signatureMatches = matchSignatureEntries(sig);
-        const allMatches = [...signatureMatches, ...certs.flatMap((cert) => matchCertificateEntries(cert))];
-        const uniqueMatches = [];
-        const seen = new Set();
-        for (const item of allMatches) {
-          if (seen.has(item.entry.name)) continue;
-          seen.add(item.entry.name);
-          uniqueMatches.push(item);
-        }
-        const referenceDate = sig.signingDate || new Date();
-        const kind = signatureKind(sig, certs);
-        const verdict = kind.type === "timestamp"
-          ? { state: "excluded", text: "タイムスタンプ/技術署名のため、登記利用可否の判定対象外です。" }
-          : pdfVerdict(uniqueMatches);
-        const signerInfo = signerIdentity(sig, certs);
-        const signer = signerInfo.name;
-        const signerLabel = signerInfo.serviceLike ? "読取名義" : "署名者（候補）";
-        const signerNote = signerIdentityNote(signerInfo);
-        const leafCert = signerCertificate(certs);
-        const certOwner = leafCert
-          ? (leafCert.subject?.cn || leafCert.subject?.o || leafCert.subject?.text || "不明")
-          : "読取不可";
-        const caution = signerCaution(sig, certs);
-        const pdfNameInfo = sig.signerNamePdf
-          ? `${sig.signerNamePdf}${isTechnicalSignerName(sig.signerNamePdf) ? "（技術情報の可能性）" : ""}`
-          : "不明";
-        const certificateValidity = validityCheckForCerts(certs, referenceDate);
-        const integrity = sig.integrityCheck || {
-          state: "warn",
-          label: "要確認",
-          title: "文書の整合性を未確認",
-          text: "署名対象部分の整合性を確認できませんでした。"
-        };
-        const displayValidity = kind.type === "timestamp"
-          ? "判定対象外（タイムスタンプ）"
-          : signatureValiditySummary(integrity, certificateValidity);
-        const excludedBanner = kind.type === "timestamp"
-          ? '<div class="pdf-excluded-banner"><strong>登記利用可否の判定対象外</strong><span>これは本人の電子署名ではなく、時刻を証明するためのタイムスタンプ／技術署名です。</span></div>'
-          : "";
-        const checks = [
-          issuerCheckForMatches(uniqueMatches, kind),
-          integrity,
-          certificateValidity,
-          authorityCheckForSignature(sig, certs, kind)
-        ];
-        const checksHtml = `<div class="pdf-check-grid">${checks.map(renderCheckCard).join("")}</div>`;
-        const broadMatchHint = uniqueMatches.length >= 4
-          ? `<div class="pdf-hint">同じ認証局証明書を複数サービスが利用しているため、サービス名はPDF本文や合意締結証明書でも確認してください。</div>`
-          : "";
-        const certHtml = certs.length ? certs.map((cert, certIndex) => {
-          const validity = validityLabel(cert, referenceDate);
-          const matches = matchCertificateEntries(cert);
-          const matchHtml = matches.length
-            ? `<ul class="pdf-match-list">${matches.slice(0, 6).map((item) => `<li>${escapeHtml(item.entry.name)} <span class="context-badge hit">${escapeHtml(item.entry.kind)}</span></li>`).join("")}</ul>`
-            : `<div class="pdf-hint">この証明書名・発行者では掲載候補を特定できませんでした。</div>`;
-          return `
-            <div class="pdf-cert">
-              <p class="pdf-cert-title">証明書 ${certIndex + 1}</p>
-              <dl class="pdf-meta-grid">
-                <dt>証明書主体</dt><dd>${escapeHtml(cert.subject?.cn || cert.subject?.o || cert.subject?.text || "不明")}</dd>
-                <dt>発行者</dt><dd>${escapeHtml(cert.issuer?.cn || cert.issuer?.o || cert.issuer?.text || "不明")}</dd>
-                <dt>有効期間</dt><dd><span class="pdf-verdict ${validity.state}">${escapeHtml(validity.text)}</span></dd>
-                <dt>照合候補</dt><dd>${matchHtml}</dd>
-              </dl>
-            </div>
-          `;
-        }).join("") : `<div class="pdf-cert"><p class="pdf-cert-title">証明書を読み取れませんでした</p><div class="pdf-hint">PDFに署名辞書はありますが、証明書情報の抽出はできませんでした。署名データ内の文字列から照合候補を探しています。</div></div>`;
-        const signatureMatchHtml = signatureMatches.length
-          ? `<div class="pdf-cert"><p class="pdf-cert-title">署名データ内の照合候補</p><ul class="pdf-match-list">${signatureMatches.slice(0, 8).map((item) => `<li>${escapeHtml(item.entry.name)} <span class="context-badge hit">${escapeHtml(item.entry.kind)}</span></li>`).join("")}</ul>${broadMatchHint}</div>`
-          : "";
-
-        return `
-          <article class="pdf-signature${kind.type === "timestamp" ? " excluded" : ""}">
-            <h3>署名 ${index + 1}</h3>
-            ${excludedBanner}
-            ${checksHtml}
-            <div class="pdf-keyline">
-              <div><b>署名の種類:</b> ${escapeHtml(kind.label)}</div>
-              <div><b>${escapeHtml(signerLabel)}:</b> ${escapeHtml(signer)}${escapeHtml(signerNote)}</div>
-              <div><b>証明書の名義:</b> ${escapeHtml(certOwner)}</div>
-              <div><b>有効性:</b> ${escapeHtml(displayValidity)}</div>
-              <div><b>署名日時:</b> ${escapeHtml(sig.signingDate ? formatDateTime(sig.signingDate) : (sig.signingDateRaw || "不明"))}</div>
-            </div>
-            ${caution ? `<div class="pdf-hint">${escapeHtml(caution)}</div>` : ""}
-            <details class="pdf-detail">
-              <summary>詳細を表示</summary>
-              <div class="pdf-verdict ${verdict.state}">${escapeHtml(verdict.text)}</div>
-              <dl class="pdf-meta-grid">
-                <dt>PDF署名名</dt><dd>${escapeHtml(pdfNameInfo)}</dd>
-                <dt>署名者の表示根拠</dt><dd>${escapeHtml(signerInfo.source)}</dd>
-                <dt>署名の理由</dt><dd>${escapeHtml(sig.reason || "不明")}</dd>
-                <dt>証明書主体</dt><dd>${escapeHtml(certificateSubjectSummary(certs))}</dd>
-                <dt>形式</dt><dd>${escapeHtml([sig.filter, sig.subFilter].filter(Boolean).join(" / ") || "不明")}</dd>
-                <dt>署名種別メモ</dt><dd>${escapeHtml(kind.description)}</dd>
-                <dt>署名データ</dt><dd>${escapeHtml(sig.hasContents ? `${sig.contentsBytes.length.toLocaleString()} bytes` : "未検出")}</dd>
-                <dt>確認範囲</dt><dd>署名の存在、署名者名候補、証明書発行者、有効期間、法務省掲載一覧との照合</dd>
-              </dl>
-              <div class="pdf-cert-list">${signatureMatchHtml}${certHtml}</div>
-            </details>
-          </article>
-        `;
-      }).join("");
+      const cards = signatures.map(buildSignatureCard);
+      const signerCount = cards.filter((card) => card.kind.type === "signature").length;
+      const timestampCount = cards.length - signerCount;
+      pdfStatus.textContent = `${file.name}：署名 ${cards.length} 件（人による電子署名 ${signerCount} 件／タイムスタンプ等 ${timestampCount} 件）を検出しました。`;
+      pdfResults.innerHTML = renderSignerRoster(cards) + cards.map(renderSignatureCard).join("");
     }
+
+    let lastPdfInspection = null;
 
     async function inspectPdfFile(file) {
       if (!file) return;
+      lastPdfInspection = null;
       pdfResults.innerHTML = "";
       pdfStatus.textContent = `${file.name} を確認しています。`;
       try {
@@ -2627,8 +3522,11 @@
         const signatures = await Promise.all(extractPdfSignatures(bytes).map(async (signature) => ({
           ...signature,
           certificates: extractCertificatesFromCms(signature.contentsBytes),
+          cmsSignerInfo: parseCmsSignerInfo(signature.contentsBytes),
+          timestampInfo: parseTimestampInfo(signature.contentsBytes),
           integrityCheck: await integrityCheckForSignature(bytes, signature)
         })));
+        lastPdfInspection = { file, signatures };
         renderPdfResults(file, signatures);
       } catch (error) {
         pdfStatus.textContent = "PDFの読取中にエラーが発生しました。別のPDFで確認してください。";
@@ -2666,6 +3564,11 @@
 
     queryInput.addEventListener("input", render);
     contextSelect.addEventListener("change", render);
+    if (expectedSignerInput) {
+      expectedSignerInput.addEventListener("input", () => {
+        if (lastPdfInspection) renderPdfResults(lastPdfInspection.file, lastPdfInspection.signatures);
+      });
+    }
     setupPdfDrop();
     render();
   </script>
