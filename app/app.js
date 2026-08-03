@@ -1176,6 +1176,11 @@
       hintEl.textContent = `予定日を ${-n} 日過ぎています（${context}・${applicationMethodLabel(method)}）${sourceSuffix}${dataBasisSuffix}${saveSuffix}`;
     }
     dateEl.textContent = fmtJP(due);
+
+    if (window.goatcounter) {
+      const src = new URLSearchParams(location.search).get("src") || "direct";
+      window.goatcounter.count({ path: "check-" + src, event: true });
+    }
   }
 
   function caseState(c) {

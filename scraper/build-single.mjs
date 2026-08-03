@@ -24,6 +24,9 @@ html = html
   .replace(/\s*<link rel="apple-touch-icon"[^>]*>/i, "")
   .replace(/\s*<link rel="icon"[^>]*>/i, "");
 
+// アクセス解析はWebサイト版のみ。配布用の単一ファイルには含めない
+html = html.replace(/\s*<script data-goatcounter[^>]*><\/script>/i, "");
+
 // CSS を <style> に
 html = html.replace(
   /<link rel="stylesheet" href="styles\.css(?:\?[^\"]+)?" \/>/i,
