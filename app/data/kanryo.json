@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-08-03T05:34:16.631Z",
+  "generatedAt": "2026-08-03T09:24:55.076Z",
   "source": "登記完了予定日（50法務局対応・履歴蓄積）",
   "fetchPolicy": {
     "mode": "scheduledSnapshot",
@@ -478,10 +478,10 @@
   "history": {
     "enabled": true,
     "startedAt": "2026-06-24T02:45:48.241Z",
-    "previousGeneratedAt": "2026-08-03T01:53:51.935Z",
+    "previousGeneratedAt": "2026-08-03T05:34:16.631Z",
     "currentEntries": 8991,
     "retainedEntries": 12413,
-    "addedEntries": 171,
+    "addedEntries": 0,
     "updatedEntries": 0,
     "totalEntries": 21404
   },
