@@ -245,6 +245,11 @@
     el.printType.textContent = `${typeDisplay(p)}（公告期間 ${periodDisplay(p)}）`;
     el.printMethod.textContent = METHOD_LABELS[p.method];
     el.printReportDate.textContent = fmtJP(new Date());
+
+    if (window.goatcounter) {
+      const src = new URLSearchParams(location.search).get("src") || "direct";
+      window.goatcounter.count({ path: "check-" + src, event: true });
+    }
   }
 
   /* ===== 案件一覧 ===== */
@@ -749,7 +754,7 @@
     });
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20260727-v8", { updateViaCache: "none" })
+        .register("./sw.js?v=20260803-v9", { updateViaCache: "none" })
         .then((registration) => registration.update())
         .catch(() => {});
     });

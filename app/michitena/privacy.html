@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <title>プライバシーについて | ミチテナ</title>
+  <link rel="icon" href="favicon.svg?v=20260727-v8" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css?v=20260803-v9" />
+  <style>
+    .privacy-lead { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 1.75; }
+    .privacy-updated { margin: 8px 0 0; color: var(--text-tertiary); font-size: 12px; }
+    .privacy-section { margin-top: 26px; }
+    .privacy-section h2 { margin: 0 0 8px; color: var(--text); font-size: 16px; font-weight: 700; letter-spacing: 0; }
+    .privacy-section p { margin: 0 0 8px; color: var(--text-secondary); font-size: 13px; line-height: 1.75; }
+    .privacy-section ul { margin: 0 0 8px; padding-left: 20px; color: var(--text-secondary); font-size: 13px; line-height: 1.75; }
+    .privacy-back { margin: 34px 0 40px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <div class="appbar__inner">
+      <img class="appbar__logo" src="favicon.svg?v=20260727-v8" alt="" />
+      <div class="appbar__wordmark">
+        <h1 class="appbar__title">ミチテナ</h1>
+        <span class="appbar__tagline">プライバシーについて</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section aria-labelledby="privacy-title">
+      <h2 id="privacy-title" style="margin: 0 0 8px; color: var(--text); font-size: 20px; font-weight: 700;">ツール利用時のデータの扱い</h2>
+      <p class="privacy-lead">このページでは、tools.ishimoto-legal.com で公開している「ミチテナ」（法定公告 満了日計算ツール）における保存データと外部通信について説明します。</p>
+      <p class="privacy-updated">最終更新日：2026年8月3日</p>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="local-storage">
+      <h2 id="local-storage">端末内に保存される情報</h2>
+      <p>ミチテナでは、利用者の操作により、次の情報が利用中のブラウザ内に保存されます。</p>
+      <ul>
+        <li>公告の種類</li>
+        <li>公告方式</li>
+        <li>掲載予定日</li>
+        <li>会社名・案件名・メモ（任意入力）</li>
+        <li>完了／未完了の状態</li>
+      </ul>
+      <p>これらの情報は利用中のブラウザ内にだけ保存され、ISHIMOTO Legal のサーバーや第三者サービスへ送信されません。</p>
+      <p>守秘の観点から、案件名・メモには依頼者名、住所など、個別案件を特定できる情報を入力しない運用をおすすめします。</p>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="network">
+      <h2 id="network">外部通信について</h2>
+      <p>ミチテナは、アプリの表示に必要なファイルの取得と、次項のアクセス解析を除き、外部との通信を行いません。利用者が入力・保存した案件情報の内容が送信されることはありません。</p>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="analytics">
+      <h2 id="analytics">アクセス解析について</h2>
+      <p>品質向上のため、ミチテナでは、アクセス解析サービス GoatCounter を利用して、匿名の利用状況（ページの表示回数・計算機能の実行回数・流入元）のみを記録しています。</p>
+      <p>この計測では、氏名・メールアドレス等の個人情報は取得せず、Cookieも使用しません。利用者が入力・保存した案件名や日付等の内容が送信されることもありません。</p>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="delete">
+      <h2 id="delete">保存情報の削除</h2>
+      <p>保存した案件は、ミチテナの画面から削除できます。ブラウザのサイトデータを削除した場合、端末内に保存された情報も利用できなくなります。</p>
+    </section>
+
+    <section class="privacy-section" aria-labelledby="corporate-policy">
+      <h2 id="corporate-policy">事務所のプライバシーポリシー</h2>
+      <p>ISHIMOTO Legal の事務所運営、相談業務、ウェブサイト全般に関する個人情報の取扱いは、事務所サイトのプライバシーポリシーをご確認ください。</p>
+      <p><a href="https://www.ishimoto-legal.com/privacypolicy">いしもと司法書士事務所 プライバシーポリシー</a></p>
+    </section>
+
+    <p class="privacy-back"><a href="./">ミチテナへ戻る</a></p>
+  </main>
+</body>
+</html>

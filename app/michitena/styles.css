@@ -400,6 +400,9 @@ select:focus, input:focus {
 .footer__brand { margin: 0; color: var(--text-tertiary); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; }
 .footer__brand strong { color: var(--text); letter-spacing: 0; }
 .footer__sub { margin: 8px 0 0; color: #c7c7cc; font-size: 9px; letter-spacing: 0.28em; }
+.footer__note { margin: 14px auto 0; max-width: 460px; color: var(--text-tertiary); font-size: 11px; line-height: 1.6; }
+.footer__links { margin: 6px 0 0; font-size: 12px; }
+.footer__links a { color: var(--text-secondary); }
 
 /* Print */
 .print-only { display: none; }
