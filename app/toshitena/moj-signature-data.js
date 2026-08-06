@@ -1,6 +1,6 @@
 // Generated from https://www.moj.go.jp/MINJI/minji60.html
-// Updated at 2026-08-05 16:35
-window.MOJ_SIGNATURE_DATA_UPDATED_AT = "2026-08-05 16:35";
+// Updated at 2026-08-06 09:04
+window.MOJ_SIGNATURE_DATA_UPDATED_AT = "2026-08-06 09:04";
 window.MOJ_SIGNATURE_OTHER_SERVICES = [
   {
     "name": "Adobe Acrobat Sign",
@@ -359,7 +359,7 @@ window.MOJ_SIGNATURE_OTHER_SERVICES = [
     "name": "SMBCクラウドサイン",
     "provider": "SMBCクラウドサイン株式会社",
     "certificates": [
-      "Cybertrust iTrust Signature Certification Authority",
+      "Cybertrust iTrust Signature Certification Authority G2",
       "（サイバートラスト株式会社）"
     ],
     "published": "R6.10.24",
@@ -546,15 +546,15 @@ window.MOJ_SIGNATURE_OTHER_SERVICES = [
   },
   {
     "name": "電子取引サービス＠Sign",
-    "provider": "三菱電機インフォメーションネットワーク株式会社",
+    "provider": "三菱電機デジタルイノベーション株式会社",
     "certificates": [
-      "GlobalSign GCC R6 AATL CA 2020",
+      "GlobalSign GCC R45 AATL CA 2020",
       "（GMOグローバルサイン株式会社）",
-      "Enterprise Premium Public CA",
-      "（三菱電機インフォメーションネットワーク株式会社）"
+      "DigiCert G1 SMIME RSA4096 SHA384 2025 CA1",
+      "（DigiCert,Inc.）"
     ],
     "published": "R3.5.10",
-    "link": "https://www.mind.co.jp/service/security/digitalcert/atsign.html",
+    "link": "https://www.mitsubishielectric.co.jp/medigital/solution/atsign/",
     "aliases": []
   }
 ];
