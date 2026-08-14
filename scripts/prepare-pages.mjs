@@ -3,9 +3,9 @@ import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const source = resolve(root, "app");
+const portal = resolve(root, "site");
 const output = resolve(root, "_site");
 const agetena = resolve(output, "agetena");
-const rootIndex = resolve(output, "index.html");
 const rootPrivacy = resolve(output, "privacy.html");
 
 const agetenaFiles = [
@@ -31,15 +31,8 @@ for (const item of agetenaFiles) {
   await cp(resolve(source, item), resolve(agetena, item), { recursive: true });
 }
 
-await writeFile(
-  rootIndex,
-  redirectHtml({
-    title: "アゲテナへ移動します",
-    message: "アゲテナは新しいURLへ移動しました。",
-    targetPath: "/agetena/",
-    linkText: "アゲテナを開く",
-  })
-);
+// ルート（/）はテナシリーズのポータル。app/ のコピーで置かれたアゲテナ用 index.html を上書きする。
+await cp(portal, output, { recursive: true, force: true });
 
 await writeFile(
   rootPrivacy,
@@ -51,7 +44,7 @@ await writeFile(
   })
 );
 
-console.log("GitHub Pages output prepared: / redirects to /agetena/, with /agetena/ app output");
+console.log("GitHub Pages output prepared: / = テナシリーズのポータル, /agetena/ = アゲテナ本体");
 
 function redirectHtml({ title, message, targetPath, linkText }) {
   return `<!DOCTYPE html>

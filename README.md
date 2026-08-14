@@ -147,7 +147,10 @@ npm run build:extension
 - 未対応の法務局・地方法務局へ順次拡大
 ## 公開中の関連ツール
 
+- テナシリーズ ポータル（トップ）: https://tools.ishimoto-legal.com/ ← ソースは `site/`。掲載するのは完成済みツールのみ
 - アゲテナ（新URL）: https://tools.ishimoto-legal.com/agetena/
-- アゲテナ（従来URL・新URLへリダイレクト）: https://tools.ishimoto-legal.com/
-- トウシテナ（登記用電子署名チェッカー・新URL）: https://tools.ishimoto-legal.com/toshitena/
+- ミチテナ（法定公告 満了日計算）: https://tools.ishimoto-legal.com/michitena/
+- トウシテナ（登記用電子署名チェッカー・**開発中のためポータル未掲載**）: https://tools.ishimoto-legal.com/toshitena/
 - トウシテナ（従来URL・リダイレクト）: https://tools.ishimoto-legal.com/electronic-signature-checker/
+- アゲテナの従来のプライバシー説明URL（`/privacy.html`）は `/agetena/privacy.html` へリダイレクト
+- ルート（`/`）をホーム画面に追加済みの旧アゲテナ利用者は、アプリとして起動したときだけ `/agetena/` へ自動転送される

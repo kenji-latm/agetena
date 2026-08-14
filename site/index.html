@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f7" />
+  <title>テナシリーズ｜司法書士のための実務ツール</title>
+  <meta name="description" content="登記の完了予定日、法定公告の満了日。司法書士の実務でよく使う計算を、単機能のWebツールにまとめました。インストール不要・無料でお使いいただけます。" />
+  <link rel="canonical" href="https://tools.ishimoto-legal.com/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="テナシリーズ" />
+  <meta property="og:title" content="テナシリーズ｜司法書士のための実務ツール" />
+  <meta property="og:description" content="登記の完了予定日、法定公告の満了日。司法書士の実務でよく使う計算を、単機能のWebツールにまとめました。" />
+  <meta property="og:url" content="https://tools.ishimoto-legal.com/" />
+  <meta property="og:image" content="https://tools.ishimoto-legal.com/icon-512.png" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-985J90RYS6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-985J90RYS6");
+  </script>
+
+  <style>
+    /* ============================================================
+       テナシリーズ ポータル
+       tena-ui.css のトークンをインラインで持つ単一ファイル構成。
+       （tena-ui.css は各アプリ用。ルートは依存ゼロで確実に出したい）
+       ============================================================ */
+    :root {
+      --background: #f5f5f7;
+      --surface: #ffffff;
+      --surface-soft: #f7f7f9;
+      --text: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #8e8e93;
+      --line: rgba(60, 60, 67, 0.16);
+      --line-soft: rgba(60, 60, 67, 0.08);
+
+      --brand: #718260;
+      --brand-dark: #415d28;
+      --brand-soft: #edf1e9;
+      --brand-line: rgba(113, 130, 96, 0.22);
+
+      --focus-outline: 3px solid rgba(0, 113, 227, 0.22);
+
+      --r-md: 12px;
+      --r-lg: 15px;
+      --r-xl: 20px;
+      --r-pill: 999px;
+
+      --sp-1: 4px;
+      --sp-2: 8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-5: 22px;
+      --sp-6: 28px;
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 28px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.05), 0 16px 40px rgba(0, 0, 0, 0.09);
+
+      --fs-xs: 11px;
+      --fs-sm: 12px;
+      --fs-base: 14px;
+      --fs-md: 15px;
+      --fs-lg: 18px;
+      --fs-title: 19px;
+
+      --content-width: 720px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans",
+        "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #000000;
+        --surface: #1c1c1e;
+        --surface-soft: #2c2c2e;
+        --text: #f5f5f7;
+        --text-secondary: #a1a1a6;
+        --text-tertiary: #8e8e93;
+        --line: rgba(255, 255, 255, 0.16);
+        --line-soft: rgba(255, 255, 255, 0.09);
+        --brand: #a8bf92;
+        --brand-dark: #c3d6ae;
+        --brand-soft: rgba(168, 191, 146, 0.12);
+        --brand-line: rgba(168, 191, 146, 0.26);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    :focus-visible { outline: var(--focus-outline); outline-offset: 2px; }
+
+    /* ---- ヘッダー ---- */
+    .appbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: env(safe-area-inset-top) 0 0;
+      background: color-mix(in srgb, var(--background) 82%, transparent);
+      border-bottom: 1px solid var(--line-soft);
+      -webkit-backdrop-filter: saturate(190%) blur(24px);
+      backdrop-filter: saturate(190%) blur(24px);
+    }
+    .appbar__inner {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 11px 24px 10px;
+    }
+    .appbar__logo {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(79, 111, 39, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+    .appbar__wordmark { display: flex; flex-direction: column; min-width: 0; gap: 1px; }
+    .appbar__title { margin: 0; font-size: var(--fs-title); font-weight: 730; line-height: 1.08; }
+    .appbar__tagline {
+      color: var(--text-secondary);
+      font-size: var(--fs-xs);
+      font-weight: 560;
+      line-height: 1.25;
+      letter-spacing: 0.025em;
+    }
+
+    .container {
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: var(--sp-6) var(--sp-5) 10px;
+    }
+
+    /* ---- ヒーロー ---- */
+    .hero { margin-bottom: var(--sp-6); }
+    .hero__label {
+      margin: 0 0 var(--sp-3);
+      color: var(--text-tertiary);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+    .hero__title {
+      margin: 0 0 var(--sp-3);
+      font-size: 26px;
+      font-weight: 750;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+    }
+    .hero__lead {
+      margin: 0;
+      max-width: 34em;
+      color: var(--text-secondary);
+      font-size: var(--fs-md);
+      line-height: 1.85;
+    }
+
+    /* ---- ツール一覧 ---- */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-3);
+    }
+    .section-head__title {
+      margin: 0;
+      color: var(--text-tertiary);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .section-head__count { color: var(--text-tertiary); font-size: var(--fs-xs); }
+
+    .tools { display: grid; gap: var(--sp-3); }
+
+    .tool {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-4);
+      padding: var(--sp-4);
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .tool:hover {
+      transform: translateY(-2px);
+      border-color: var(--brand-line);
+      box-shadow: var(--shadow-hover);
+    }
+    .tool:active { transform: translateY(0); }
+
+    .tool__icon {
+      flex: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(79, 111, 39, 0.18), 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+    .tool__body { min-width: 0; flex: 1; }
+    .tool__name {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      margin: 0 0 2px;
+      font-size: var(--fs-lg);
+      font-weight: 730;
+      line-height: 1.3;
+    }
+    .tool__arrow { color: var(--brand); font-size: var(--fs-base); }
+    .tool__tagline {
+      margin: 0 0 var(--sp-2);
+      color: var(--brand-dark);
+      font-size: var(--fs-sm);
+      font-weight: 640;
+      letter-spacing: 0.02em;
+    }
+    .tool__desc {
+      margin: 0 0 var(--sp-3);
+      color: var(--text-secondary);
+      font-size: var(--fs-base);
+      line-height: 1.75;
+    }
+    .tool__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tool__tag {
+      padding: 3px 10px;
+      color: var(--text-secondary);
+      background: var(--surface-soft);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--r-pill);
+      font-size: 10px;
+      font-weight: 640;
+      letter-spacing: 0.02em;
+    }
+
+    .coming {
+      margin-top: var(--sp-3);
+      padding: 15px var(--sp-4);
+      color: var(--text-tertiary);
+      background: transparent;
+      border: 1px dashed var(--line);
+      border-radius: var(--r-xl);
+      font-size: var(--fs-sm);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    /* ---- 共通の特徴 ---- */
+    .features { margin-top: 34px; }
+    .features__grid { display: grid; gap: var(--sp-2); }
+    @media (min-width: 560px) { .features__grid { grid-template-columns: repeat(3, 1fr); } }
+    .features__grid div {
+      padding: 13px;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--line-soft);
+      border-radius: 13px;
+      font-size: var(--fs-xs);
+      line-height: 1.7;
+    }
+    .features__grid strong {
+      display: block;
+      margin-bottom: var(--sp-1);
+      color: var(--brand-dark);
+      font-size: var(--fs-sm);
+    }
+
+    .disclaimer { margin-top: var(--sp-4); padding: 0 2px; }
+    .disclaimer p { margin: 0; color: var(--text-tertiary); font-size: var(--fs-xs); line-height: 1.75; }
+
+    .inquiry { margin-top: var(--sp-6); text-align: center; }
+    .inquiry__label {
+      margin: 0 0 10px;
+      color: var(--text-tertiary);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+    .inquiry a {
+      display: inline-block;
+      padding: 11px var(--sp-6);
+      color: var(--brand-dark);
+      background: var(--surface);
+      border: 1px solid var(--brand-line);
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .inquiry a:hover { background: var(--brand-soft); }
+
+    .footer {
+      margin: 44px 0 40px;
+      padding-bottom: env(safe-area-inset-bottom);
+      text-align: center;
+    }
+    .footer__brand { margin: 0; color: var(--text-tertiary); font-size: var(--fs-xs); letter-spacing: 0.18em; }
+    .footer__brand strong { color: var(--text); letter-spacing: 0; }
+    .footer__sub { margin: var(--sp-2) 0 0; color: var(--text-tertiary); font-size: 9px; letter-spacing: 0.28em; opacity: 0.7; }
+
+    @media (max-width: 420px) {
+      .appbar__inner { padding-inline: 18px; }
+      .container { padding: var(--sp-5) var(--sp-4) var(--sp-2); }
+      .hero__title { font-size: 22px; }
+      .tool { gap: var(--sp-3); padding: var(--sp-4) var(--sp-3); }
+      .tool__icon { width: 44px; height: 44px; border-radius: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <div class="appbar__inner">
+      <img class="appbar__logo" src="favicon.svg" alt="" width="36" height="36" />
+      <div class="appbar__wordmark">
+        <h1 class="appbar__title">テナシリーズ</h1>
+        <span class="appbar__tagline">ISHIMOTO Legal の実務ツール</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <p class="hero__label">TENA SERIES</p>
+      <h2 class="hero__title">司法書士の「あの確認」を、<br />ひとつずつ道具にしました。</h2>
+      <p class="hero__lead">
+        登記の完了予定日、法定公告の満了日。
+        実務のなかで毎回のように調べ直す作業を、単機能のWebツールにまとめています。
+        インストール不要、登録不要、無料でお使いいただけます。
+      </p>
+    </section>
+
+    <section aria-labelledby="tools-heading">
+      <div class="section-head">
+        <h3 class="section-head__title" id="tools-heading">TOOLS</h3>
+        <span class="section-head__count">2ツール公開中</span>
+      </div>
+
+      <div class="tools">
+        <a class="tool" href="agetena/">
+          <img class="tool__icon" src="agetena/icon.svg" alt="" width="52" height="52" />
+          <div class="tool__body">
+            <p class="tool__name">アゲテナ <span class="tool__arrow" aria-hidden="true">→</span></p>
+            <p class="tool__tagline">登記完了を、ひと目で。</p>
+            <p class="tool__desc">
+              各法務局が公表している登記完了予定日を自動で取り込み、申請日を入れるだけで完了予定日を割り出します。
+              オンライン申請と郵送申請の違いにも対応。案件ごとに保存して一覧で管理できます。
+            </p>
+            <div class="tool__tags">
+              <span class="tool__tag">不動産・商業登記</span>
+              <span class="tool__tag">データ自動更新</span>
+              <span class="tool__tag">オフライン対応</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="tool" href="michitena/">
+          <img class="tool__icon" src="michitena/favicon.svg" alt="" width="52" height="52" />
+          <div class="tool__body">
+            <p class="tool__name">ミチテナ <span class="tool__arrow" aria-hidden="true">→</span></p>
+            <p class="tool__tagline">公告満了を、ひと目で。</p>
+            <p class="tool__desc">
+              合併・会社分割、資本金の額の減少、解散などの法定公告について、起算日から満了日と申請可能日を計算します。
+              官報公告と電子公告で初日の扱いが変わる点も、選ぶだけで反映されます。
+            </p>
+            <div class="tool__tags">
+              <span class="tool__tag">商業・法人登記</span>
+              <span class="tool__tag">官報・電子公告</span>
+              <span class="tool__tag">案件保存</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <p class="coming">新しいツールを準備中です。公開のお知らせは <a href="https://x.com/ishimoto_legal" target="_blank" rel="noopener">X（@ishimoto_legal）</a> でお伝えします。</p>
+    </section>
+
+    <section class="features" aria-labelledby="features-heading">
+      <div class="section-head">
+        <h3 class="section-head__title" id="features-heading">共通の特徴</h3>
+      </div>
+      <div class="features__grid">
+        <div><strong>インストール不要</strong>ブラウザだけで動きます。ホーム画面に追加すればアプリのように使えます。</div>
+        <div><strong>データは端末の中だけ</strong>保存した案件はご自身のブラウザ内にのみ保存され、サーバーには送信されません。</div>
+        <div><strong>無料で使えます</strong>登録もログインも不要です。日々の実務にそのままお使いください。</div>
+      </div>
+      <div class="disclaimer">
+        <p>各ツールの計算結果・判定結果は参考情報です。実際の手続きにあたっては、必ず個別にご確認ください。</p>
+      </div>
+    </section>
+
+    <div class="inquiry">
+      <p class="inquiry__label">CONTACT</p>
+      <a href="https://www.ishimoto-legal.com/" target="_blank" rel="noopener">いしもと司法書士事務所</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__brand"><strong>テナシリーズ</strong></p>
+    <p class="footer__sub">TENA SERIES / ISHIMOTO LEGAL</p>
+  </footer>
+
+  <script>
+    // ルート直下（/）はかつてアゲテナ本体で、Service Worker を "/" スコープに登録していた。
+    // その名残りへの後始末を2つ行う。
+    //   1) "/" スコープの Service Worker とキャッシュを掃除する（残っていると古いアゲテナが出る）
+    //   2) ホーム画面に「アゲテナ」として追加済みの端末（start_url が "/"）は、
+    //      アプリとして起動されたときだけ /agetena/ へ送る。ブラウザで来た人にはこのポータルを見せる。
+    (function () {
+      var isAppLaunch =
+        (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+        window.navigator.standalone === true;
+
+      function cleanup() {
+        var jobs = [];
+        if ("serviceWorker" in navigator) {
+          jobs.push(
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+              return Promise.all(
+                registrations.map(function (registration) {
+                  return new URL(registration.scope).pathname === "/"
+                    ? registration.unregister()
+                    : true;
+                })
+              );
+            })
+          );
+        }
+        if (window.caches && caches.keys) {
+          jobs.push(
+            caches.keys().then(function (keys) {
+              return Promise.all(
+                keys
+                  .filter(function (key) {
+                    return key.indexOf("touki-kanryo-root-") === 0 || /^touki-kanryo-v/.test(key);
+                  })
+                  .map(function (key) {
+                    return caches.delete(key);
+                  })
+              );
+            })
+          );
+        }
+        return Promise.all(jobs).catch(function () {});
+      }
+
+      function toAgetena() {
+        if (!isAppLaunch) return;
+        var target = new URL("agetena/", window.location.href);
+        target.search = window.location.search;
+        target.hash = window.location.hash;
+        window.location.replace(target.href);
+      }
+
+      // 掃除の完了を待つが、待ちきれない場合も先へ進める。
+      var timeout = new Promise(function (resolve) {
+        window.setTimeout(resolve, 1500);
+      });
+      Promise.race([cleanup(), timeout]).then(toAgetena, toAgetena);
+    })();
+  </script>
+</body>
+</html>
