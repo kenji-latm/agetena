@@ -321,6 +321,9 @@
       padding-bottom: env(safe-area-inset-bottom);
       text-align: center;
     }
+    .footer__links { margin: 0 0 var(--sp-4); font-size: var(--fs-sm); }
+    .footer__links a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--line-soft); }
+    .footer__links a:hover { color: var(--brand-dark); border-bottom-color: var(--brand-line); }
     .footer__brand { margin: 0; color: var(--text-tertiary); font-size: var(--fs-xs); letter-spacing: 0.18em; }
     .footer__brand strong { color: var(--text); letter-spacing: 0; }
     .footer__sub { margin: var(--sp-2) 0 0; color: var(--text-tertiary); font-size: 9px; letter-spacing: 0.28em; opacity: 0.7; }
@@ -426,6 +429,7 @@
   </main>
 
   <footer class="footer">
+    <p class="footer__links"><a href="privacy/">プライバシーについて</a></p>
     <p class="footer__brand"><strong>テナシリーズ</strong></p>
     <p class="footer__sub">TENA SERIES / ISHIMOTO LEGAL</p>
   </footer>
