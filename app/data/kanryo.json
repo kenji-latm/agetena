@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-08-18T07:31:34.778Z",
+  "generatedAt": "2026-08-18T23:26:48.035Z",
   "source": "登記完了予定日（50法務局対応・履歴蓄積）",
   "fetchPolicy": {
     "mode": "scheduledSnapshot",
@@ -105,12 +105,6 @@
       "sourceUrl": "https://houmukyoku.moj.go.jp/tokyo/category_00019.html",
       "fetchedPages": [
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00117.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00116.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00115.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00114.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00113.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00112.htm",
-        "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00111.htm",
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00110.htm",
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00103.htm",
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00094.htm",
@@ -480,7 +474,7 @@
   "history": {
     "enabled": true,
     "startedAt": "2026-06-24T02:45:48.241Z",
-    "previousGeneratedAt": "2026-08-18T06:27:13.372Z",
+    "previousGeneratedAt": "2026-08-18T07:31:34.778Z",
     "currentEntries": 9435,
     "retainedEntries": 16917,
     "addedEntries": 0,
