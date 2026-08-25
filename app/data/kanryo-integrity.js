@@ -1,1 +1,1 @@
-window.KANRYO_DATA_INTEGRITY = {"algorithm":"SHA-256","sha256":"6497c1fb80e90b751dc7acae7bc56f56dee7d3aa6c77f1545cb8686aff17bbbd","dataGeneratedAt":"2026-08-25T07:38:03.313Z","generatedAt":"2026-08-25T07:38:03.327Z"};
+window.KANRYO_DATA_INTEGRITY = {"algorithm":"SHA-256","sha256":"952faf1b620c777f72dd1f6d54c4f444c773e77701863412712d2a720092e1c6","dataGeneratedAt":"2026-08-25T23:29:22.111Z","generatedAt":"2026-08-25T23:29:22.127Z"};
