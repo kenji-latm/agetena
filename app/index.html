@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=20260710-agetena" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260719-v112" />
   <link rel="icon" href="icon.svg?v=20260719-v112" />
-  <link rel="stylesheet" href="styles.css?v=20260910-search-desktop" />
+  <link rel="stylesheet" href="styles.css?v=20260910-office-down" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-985J90RYS6"></script>
   <script>
@@ -93,7 +93,10 @@
 
         <div class="field">
           <label for="f-office" class="field__label"><span class="step">4</span>管轄（本局・支局・出張所）</label>
-          <select id="f-office"></select>
+          <div id="office-picker" class="office-picker">
+            <button id="office-picker-toggle" class="office-picker__toggle" type="button" aria-label="管轄の候補を開く" aria-haspopup="listbox" aria-expanded="false" aria-controls="f-office" hidden>選択してください</button>
+            <select id="f-office"></select>
+          </div>
           <button id="favorite-toggle" class="favorite-toggle" type="button" aria-pressed="false" disabled>☆ よく使う組み合わせに追加</button>
         </div>
 
@@ -243,7 +246,7 @@
   </footer>
 
   <script src="shared-config.js?v=20260803-v137"></script>
-  <script src="app.js?v=20260910-search-desktop"></script>
+  <script src="app.js?v=20260910-office-down"></script>
   <script data-goatcounter="https://agetena.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>

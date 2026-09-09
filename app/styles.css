@@ -849,3 +849,26 @@ button, input, select { font: inherit; }
   .list-tools { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 1.5fr); gap: 12px; align-items: center; }
   .list-filter-grid { margin-top: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* PCの管轄候補は選択ボタンの直下に展開。スマホは従来のselectを使う。 */
+.office-picker__toggle, .office-picker__toggle[hidden] { display: none; }
+@media (min-width: 960px) {
+  .office-picker--enhanced .office-picker__toggle {
+    position: relative; display: block; width: 100%; padding: 12px 40px 12px 13px;
+    border: 1px solid transparent; border-radius: 12px; font: inherit; font-size: 16px;
+    background: var(--surface-soft); color: var(--text); text-align: left; cursor: pointer;
+  }
+  .office-picker__toggle::after {
+    content: ""; position: absolute; right: 17px; top: 20px; width: 6px; height: 6px;
+    border-right: 1.5px solid var(--text-secondary); border-bottom: 1.5px solid var(--text-secondary); transform: rotate(45deg);
+  }
+  .office-picker__toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .office-picker__toggle:disabled { color: var(--text-tertiary); cursor: default; }
+  .office-picker--enhanced:not(.is-open) #f-office { display: none; }
+  .office-picker--enhanced.is-open #f-office {
+    display: block; height: 252px; margin-top: 6px; padding: 4px;
+    background: var(--surface); background-image: none; border: 1px solid var(--line-strong);
+    border-radius: 12px; overflow-y: auto; overscroll-behavior: contain;
+  }
+  .office-picker--enhanced #f-office option { padding: 7px 9px; border-radius: 6px; font-size: 16px; }
+}

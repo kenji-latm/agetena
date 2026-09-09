@@ -227,10 +227,7 @@
     if (jurisdictionId !== "tokyo") return offices;
     // データ更新で未知の管轄が増えても除外せず、読み登録済みの項目の後へ表示する。
     return [...offices].sort((a, b) => {
-      // 本局は先頭、支局・出張所は読みの五十音順。
       if (a === b) return 0;
-      if (a === "本局登記部門") return -1;
-      if (b === "本局登記部門") return 1;
       const aReading = TOKYO_OFFICE_READINGS[a];
       const bReading = TOKYO_OFFICE_READINGS[b];
       if (!aReading || !bReading) {
@@ -2002,7 +1999,8 @@
         populateJurisdictions(jurisdiction.id);
         populateOffices(office);
         updateControls();
-        $("f-office").focus({ preventScroll: true });
+        const officeFocus = $("office-picker-toggle") && !$("office-picker-toggle").hidden ? $("office-picker-toggle") : $("f-office");
+        officeFocus.focus({ preventScroll: true });
       });
       item.appendChild(button);
       list.appendChild(item);
@@ -2027,6 +2025,73 @@
         : ids[0] || "";
   }
 
+  function syncOfficePicker() {
+    const select = $("f-office");
+    const toggle = $("office-picker-toggle");
+    if (!select || !toggle) return;
+    toggle.textContent = select.selectedOptions[0]?.textContent || "選択してください";
+    toggle.setAttribute("aria-label", "管轄：" + toggle.textContent + "。候補を開く");
+    toggle.disabled = select.disabled || ![...select.options].some((option) => option.value);
+  }
+
+  function initOfficePicker() {
+    const wrapper = $("office-picker");
+    const toggle = $("office-picker-toggle");
+    const select = $("f-office");
+    if (!wrapper || !toggle || !select) return;
+    const desktop = window.matchMedia("(min-width: 960px)");
+    let originalValue = select.value;
+    const close = (focusToggle = false, cancel = false) => {
+      if (!wrapper.classList.contains("is-open")) return;
+      if (cancel && [...select.options].some((option) => option.value === originalValue)) {
+        select.value = originalValue;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      wrapper.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      syncOfficePicker();
+      if (focusToggle) toggle.focus({ preventScroll: true });
+    };
+    const open = () => {
+      if (!desktop.matches || toggle.disabled) return;
+      originalValue = select.value;
+      wrapper.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      select.focus({ preventScroll: true });
+      // 候補を下に置いたまま、画面内に収まる分だけページをスクロールする。
+      select.scrollIntoView({ block: "nearest", behavior: "instant" });
+    };
+    const applyViewport = () => {
+      close();
+      wrapper.classList.toggle("office-picker--enhanced", desktop.matches);
+      toggle.hidden = !desktop.matches;
+      if (desktop.matches) select.size = 7;
+      else select.removeAttribute("size");
+      syncOfficePicker();
+    };
+    toggle.addEventListener("click", () => wrapper.classList.contains("is-open") ? close(true) : open());
+    toggle.addEventListener("keydown", (event) => {
+      if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); open(); }
+    });
+    document.querySelector('label[for="f-office"]')?.addEventListener("click", (event) => {
+      if (desktop.matches) { event.preventDefault(); open(); }
+    });
+    select.addEventListener("change", syncOfficePicker);
+    select.addEventListener("click", (event) => {
+      if (desktop.matches && event.target.tagName === "OPTION") close(true);
+    });
+    select.addEventListener("keydown", (event) => {
+      if (!desktop.matches) return;
+      if (event.key === "Enter" || event.key === "Escape") {
+        event.preventDefault(); close(true, event.key === "Escape");
+      }
+    });
+    document.addEventListener("pointerdown", (event) => { if (!wrapper.contains(event.target)) close(); });
+    wrapper.addEventListener("focusout", (event) => { if (!wrapper.contains(event.relatedTarget)) close(); });
+    desktop.addEventListener("change", applyViewport);
+    applyViewport();
+  }
+
   function populateOffices(selected = "") {
     const jurisdictionId = selectedJurisdiction();
     const typeId = selectedType();
@@ -2047,6 +2112,7 @@
     select.value = offices.includes(selected)
       ? selected
       : offices.length === 1 ? offices[0] : "";
+    syncOfficePicker();
   }
 
   function updateControls() {
@@ -2180,6 +2246,7 @@
         if (first) { event.preventDefault(); first.focus(); }
       }
     });
+    initOfficePicker();
     $("f-jurisdiction").addEventListener("change", updateControls);
     document.querySelectorAll('input[name="registration-type"]').forEach((input) => input.addEventListener("change", updateControls));
     $("f-apply-trigger").addEventListener("click", openApplyDatePicker);
