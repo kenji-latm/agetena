@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=20260710-agetena" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260719-v112" />
   <link rel="icon" href="icon.svg?v=20260719-v112" />
-  <link rel="stylesheet" href="styles.css?v=20260803-v137" />
+  <link rel="stylesheet" href="styles.css?v=20260910-search-desktop" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-985J90RYS6"></script>
   <script>
@@ -46,6 +46,17 @@
         <div id="favorite-shortcuts" class="favorite-shortcuts"></div>
       </div>
 
+      <div class="office-search">
+        <label for="office-search" class="field__label">法務局・管轄を検索</label>
+        <input id="office-search" class="office-search__input" type="search" placeholder="例：東京、板橋、たなし" autocomplete="off" aria-describedby="office-search-help" aria-controls="office-search-results" />
+        <p id="office-search-help" class="office-search__help">候補を選ぶと、①法務局と④管轄に反映します。</p>
+        <div id="office-search-results" class="office-search__results" hidden>
+          <p id="office-search-status" class="office-search__status" role="status" aria-live="polite"></p>
+          <ul id="office-search-list" class="office-search__list" aria-label="法務局・管轄の検索結果"></ul>
+        </div>
+      </div>
+
+      <div class="checker__workspace">
       <div class="checker__inputs">
         <label class="field">
           <span class="field__label"><span class="step">1</span>法務局</span>
@@ -100,6 +111,7 @@
         </div>
       </div>
 
+      <div class="checker__summary">
       <!-- 結果（常時表示・自動更新） -->
       <div id="result" class="result result--empty" aria-live="polite">
         <div class="result__caption">完了予定日</div>
@@ -120,6 +132,8 @@
         <button id="f-add" class="btn btn--primary" type="button" disabled>一覧に保存</button>
       </div>
       <p id="save-message" class="save-message" hidden></p>
+      </div>
+      </div>
     </section>
 
     <!-- 保存先 -->
@@ -229,7 +243,7 @@
   </footer>
 
   <script src="shared-config.js?v=20260803-v137"></script>
-  <script src="app.js?v=20260803-v137"></script>
+  <script src="app.js?v=20260910-search-desktop"></script>
   <script data-goatcounter="https://agetena.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>

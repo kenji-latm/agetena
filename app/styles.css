@@ -808,3 +808,44 @@ button, input, select { font: inherit; }
   .shared-session { align-items: stretch; flex-direction: column; }
   .shared-session__actions { justify-content: flex-end; }
 }
+
+/* 法務局・管轄検索。候補は入力欄の下に展開する。 */
+.office-search { margin-bottom: 20px; }
+.office-search__input {
+  display: block; width: 100%; min-width: 0; padding: 12px 13px;
+  color: var(--text); background: var(--surface-soft); border: 1px solid var(--line);
+  border-radius: 12px; font: inherit; font-size: 16px;
+}
+.office-search__input:focus {
+  outline: none; background: var(--surface); border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.14);
+}
+.office-search__help { margin: 6px 2px 0; color: var(--text-secondary); font-size: 12px; }
+.office-search__results { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.office-search__results[hidden] { display: none; }
+.office-search__status { margin: 0; padding: 10px 12px; color: var(--text-secondary); background: var(--surface-soft); font-size: 13px; }
+.office-search__list { max-height: 280px; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 0; list-style: none; }
+.office-search__option {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 14px;
+  width: 100%; min-height: 48px; padding: 11px 13px; border: 0; border-top: 1px solid var(--line);
+  background: var(--surface); color: var(--text); text-align: left; font-size: 14px; cursor: pointer;
+}
+.office-search__option:hover, .office-search__option:focus-visible { background: var(--brand-soft); }
+.office-search__option:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.office-search__jurisdiction { color: var(--text-secondary); font-size: 12px; }
+.checker__workspace, .checker__summary { display: contents; }
+
+/* スマホは従来の幅・縦並び。PCでは入力と結果を並べる。 */
+@media (min-width: 960px) {
+  .appbar__inner, .container, .footer { max-width: 1040px; }
+  .checker { padding: 26px; }
+  .checker__workspace { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .checker__summary { display: block; min-width: 0; padding-left: 28px; border-left: 1px solid var(--line); }
+  .checker__summary .result { margin-top: 0; padding-top: 30px; padding-bottom: 28px; }
+  .checker__summary .save-row { flex-direction: column; }
+  .checker__summary .save-row .btn { width: 100%; }
+  .favorite-shortcuts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .office-search { margin-bottom: 26px; }
+  .list-tools { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 1.5fr); gap: 12px; align-items: center; }
+  .list-filter-grid { margin-top: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

@@ -194,9 +194,53 @@
     document.querySelector('input[name="registration-type"]:checked')?.value || DEFAULT_TYPE;
   const selectedMethod = () =>
     normalizeApplicationMethod(document.querySelector('input[name="application-method"]:checked')?.value);
-  const officesFor = (jurisdictionId, typeId) =>
-    META.officesByJurisdiction?.[jurisdictionId]?.[typeId] ||
-    Object.keys(DB[jurisdictionId]?.[typeId] || {}).sort();
+  // 漢字の文字順ではなく読みで整列する。保存案件・お気に入りの管轄名は変えない。
+  const TOKYO_OFFICE_READINGS = {
+    "板橋出張所": "いたばし",
+    "江戸川出張所": "えどがわ",
+    "北出張所": "きた",
+    "品川出張所": "しながわ",
+    "渋谷出張所": "しぶや",
+    "城南出張所": "じょうなん",
+    "城北出張所": "じょうほく",
+    "新宿出張所": "しんじゅく",
+    "杉並出張所": "すぎなみ",
+    "墨田出張所": "すみだ",
+    "世田谷出張所": "せたがや",
+    "台東出張所": "たいとう",
+    "立川出張所": "たちかわ",
+    "田無出張所": "たなし",
+    "豊島出張所": "としま",
+    "中野出張所": "なかの",
+    "西多摩支局": "にしたま",
+    "練馬出張所": "ねりま",
+    "八王子支局": "はちおうじ",
+    "府中支局": "ふちゅう",
+    "本局登記部門": "ほんきょく",
+    "町田出張所": "まちだ",
+    "港出張所": "みなと",
+  };
+  const officeReadingCollator = new Intl.Collator("ja");
+  const officesFor = (jurisdictionId, typeId) => {
+    const offices = META.officesByJurisdiction?.[jurisdictionId]?.[typeId] ||
+      Object.keys(DB[jurisdictionId]?.[typeId] || {}).sort();
+    if (jurisdictionId !== "tokyo") return offices;
+    // データ更新で未知の管轄が増えても除外せず、読み登録済みの項目の後へ表示する。
+    return [...offices].sort((a, b) => {
+      // 本局は先頭、支局・出張所は読みの五十音順。
+      if (a === b) return 0;
+      if (a === "本局登記部門") return -1;
+      if (b === "本局登記部門") return 1;
+      const aReading = TOKYO_OFFICE_READINGS[a];
+      const bReading = TOKYO_OFFICE_READINGS[b];
+      if (!aReading || !bReading) {
+        if (aReading) return -1;
+        if (bReading) return 1;
+        return officeReadingCollator.compare(a, b);
+      }
+      return officeReadingCollator.compare(aReading, bReading);
+    });
+  };
 
   function normalizeFavorite(item) {
     if (!item || typeof item !== "object") return null;
@@ -1916,6 +1960,55 @@
     render();
   }
 
+  const normalizeOfficeSearch = (value) => String(value).normalize("NFKC").toLowerCase()
+    .replace(/[ァ-ヶ]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0x60));
+
+  function renderOfficeSearch() {
+    const input = $("office-search");
+    const panel = $("office-search-results");
+    const list = $("office-search-list");
+    if (!input || !panel || !list) return;
+    const words = normalizeOfficeSearch(input.value).trim().split(/\s+/).filter(Boolean);
+    list.replaceChildren();
+    panel.hidden = words.length === 0;
+    $("office-search-status").textContent = "";
+    if (!words.length) return;
+    const typeId = selectedType();
+    const matches = [];
+    for (const jurisdiction of JURISDICTIONS) {
+      for (const office of officesFor(jurisdiction.id, typeId)) {
+        const reading = jurisdiction.id === "tokyo" ? TOKYO_OFFICE_READINGS[office] || "" : "";
+        const haystack = normalizeOfficeSearch(jurisdiction.label + " " + jurisdiction.id + " " + office + " " + reading);
+        if (words.every((word) => haystack.includes(word))) matches.push({ jurisdiction, office });
+      }
+    }
+    const limit = 40;
+    $("office-search-status").textContent = matches.length
+      ? typeLabel(typeId) + "：" + matches.length + "件" + (matches.length > limit ? "（先頭40件を表示。文字を追加して絞り込めます）" : "")
+      : "該当する法務局・管轄がありません。名称を変えてお試しください。";
+    for (const { jurisdiction, office } of matches.slice(0, limit)) {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "office-search__option";
+      const title = document.createElement("span");
+      title.textContent = office;
+      const detail = document.createElement("span");
+      detail.className = "office-search__jurisdiction";
+      detail.textContent = jurisdiction.label;
+      button.append(title, detail);
+      button.addEventListener("click", () => {
+        input.value = "";
+        populateJurisdictions(jurisdiction.id);
+        populateOffices(office);
+        updateControls();
+        $("f-office").focus({ preventScroll: true });
+      });
+      item.appendChild(button);
+      list.appendChild(item);
+    }
+  }
+
   function populateJurisdictions(selected = "") {
     const select = $("f-jurisdiction");
     const jurisdictions = JURISDICTIONS.length ? JURISDICTIONS : FALLBACK_JURISDICTIONS;
@@ -1960,6 +2053,7 @@
     useTodayFallback = false;
     const previousOffice = $("f-office").value;
     populateOffices(previousOffice);
+    renderOfficeSearch();
     $("f-label").placeholder = caseLabelPlaceholder();
     renderFavorites();
     updateResult();
@@ -2072,6 +2166,20 @@
     populateListFilters();
     renderStoragePanel();
 
+    $("office-search")?.addEventListener("input", (event) => {
+      if (!event.isComposing) renderOfficeSearch();
+    });
+    $("office-search")?.addEventListener("compositionend", renderOfficeSearch);
+    $("office-search")?.addEventListener("keydown", (event) => {
+      if (event.isComposing) return;
+      if (event.key === "Escape") {
+        event.currentTarget.value = "";
+        renderOfficeSearch();
+      } else if (event.key === "ArrowDown" || event.key === "Enter") {
+        const first = $("office-search-list")?.querySelector("button");
+        if (first) { event.preventDefault(); first.focus(); }
+      }
+    });
     $("f-jurisdiction").addEventListener("change", updateControls);
     document.querySelectorAll('input[name="registration-type"]').forEach((input) => input.addEventListener("change", updateControls));
     $("f-apply-trigger").addEventListener("click", openApplyDatePicker);
