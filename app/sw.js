@@ -2,11 +2,11 @@
 const SCOPE_PATH = new URL(self.registration.scope).pathname;
 const IS_AGETENA_PATH = /\/agetena\/$/.test(SCOPE_PATH);
 const CACHE_PREFIX = IS_AGETENA_PATH ? "agetena-touki-kanryo-" : "touki-kanryo-root-";
-const CACHE = `${CACHE_PREFIX}v39-v139-office-down`;
+const CACHE = `${CACHE_PREFIX}v40-v1310-feedback`;
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=20260910-office-down",
+  "./styles.css?v=20260911-feedback",
   "./app.js?v=20260910-office-down",
   "./shared-config.js?v=20260803-v137",
   "./data/kanryo-integrity.js",

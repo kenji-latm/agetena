@@ -872,3 +872,12 @@ button, input, select { font: inherit; }
   }
   .office-picker--enhanced #f-office option { padding: 7px 9px; border-radius: 6px; font-size: 16px; }
 }
+
+.feature-request { display:flex; flex-direction:column; gap:16px; margin:28px 0 8px; padding:20px; background:var(--surface); border:1px solid var(--line); border-radius:17px; }
+.feature-request h2 { margin:0 0 6px; font-size:16px; font-weight:650; }
+.feature-request p { margin:0 0 6px; color:var(--text-secondary); font-size:14px; }
+.feature-request small { color:var(--text-secondary); font-size:12px; }
+.feature-request__link { display:inline-block; padding:12px 16px; border:1px solid var(--line); border-radius:12px; background:var(--brand-soft); color:var(--text); font:inherit; font-size:14px; font-weight:600; text-decoration:none; text-align:center; }
+.feature-request__link:hover { background:var(--surface-soft); }
+.feature-request__link:focus-visible { outline:2px solid var(--focus); outline-offset:3px; }
+@media(min-width:960px) { .feature-request { flex-direction:row; align-items:center; justify-content:space-between; gap:24px; } .feature-request__link { flex-shrink:0; } }
