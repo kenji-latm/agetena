@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest?v=20260710-agetena" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260719-v112" />
   <link rel="icon" href="icon.svg?v=20260719-v112" />
-  <link rel="stylesheet" href="styles.css?v=20260911-feedback" />
+  <link rel="stylesheet" href="styles.css?v=20260913-native-date" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-985J90RYS6"></script>
   <script>
@@ -101,15 +101,15 @@
         </div>
 
         <div class="field">
-          <span id="f-apply-label" class="field__label"><span class="step">5</span>申請日</span>
+          <label for="f-apply" id="f-apply-label" class="field__label"><span class="step">5</span>申請日</label>
           <span class="date-input-wrap">
-            <button id="f-apply-trigger" class="date-input-trigger" type="button" aria-labelledby="f-apply-label f-apply-display">
+            <span class="date-input-face" aria-hidden="true">
               <span id="f-apply-display" class="date-input-display"></span>
               <svg class="date-input-calendar" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
               </svg>
-            </button>
-            <input id="f-apply" class="date-input-native" type="date" aria-labelledby="f-apply-label" tabindex="-1" />
+            </span>
+            <input id="f-apply" class="date-input-native" type="date" aria-labelledby="f-apply-label" />
           </span>
         </div>
       </div>
@@ -255,7 +255,7 @@
   </footer>
 
   <script src="shared-config.js?v=20260803-v137"></script>
-  <script src="app.js?v=20260910-office-down"></script>
+  <script src="app.js?v=20260913-native-date"></script>
   <script data-goatcounter="https://agetena.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>

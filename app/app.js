@@ -163,22 +163,6 @@
       ? `${d.getFullYear()}/${pad(d.getMonth() + 1)}/${pad(d.getDate())}（${WD[d.getDay()]}）`
       : "日付を選択";
   }
-  function openApplyDatePicker() {
-    const input = $("f-apply");
-    if (!input) return;
-    try {
-      if (typeof input.showPicker === "function") {
-        input.showPicker();
-        return;
-      }
-    } catch {
-      // showPicker非対応時は、ユーザー操作内のclickへフォールバックする。
-    }
-    input.focus({ preventScroll: true });
-    input.click();
-  }
-
-
   const jurisdictionLabel = (jurisdictionId) =>
     JURISDICTIONS.find((j) => j.id === jurisdictionId)?.label ||
     FALLBACK_JURISDICTIONS.find((j) => j.id === jurisdictionId)?.label ||
@@ -2249,18 +2233,19 @@
     initOfficePicker();
     $("f-jurisdiction").addEventListener("change", updateControls);
     document.querySelectorAll('input[name="registration-type"]').forEach((input) => input.addEventListener("change", updateControls));
-    $("f-apply-trigger").addEventListener("click", openApplyDatePicker);
     document.querySelectorAll('input[name="application-method"]').forEach((input) => input.addEventListener("change", updateResult));
     $("f-office").addEventListener("change", () => {
       useTodayFallback = false;
       renderFavorites();
       updateResult();
     });
-    $("f-apply").addEventListener("change", () => {
+    const onApplyDateChange = () => {
       useTodayFallback = false;
       updateApplyDateDisplay();
       updateResult();
-    });
+    };
+    $("f-apply").addEventListener("input", onApplyDateChange);
+    $("f-apply").addEventListener("change", onApplyDateChange);
     $("favorite-toggle").addEventListener("click", toggleFavorite);
     $("result-calendar").addEventListener("click", openCalendarSheetFromResult);
     $("f-add").addEventListener("click", addCase);
