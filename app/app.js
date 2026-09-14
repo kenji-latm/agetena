@@ -130,21 +130,8 @@
     d.setDate(d.getDate() + days);
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
-  function addBusinessDaysISO(iso, days) {
-    const d = isoDate(iso);
-    if (!d) return "";
-    let remaining = Math.max(0, Number(days) || 0);
-    while (remaining > 0) {
-      d.setDate(d.getDate() + 1);
-      const day = d.getDay();
-      if (day !== 0 && day !== 6) remaining -= 1;
-    }
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  }
-  const isWeekdayISO = (iso) => {
-    const d = isoDate(iso);
-    return !!d && d.getDay() !== 0 && d.getDay() !== 6;
-  };
+  const addBusinessDaysISO = (iso, days) => window.TOUKI_BUSINESS_DAYS?.addBusinessDays(iso, days) || "";
+  const isBusinessDayISO = (iso) => window.TOUKI_BUSINESS_DAYS?.isBusinessDay(iso) ?? null;
   function nextMondayISO(fromISO = todayISO()) {
     const d = isoDate(fromISO);
     if (!d) return "";
@@ -274,8 +261,10 @@
       .sort()
       .pop();
     if (!previousApplyDate) return null;
+    const dueDate = addBusinessDaysISO(entries[previousApplyDate], 1);
+    if (!dueDate) return null;
     return {
-      dueDate: addBusinessDaysISO(entries[previousApplyDate], 1),
+      dueDate,
       previousApplyDate,
       previousDueDate: entries[previousApplyDate],
     };
@@ -285,7 +274,7 @@
     if (!isISODate(applyISO)) return null;
     if (applyISO > todayISO()) return null;
     let baseDue = lookupDue(jurisdictionId, typeId, office, applyISO);
-    if (!baseDue && useFallback && applyISO === todayISO() && isWeekdayISO(applyISO)) {
+    if (!baseDue && useFallback && applyISO === todayISO() && isBusinessDayISO(applyISO)) {
       baseDue = nextBusinessDayEstimate(jurisdictionId, typeId, office, applyISO)?.dueDate || null;
     }
     if (!baseDue) return null;
@@ -316,7 +305,7 @@
       }
     }
     if (isCalendarDraftCase(c)) return "カレンダー仮登録：アゲテナで手動選択した登録日（法務局データに基づく完了予定日ではありません）";
-    if (letterPack) return "申請方法：レターパック申請（法務局データの完了予定日の翌営業日・土日を除く）";
+    if (letterPack) return "申請方法：レターパック申請（法務局データの完了予定日の翌営業日・土日祝日と年末年始を除く）";
     return `データ基準：${dataSnapshotText(c)}`;
   }
 
@@ -1157,19 +1146,28 @@
     const saveSuffix = canSave ? "" : ` ／ ${saveReason}`;
     setSaveMessage(canSave ? "この内容で一覧に保存できます。" : saveReason, canSave ? "" : "warn");
 
+    if (!due && isLetterPack && lookupDue(jurisdictionId, typeId, office, apply) && apply <= todayISO()) {
+      box.className = "result result--warn";
+      dateEl.textContent = "計算できません";
+      hintEl.textContent = "対象年の祝日データを確認できないため、翌営業日を計算できません。オンラインで開き直してください。";
+      addBtn.disabled = true;
+      setSaveMessage("祝日データの確認が必要です。", "warn");
+      return;
+    }
+
     if (!due) {
       box.className = "result result--warn";
       dateEl.textContent = "未掲載";
       const today = todayISO();
-      const estimate = apply === today && isWeekdayISO(apply) ? nextBusinessDayEstimate(jurisdictionId, typeId, office, apply) : null;
+      const estimate = apply === today && isBusinessDayISO(apply) ? nextBusinessDayEstimate(jurisdictionId, typeId, office, apply) : null;
       if (estimate) {
         showResultCalendarButton("日付を選んで保存", "候補日を初期値にして確認");
         const letterPackText = isLetterPack ? " レターパック申請の場合は、候補日に到着分としてさらに1営業日を加えます。" : "";
         hintEl.textContent = `本日分はまだ未掲載です。下のボタンで登録日を選択できます。${letterPackText}${saveSuffix}`;
       } else {
         showResultCalendarButton("日付を選んで保存", "登録日と案件名を入力");
-        if (apply === today && !isWeekdayISO(apply)) {
-          hintEl.textContent = `本日は土日のため、法務局の受付・データ掲載はありません。登録日は手動で選択できます。${saveSuffix}`;
+        if (apply === today && isBusinessDayISO(apply) === false) {
+          hintEl.textContent = `本日は法務局の休業日（土日祝日・年末年始）のため、通常の業務取扱いはありません。登録日は手動で選択できます。${saveSuffix}`;
         } else if (apply > today) {
           hintEl.textContent = `未来の申請日は、法務局データが掲載されるまで「未掲載」として扱います。登録日は手動で選択できます。${saveSuffix}`;
         } else {
@@ -1550,7 +1548,7 @@
     if (listedDate) {
       return { mode: "listed", calendarDate: listedDate, caseData: { ...normalized, dueDate: listedDate }, estimate: null, targetCaseId: normalized.id };
     }
-    const canEstimate = applyDate === todayISO() && isWeekdayISO(applyDate) && !lookupDue(jurisdiction, registrationType, office, applyDate);
+    const canEstimate = applyDate === todayISO() && isBusinessDayISO(applyDate) && !lookupDue(jurisdiction, registrationType, office, applyDate);
     const estimate = canEstimate ? nextBusinessDayEstimate(jurisdiction, registrationType, office, applyDate) : null;
     const fallbackDate = estimate ? dueDateFor(jurisdiction, registrationType, office, applyDate, applicationMethod, true) : null;
     return {
@@ -1591,7 +1589,7 @@
       return { mode: "listed", calendarDate: listedDate, caseData: currentFormCase(listedDate, false), estimate: null };
     }
 
-    const canEstimate = applyDate === todayISO() && isWeekdayISO(applyDate) && !lookupDue(jurisdiction, registrationType, office, applyDate);
+    const canEstimate = applyDate === todayISO() && isBusinessDayISO(applyDate) && !lookupDue(jurisdiction, registrationType, office, applyDate);
     const estimate = canEstimate ? nextBusinessDayEstimate(jurisdiction, registrationType, office, applyDate) : null;
     const fallbackDate = estimate ? dueDateFor(jurisdiction, registrationType, office, applyDate, applicationMethod, true) : null;
     const calendarDate = fallbackDate || applyDate || todayISO();

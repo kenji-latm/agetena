@@ -45,6 +45,12 @@ html = html.replace(
   `<script>\n${data}\n</script>`
 );
 
+// 営業日計算・公式祝日一覧もオフライン版に含める
+for (const file of ["data/holidays.js", "data/business-days.js"]) {
+  const tag = new RegExp('<script src="' + file.replaceAll('.', '\\.') + '(?:\\?[^\"]+)?"><\/script>', 'i');
+  html = html.replace(tag, () => '<script>\n' + read(file) + '\n</script>');
+}
+
 // 共有設定 JS を埋め込み
 html = html.replace(
   /<script src="shared-config\.js(?:\?[^\"]+)?"><\/script>/i,

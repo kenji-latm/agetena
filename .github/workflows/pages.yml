@@ -53,6 +53,13 @@ jobs:
         if: github.event_name != 'push'
         run: npm run scrape:signature
 
+      - name: 内閣府の祝日一覧を更新
+        if: github.event_name != 'push'
+        run: node scripts/update-holidays.mjs
+
+      - name: 営業日計算を検証
+        run: node --test scripts/business-days.test.mjs
+
       - name: 更新データをリポジトリへ保存
         if: github.event_name != 'push'
         shell: bash

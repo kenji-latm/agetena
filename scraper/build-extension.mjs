@@ -161,6 +161,8 @@ copyFromApp("app.js");
 copyFromApp("styles.css");
 copyFromApp("data/kanryo-integrity.js");
 copyFromApp("data/kanryo.js");
+copyFromApp("data/holidays.js");
+copyFromApp("data/business-days.js");
 copyFromApp("data/kanryo.json");
 
 const result = zipStore(OUT_DIR, OUT_ZIP, copiedFiles);
