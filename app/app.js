@@ -233,6 +233,7 @@
   const saveFavorites = () => localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
 
   const lookupDue = (jurisdictionId, typeId, office, applyISO) =>
+    META.quarantinedDates?.[[jurisdictionId, typeId, office].join("|")]?.includes(applyISO) ? null :
     (DB[jurisdictionId] && DB[jurisdictionId][typeId] && DB[jurisdictionId][typeId][office] &&
       DB[jurisdictionId][typeId][office][applyISO]) || null;
   const publishedDatesFor = (jurisdictionId, typeId, office) =>
@@ -246,7 +247,7 @@
   }
   function sourceText(status) {
     if (status === "current") return "現在掲載中";
-    if (status === "history") return "過去取得済み（現在の公式掲載表には未掲載）";
+    if (status === "history") return "過去取得済み（今回の取得データにはありません）";
     return "";
   }
 
@@ -257,7 +258,7 @@
   function nextBusinessDayEstimate(jurisdictionId, typeId, office, applyISO) {
     const entries = DB[jurisdictionId]?.[typeId]?.[office] || {};
     const previousApplyDate = Object.keys(entries)
-      .filter((date) => isISODate(date) && date < applyISO && isISODate(entries[date]))
+      .filter((date) => isISODate(date) && date < applyISO && isISODate(entries[date]) && lookupDue(jurisdictionId, typeId, office, date))
       .sort()
       .pop();
     if (!previousApplyDate) return null;
@@ -339,6 +340,19 @@
     } catch {
       return null;
     }
+  }
+
+
+  function dataWarning(meta, jurisdictionId, now = Date.now()) {
+    const source = meta.sources?.find(s => s.id === jurisdictionId);
+    if (source?.fetchError) return "この法務局の最新データ取得に失敗しています。公式の完了予定日をご確認ください。";
+    const time = Date.parse(meta.generatedAt || "");
+    if (!Number.isFinite(time)) return "データの取得時刻を確認できません。公式情報をご確認ください。";
+    // During the update window, detect missing hourly runs. Allow overnight/weekend gaps.
+    const jst = new Date(now + 9 * 3600000);
+    const hour = jst.getUTCHours(), day = jst.getUTCDay();
+    const limit = day > 0 && day < 6 && hour >= 11 && hour <= 19 ? 3 : 72;
+    return now - time > limit * 3600000 ? "データの更新が遅れています。公式の完了予定日をご確認ください。" : "";
   }
 
   function dataSnapshotText(c) {
@@ -1143,7 +1157,8 @@
     const canSave = canSaveToCurrentMode();
     addBtn.disabled = !canSave;
     const saveReason = saveUnavailableReason();
-    const saveSuffix = canSave ? "" : ` ／ ${saveReason}`;
+    const warning = dataWarning(META, jurisdictionId);
+    const saveSuffix = (canSave ? "" : ` ／ ${saveReason}`) + (warning ? ` ／ ${warning}` : "");
     setSaveMessage(canSave ? "この内容で一覧に保存できます。" : saveReason, canSave ? "" : "warn");
 
     if (!due && isLetterPack && lookupDue(jurisdictionId, typeId, office, apply) && apply <= todayISO()) {
@@ -1157,23 +1172,24 @@
 
     if (!due) {
       box.className = "result result--warn";
-      dateEl.textContent = "未掲載";
+      dateEl.textContent = warning ? "最新情報を確認できません" : "取得データなし";
       const today = todayISO();
       const estimate = apply === today && isBusinessDayISO(apply) ? nextBusinessDayEstimate(jurisdictionId, typeId, office, apply) : null;
       if (estimate) {
         showResultCalendarButton("日付を選んで保存", "候補日を初期値にして確認");
         const letterPackText = isLetterPack ? " レターパック申請の場合は、候補日に到着分としてさらに1営業日を加えます。" : "";
-        hintEl.textContent = `本日分はまだ未掲載です。下のボタンで登録日を選択できます。${letterPackText}${saveSuffix}`;
+        hintEl.textContent = `本日分は取得済みデータにありません。下のボタンで登録日を選択できます。${letterPackText}${saveSuffix}`;
       } else {
         showResultCalendarButton("日付を選んで保存", "登録日と案件名を入力");
         if (apply === today && isBusinessDayISO(apply) === false) {
           hintEl.textContent = `本日は法務局の休業日（土日祝日・年末年始）のため、通常の業務取扱いはありません。登録日は手動で選択できます。${saveSuffix}`;
         } else if (apply > today) {
-          hintEl.textContent = `未来の申請日は、法務局データが掲載されるまで「未掲載」として扱います。登録日は手動で選択できます。${saveSuffix}`;
+          hintEl.textContent = `未来の申請日は、まだ完了予定日を表示しません。登録日は手動で選択できます。${saveSuffix}`;
         } else {
-          hintEl.textContent = `この申請日は現在の掲載表・過去取得済みデータのどちらにもありません。登録日は手動で選択できます。${saveSuffix}`;
+          hintEl.textContent = `この申請日は取得済みデータにありません。公式サイトでは掲載済みの場合があります。登録日は手動で選択できます。${saveSuffix}`;
         }
       }
+      hintEl.textContent += ` ／ 最終取得：${dataSnapshotText()}`;
       return;
     }
 
@@ -1218,7 +1234,7 @@
   function badge(state, c) {
     if (state === "done") return { cls: "badge--done", text: "完了" };
     if (state === "draft") return { cls: "badge--draft", text: "仮登録" };
-    if (state === "unknown") return { cls: "badge--unknown", text: "予定日 未掲載" };
+    if (state === "unknown") return { cls: "badge--unknown", text: "予定日 未取得" };
     if (state === "over") return { cls: "badge--over", text: `${diffDays(c.dueDate, todayISO())}日超過` };
     if (state === "due") return { cls: "badge--due", text: "本日が予定日" };
     return { cls: "badge--wait", text: `あと${diffDays(todayISO(), c.dueDate)}日` };
@@ -1281,7 +1297,7 @@
       thisWeek: "今週",
       nextWeek: "来週",
       later: "それ以降",
-      unknown: "予定日未掲載",
+      unknown: "予定日未取得",
       done: "完了",
     }[bucket] || "その他";
   }
@@ -1605,7 +1621,7 @@
     if (!draft) return "";
     if (draft.mode === "listed") return `表示された完了予定日 ${fmtJP(draft.calendarDate)} を初期値にしています。`;
     if (draft.mode === "fallback") return `候補日 ${fmtJP(draft.calendarDate)} を初期値にしています。`;
-    return "完了予定日が未掲載のため、登録日を手動で選択してください。";
+    return "完了予定日を取得できていないため、登録日を手動で選択してください。";
   }
 
   function calendarSaveNote(draft) {
@@ -1657,11 +1673,11 @@
       lines.push(`表示された完了予定日：${fmtJP(draft.calendarDate)}`);
       if (selectedDate !== draft.calendarDate) lines.push("表示された完了予定日から変更して仮登録しています。");
     } else if (draft.mode === "fallback" && draft.estimate) {
-      lines.push("本日分の法務局データが未掲載のため、仮登録として作成しています。");
+      lines.push("本日分の法務局データを取得できていないため、仮登録として作成しています。");
       lines.push(`根拠：${fmtJP(draft.estimate.previousApplyDate)}申請分の完了予定日 ${fmtJP(draft.estimate.previousDueDate)}`);
       if (isLetterPackMethod(draft.caseData.applicationMethod)) lines.push("レターパック申請のため、候補日は到着分としてさらに1営業日後にしています。");
     } else {
-      lines.push("完了予定日データが未掲載のため、手動選択した日付です。");
+      lines.push("完了予定日データを取得できていないため、手動選択した日付です。");
     }
     return lines;
   }
@@ -1841,7 +1857,7 @@
       const methodText = isLetterPackMethod(c.applicationMethod) ? ` ｜ ${applicationMethodLabel(c.applicationMethod)}` : "";
       el.querySelector(".item__office").textContent = `${jurisdictionLabel(c.jurisdiction || DEFAULT_JURISDICTION)} ｜ ${typeLabel(c.registrationType || DEFAULT_TYPE)} ｜ ${c.office}${methodText}`;
       el.querySelector(".apply").textContent = fmtJP(c.applyDate);
-      el.querySelector(".due").textContent = c.dueDate ? `${isCalendarDraftCase(c) ? "仮 " : ""}${fmtJP(c.dueDate)}` : "未掲載";
+      el.querySelector(".due").textContent = c.dueDate ? `${isCalendarDraftCase(c) ? "仮 " : ""}${fmtJP(c.dueDate)}` : "未取得";
       const sourceEl = el.querySelector(".item__source");
       sourceEl.textContent = isCalendarDraftCase(c) ? "仮登録日" : "保存時点";
       const snapshotEl = el.querySelector(".item__snapshot");
@@ -1850,7 +1866,7 @@
       if (latestDue !== c.dueDate && (latestDue || c.dueDate)) {
         const latestEl = el.querySelector(".item__latest");
         latestEl.hidden = false;
-        latestEl.textContent = latestDue ? "現在の掲載 " : "現在の掲載では確認できません";
+        latestEl.textContent = latestDue ? "最新の取得データ " : "最新の取得データでは確認できません";
         if (latestDue) {
           const latestDate = document.createElement("b");
           latestDate.textContent = fmtJP(latestDue);
@@ -2278,6 +2294,19 @@
     render();
     if (storageMode === "shared") await startSharedMode();
 
+    await refreshPublishedData();
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshPublishedData(); });
+    window.addEventListener("focus", refreshPublishedData);
+    window.setInterval(() => { if (!document.hidden) refreshPublishedData(); }, 15 * 60 * 1000);
+  }
+
+  let lastDataRefreshAt = 0;
+  let dataRefreshPending = false;
+  async function refreshPublishedData() {
+    if (dataRefreshPending || Date.now() - lastDataRefreshAt < 15 * 60 * 1000) return;
+    lastDataRefreshAt = Date.now();
+    dataRefreshPending = true;
+    try {
     const latest = await fetchLatestData();
     if (latest && useData(latest)) {
       const selectedJ = selectedJurisdiction();
@@ -2289,6 +2318,7 @@
       populateListFilters();
       render();
     }
+    } finally { dataRefreshPending = false; }
   }
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
