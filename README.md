@@ -154,3 +154,5 @@ npm run build:extension
 - トウシテナ（従来URL・リダイレクト）: https://tools.ishimoto-legal.com/electronic-signature-checker/
 - アゲテナの従来のプライバシー説明URL（`/privacy.html`）は `/agetena/privacy.html` へリダイレクト
 - ルート（`/`）をホーム画面に追加済みの旧アゲテナ利用者は、アプリとして起動したときだけ `/agetena/` へ自動転送される
+
+データの自動監査・復旧と取得異常時の扱いは [保守手順](docs/data-maintenance.md) を参照してください。

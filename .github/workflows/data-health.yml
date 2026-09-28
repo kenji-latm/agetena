@@ -1,0 +1,38 @@
+name: 完了予定日データの定期監査
+on:
+  schedule:
+    # 平日12:47・18:47 JST。取得とは別の時刻で公開済みデータを検査。
+    - cron: "47 3,9 * * 1-5"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: data-health
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 全50局・更新時刻・日付・ハッシュの監査
+        id: audit
+        continue-on-error: true
+        run: node --use-system-ca scripts/audit-data.mjs https://tools.ishimoto-legal.com/agetena/data/kanryo.json
+      - name: 更新が止まっていれば再取得を起動
+        if: steps.audit.outputs.stale == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          active=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow pages.yml --limit 10 --json status --jq '[.[] | select(.status != "completed")] | length')
+          if [ "$active" -eq 0 ]; then
+            gh workflow run pages.yml --repo "$GITHUB_REPOSITORY"
+            echo "更新遅延を検出し、再取得を起動しました。復旧確認は公開後監査で行います。" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: 異常を成功扱いにしない
+        if: steps.audit.outcome == 'failure'
+        run: exit 1

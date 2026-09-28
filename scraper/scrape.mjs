@@ -4,7 +4,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -241,7 +241,7 @@ const JURISDICTIONS = [
   },  {
     id: "nara",
     label: "奈良地方法務局",
-    kind: "pdfMatrixRows",
+    kind: "pdfMatrixCoordinates",
     pdfUrl: "https://houmukyoku.moj.go.jp/nara/content/001137057.pdf",
     pdfOffices: ["本局", "葛城支局", "中和支局", "五條支局"],
     minimums: minimum(4, 20, 1, 3),
@@ -269,7 +269,8 @@ const JURISDICTIONS = [
   {
     id: "okayama",
     label: "岡山地方法務局",
-    kind: "pdfOkayama",
+    kind: "pdfMatrixCoordinates",
+    pdfOffices: ["本局", "備前支局", "倉敷支局", "笠岡支局", "高梁支局", "津山支局"],
     indexUrl: "https://houmukyoku.moj.go.jp/okayama/category_00011.html",
     minimums: minimum(6, 18, 1, 3),
   },  {
@@ -290,8 +291,8 @@ const JURISDICTIONS = [
   {
     id: "matsue",
     label: "松江地方法務局",
-    kind: "pdfMatrixRows",
-    pdfUrl: "https://houmukyoku.moj.go.jp/matsue/content/001437662.pdf",
+    kind: "pdfMatrixCoordinates",
+    indexUrl: "https://houmukyoku.moj.go.jp/matsue/standard/aaaa.html",
     pdfOffices: ["本局登記部門", "出雲支局", "浜田支局", "益田支局", "西郷支局"],
     minimums: minimum(5, 15, 1, 3),
   },
@@ -306,8 +307,8 @@ const JURISDICTIONS = [
   {
     id: "tokushima",
     label: "徳島地方法務局",
-    kind: "pdfMatrixRows",
-    pdfUrl: "https://houmukyoku.moj.go.jp/tokushima/content/000135286.pdf",
+    kind: "pdfMatrixCoordinates",
+    indexUrl: "https://houmukyoku.moj.go.jp/tokushima/category_00006.html",
     pdfOffices: ["本局", "阿南支局", "美馬支局"],
     minimums: minimum(3, 12, 1, 3),
   },
@@ -322,8 +323,8 @@ const JURISDICTIONS = [
   {
     id: "matsuyama",
     label: "松山地方法務局",
-    kind: "pdfMatrixRows",
-    pdfUrl: "https://houmukyoku.moj.go.jp/matsuyama/content/001452214.pdf",
+    kind: "pdfMatrixCoordinates",
+    indexUrl: "https://houmukyoku.moj.go.jp/matsuyama/category_00013.html",
     pdfOffices: ["本局", "大洲支局", "西条支局", "今治支局", "宇和島支局", "砥部出張所", "四国中央支局"],
     minimums: minimum(7, 25, 1, 3),
   },  {
@@ -373,7 +374,7 @@ const JURISDICTIONS = [
   {
     id: "miyazaki",
     label: "宮崎地方法務局",
-    kind: "pdfMatrixRows",
+    kind: "pdfMatrixCoordinates",
     pdfUrl: "https://houmukyoku.moj.go.jp/miyazaki/page000082_00002.pdf",
     pdfOffices: ["本局", "都城支局", "延岡支局", "日南支局", "小林出張所", "高鍋出張所"],
     minimums: minimum(6, 30, 1, 5),
@@ -414,6 +415,7 @@ async function getBuf(url) {
     try {
       await waitForPoliteInterval();
       const res = await fetch(url, {
+        signal: AbortSignal.timeout(30_000),
         headers: {
           "User-Agent": "Mozilla/5.0 touki-kanryo-app (+https://tools.ishimoto-legal.com/)",
         },
@@ -812,7 +814,7 @@ function extractLinks(html, source) {
 function extractScheduleLink(html, source, hrefPattern) {
   const anchors = [...html.matchAll(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi)]
     .map((m) => ({ href: m[1], text: cleanText(m[2]) }));
-  const hit = anchors.find((a) => /登記完了予定日/.test(a.text) && (!hrefPattern || hrefPattern.test(a.href)));
+  const hit = anchors.find((a) => /登記完了(?:予定)?日/.test(a.text.replace(/\s/g, "")) && (!hrefPattern || hrefPattern.test(a.href)));
   if (!hit) throw new Error("登記完了予定日のリンクが見つかりません。");
   return absoluteUrl(hit.href, source.indexUrl);
 }
@@ -856,7 +858,40 @@ async function pdfTextItems(buf) {
   return items;
 }
 
+
+function parseOfficeCoordinateItems(items, stores, jurisdiction) {
+  const baseYear = reiwaToYear(items.map(i=>i.text).join(" "));
+  for(const pageNo of new Set(items.map(i=>i.pageNo))) {
+    const page=items.filter(i=>i.pageNo===pageNo);
+    const dateItems=page.filter(i=>/^令和.*月.*日/.test(i.text));
+    if(!dateItems.length) continue;
+    const title=page.filter(i=>i.y>730).map(i=>compactPdfText(i.text)).find(t=>/^【.*(?:部門|支局|出張所)】$/.test(t)||/^(?:本局(?:不動産|法人)登記部門|[^【】]+(?:支局|出張所))$/.test(t));
+    if(!title) throw new Error("PDFの庁名を特定できません。");
+    const office=title.replace(/[【】]/g,"");
+    const applyX=Math.min(...dateItems.map(i=>i.x));
+    const rows=[];
+    for(const item of dateItems.sort((a,b)=>b.y-a.y||a.x-b.x)) {
+      let row=rows.find(r=>Math.abs(r.y-item.y)<3);
+      if(!row){row={y:item.y,items:[]};rows.push(row);} row.items.push(item);
+    }
+    let applied=null;
+    for(const row of rows.sort((a,b)=>b.y-a.y)) {
+      const application=row.items.find(i=>i.x<applyX+30);
+      if(application) applied=parseMD(application.text);
+      const due=row.items.filter(i=>i.x>=applyX+30).sort((a,b)=>a.x-b.x);
+      if(!applied || !due.length) throw new Error("申請日と完了日の対応が不明です。");
+      if(/本局法人/.test(office)) {
+        for(const item of due) addEntry(stores,jurisdiction.id,"commercial",office,baseYear,applied,parseMD(item.text));
+      } else {
+        addEntry(stores,jurisdiction.id,"realEstate",office,baseYear,applied,parseMD(due[0].text));
+        if(jurisdiction.id==="maebashi" && office==="本局登記部門" && due[2]) addEntry(stores,jurisdiction.id,"commercial",office,baseYear,applied,parseMD(due[2].text));
+      }
+    }
+  }
+}
+
 async function parsePdf(buf, stores, jurisdiction) {
+  if (jurisdiction.id === "maebashi") return parseOfficeCoordinateItems(await pdfTextItems(buf), stores, jurisdiction);
   const lines = await pdfLines(buf);
   const baseYear = reiwaToYear(lines.join("\n"));
   let currentOffice = null;
@@ -882,6 +917,66 @@ async function parsePdf(buf, stores, jurisdiction) {
 
 function compactPdfText(text) {
   return String(text || "").replace(/\s/g, "").replace(/[()（）]/g, "");
+}
+
+
+// Match actual PDF coordinates: merged application-date cells and split labels
+// must never turn a completion date into an application date.
+function parseMatrixCoordinateItems(items, stores, jurisdiction) {
+  const baseYear = reiwaToYear([...items].sort((a,b)=>a.pageNo-b.pageNo||b.y-a.y).map(i => i.text).join(" "));
+  for (const pageNo of new Set(items.map(i => i.pageNo))) {
+    const page = items.filter(i => i.pageNo === pageNo);
+    const headers = (jurisdiction.pdfOffices || []).map(office => {
+      let hit = page.find(i => compactPdfText(i.text) === office || (office === "本局" && compactPdfText(i.text) === "本"));
+      if (!hit && jurisdiction.id === "miyazaki") {
+        const topRight = page.filter(i=>/権/.test(i.text)).sort((a,b)=>b.y-a.y)[0];
+        const columns = page.filter(i=>i.x>topRight.x+50 && Math.abs(i.y-topRight.y)<6 && parseMD(i.text)).sort((a,b)=>a.x-b.x);
+        for (const column of columns) {
+          const fragments = page.filter(i=>i.y>topRight.y+8 && i.y<topRight.y+35 && i.x>=column.x-1 && i.x<column.x+50);
+          const label = fragments.sort((a,b)=>Math.abs(a.y-b.y)<4?a.x-b.x:b.y-a.y).map(i=>compactPdfText(i.text)).join("");
+          if (label===office) hit={x:column.x,y:topRight.y+20};
+        }
+      }
+      if (!hit) throw new Error(office + "の列見出しがありません。");
+      return { office, x: hit.x, y: hit.y };
+    }).sort((a,b) => a.x-b.x);
+    if (!headers.length) throw new Error("庁名の列見出しがありません。");
+    const firstDueX = Math.min(...page.filter(i => i.x >= headers[0].x-26 && i.y < headers[0].y && parseMD(i.text)).map(i=>i.x));
+    const typeItems = page.filter(i => i.x < firstDueX - 2);
+    const rights = typeItems.filter(i => /権/.test(i.text)).map(i => ({
+      ...i, label: compactPdfText(typeItems.filter(t => Math.abs(t.y-i.y)<5).sort((a,b)=>a.x-b.x).map(t=>t.text).join(""))
+    })).filter(i => /権利/.test(i.label)).sort((a,b)=>b.y-a.y);
+    if (!rights.length) throw new Error("権利の行見出しがありません。");
+    const typeX = Math.min(...typeItems.filter(i=>/不動産|商業/.test(compactPdfText(i.text)) && i.y > rights.at(-1).y-50).map(i=>i.x));
+    const applications = page.filter(i=>i.x < typeX && parseMD(i.text) && i.y < headers[0].y);
+    if (applications.length !== rights.length) throw new Error("申請日と権利行の数が一致しません。");
+    const matched = new Set();
+    for (const app of applications) {
+      const right = [...rights].sort((a,b)=>Math.abs(a.y-app.y)-Math.abs(b.y-app.y))[0];
+      if (matched.has(right)) throw new Error("申請日の行対応が重複しています。");
+      matched.add(right);
+      const nextY = rights[rights.indexOf(right)+1]?.y ?? -Infinity;
+      const commercial = typeItems.filter(i=>i.y < right.y && i.y > nextY).find(i=>{
+        const label=compactPdfText(typeItems.filter(t=>Math.abs(t.y-i.y)<3).sort((a,b)=>a.x-b.x).map(t=>t.text).join(""));
+        return /^商業[・]?法人$/.test(label);
+      });
+      for (const [type, label] of [["realEstate",right],["commercial",commercial]]) {
+        if (!label) continue;
+        const dates = page.filter(i=>i.x >= headers[0].x-25 && Math.abs(i.y-label.y)<6 && parseMD(i.text));
+        if ((type === "realEstate" && dates.length !== headers.length) || !dates.length) throw new Error(`完了日の列数が一致しません: ${jurisdiction.id} ${type} y=${label.y} dates=${dates.length}`);
+        const used = new Set();
+        for (const date of dates) {
+          const header = [...headers].sort((a,b)=>Math.abs(a.x-date.x)-Math.abs(b.x-date.x))[0];
+          if (Math.abs(header.x-date.x)>25 || used.has(header.office)) throw new Error("完了日の列対応が不明です。");
+          used.add(header.office);
+          addEntry(stores,jurisdiction.id,type,header.office,baseYear,parseMD(app.text),parseMD(date.text));
+        }
+      }
+    }
+  }
+}
+async function parsePdfMatrixCoordinates(buf, stores, jurisdiction) {
+  parseMatrixCoordinateItems(await pdfTextItems(buf), stores, jurisdiction);
 }
 
 async function parsePdfMatrixRows(buf, stores, jurisdiction) {
@@ -1015,50 +1110,7 @@ async function parsePdfSaitama(buf, stores, jurisdiction) {
 }
 
 async function parsePdfKobe(buf, stores, jurisdiction) {
-  const lines = await pdfLines(buf);
-  const baseYear = reiwaToYear(lines.join("\n"));
-  let currentOffice = null;
-  let currentType = null;
-  let currentApply = null;
-
-  for (const line of lines) {
-    const compact = compactPdfText(line);
-    if (compact === "本局不動産登記部門") {
-      currentOffice = "本局不動産登記部門";
-      currentType = "realEstate";
-      currentApply = null;
-      continue;
-    }
-    if (compact === "本局法人登記部門") {
-      currentOffice = "本局法人登記部門";
-      currentType = "commercial";
-      currentApply = null;
-      continue;
-    }
-
-    const office = singleOfficeFromPdfLine(line, jurisdiction);
-    if (office && !/^(支局|出張所)$/.test(office) && !/本局/.test(office)) {
-      currentOffice = office;
-      currentType = "realEstate";
-      currentApply = null;
-      continue;
-    }
-    if (!currentOffice || !currentType) continue;
-
-    const dates = datesInText(line);
-    if (dates.length === 0) continue;
-    const hasApply = /令和\s*\d+\s*年\s*\d{1,2}月\s*\d{1,2}日/.test(line);
-    const applied = hasApply ? dates[0] : currentApply;
-    const dueDates = hasApply ? dates.slice(1) : dates;
-    if (!applied || dueDates.length === 0) continue;
-    currentApply = applied;
-
-    if (currentType === "realEstate") {
-      addEntry(stores, jurisdiction.id, "realEstate", currentOffice, baseYear, applied, dueDates[0]);
-    } else {
-      for (const due of dueDates) addEntry(stores, jurisdiction.id, "commercial", currentOffice, baseYear, applied, due);
-    }
-  }
+  return parseOfficeCoordinateItems(await pdfTextItems(buf), stores, jurisdiction);
 }
 
 async function parsePdfKyotoColumns(buf, stores, jurisdiction) {
@@ -1185,6 +1237,11 @@ function countEntries(store) {
 }
 
 function validateJurisdiction(stores, jurisdiction) {
+  for (const offices of Object.values(stores[jurisdiction.id])) for (const [office, dates] of Object.entries(offices)) {
+    for (const [applied, due] of Object.entries(dates)) {
+      if (due < applied) throw new Error(office + "の完了日が申請日より前です: " + applied + " / " + due);
+    }
+  }
   for (const type of TYPES) {
     const min = jurisdiction.minimums?.[type.id];
     if (!min) continue;
@@ -1241,6 +1298,10 @@ async function scrapeJurisdiction(stores, jurisdiction) {
     const pdfUrl = jurisdiction.pdfUrl;
     console.log(`PDF: ${pdfUrl}`);
     await parsePdf(await getBuf(pdfUrl), stores, jurisdiction);
+    sourcePages.push(pdfUrl);
+  } else if (jurisdiction.kind === "pdfMatrixCoordinates") {
+    const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
+    await parsePdfMatrixCoordinates(await getBuf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfMatrixRows") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
@@ -1475,9 +1536,20 @@ function buildOutput(stores, sourcePages, previousOutput, fetchErrors = {}) {
   const { data: mergedRaw, stats } = mergeWithHistory(current.data, previousOutput);
   const merged = prepareDataForOutput(mergedRaw);
   const generatedAt = new Date().toISOString();
+  const quarantinedDates = JSON.parse(JSON.stringify(previousOutput?.quarantinedDates || {}));
+  for (const id of ["maebashi", "kobe", "nara", "miyazaki", "okayama", "matsue", "tokushima", "matsuyama"]) {
+    for (const [type, offices] of Object.entries(previousOutput?.data?.[id] || {})) for (const [office, dates] of Object.entries(offices)) {
+      const key = [id, type, office].join("|");
+      const suspect = new Set(previousOutput?.parserRevision === "coordinates-20260928" ? (quarantinedDates[key] || []) : Object.keys(dates));
+      for (const date of Object.keys(current.data?.[id]?.[type]?.[office] || {})) suspect.delete(date);
+      if (suspect.size) quarantinedDates[key] = [...suspect].sort(); else delete quarantinedDates[key];
+    }
+  }
 
   return {
     schemaVersion: 3,
+    parserRevision: "coordinates-20260928",
+    quarantinedDates,
     generatedAt,
     source: `登記完了予定日（${JURISDICTIONS.length}法務局対応・履歴蓄積）`,
     fetchPolicy: {
@@ -1492,6 +1564,9 @@ function buildOutput(stores, sourcePages, previousOutput, fetchErrors = {}) {
       sourceUrl: j.indexUrl || j.pageUrl || j.pdfUrl,
       fetchedPages: sourcePages[j.id] || [],
       fetchError: fetchErrors[j.id] || null,
+      lastSuccessfulFetchAt: fetchErrors[j.id]
+        ? (previousOutput?.sources?.find(s => s.id === j.id)?.lastSuccessfulFetchAt || null)
+        : generatedAt,
     })),
     note: "AM/PMは区別せず、同一申請日の遅い方の完了予定日を採用。不動産（表示）登記は対象外。過去に取得できた申請日データは履歴として保持。",
     history: {
@@ -1522,7 +1597,9 @@ async function main() {
 
   for (const jurisdiction of JURISDICTIONS) {
     try {
-      sourcePages[jurisdiction.id] = await scrapeJurisdiction(stores, jurisdiction);
+      const candidate = makeStores();
+      sourcePages[jurisdiction.id] = await scrapeJurisdiction(candidate, jurisdiction);
+      stores[jurisdiction.id] = candidate[jurisdiction.id];
     } catch (e) {
       const message = `${jurisdiction.label}の取得に失敗しました: ${e.message}`;
       fetchErrors[jurisdiction.id] = message;
@@ -1552,4 +1629,5 @@ async function main() {
   }
 }
 
-main();
+export { JURISDICTIONS, makeStores, parseOfficeCoordinateItems, parseMatrixCoordinateItems, parsePdfMatrixCoordinates, parseHtmlSequentialOfficeTables, validateJurisdiction, extractPdfLink, pdfTextItems };
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

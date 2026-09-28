@@ -5,10 +5,8 @@ on:
     branches:
       - main
   schedule:
-    # 日本時間 8:00
-    - cron: "0 23 * * *"
-    # 日本時間 9:00〜16:00
-    - cron: "0 0-7 * * *"
+    # 日本時間8:17〜18:17。混雑しやすい毎時00分を避ける。
+    - cron: "17 23,0-9 * * *"
   workflow_dispatch:
 
 env:
@@ -26,6 +24,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: リポジトリを取得
         uses: actions/checkout@v4
@@ -42,8 +41,10 @@ jobs:
         run: npm ci --omit=optional
 
       - name: PDF読取用ライブラリを追加
-        if: github.event_name != 'push'
         run: npm install --no-save --package-lock=false @napi-rs/canvas
+
+      - name: 取得・監査ロジックの回帰テスト
+        run: node --test scripts/*test.mjs
 
       - name: 複数法務局から最新データを取得
         if: github.event_name != 'push'
@@ -109,3 +110,14 @@ jobs:
       - name: GitHub Pagesへ公開
         id: deployment
         uses: actions/deploy-pages@v4
+
+  audit:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 公開データの全局監査
+        run: node --use-system-ca scripts/audit-data.mjs https://tools.ishimoto-legal.com/agetena/data/kanryo.json --retry

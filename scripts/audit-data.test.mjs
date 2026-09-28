@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { auditData } from './audit-data.mjs';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const fixture=()=>({generatedAt:'2026-09-28T03:00:00Z',jurisdictions:Array.from({length:50},(_,i)=>({id:String(i),label:String(i)})),sources:Array.from({length:50},(_,i)=>({id:String(i),fetchError:null})),publishedDates:Object.fromEntries(Array.from({length:50},(_,i)=>[i,{realEstate:{本局:['2026-09-25']}}])),data:Object.fromEntries(Array.from({length:50},(_,i)=>[i,{realEstate:{本局:{'2026-09-25':'2026-10-07'}}}]))});
+const now=Date.parse('2026-09-28T04:00:00Z');
+test('正常な50局データの監査',()=>assert.equal(auditData(fixture(),now).issues.length,0));
+test('HTTP成功でも局別取得失敗を検出',()=>{const d=fixture();d.sources[0].fetchError='404';assert.match(auditData(d,now).issues.join(' '),/404/);});
+test('更新停止・欠落・逆転を検出',()=>{const d=fixture();d.generatedAt='2026-09-28T00:00:00Z';d.data['0'].realEstate.本局['2026-09-25']='2026-09-24';d.publishedDates['1']={};const errors=auditData(d,now).issues.join(' ');for(const re of [/古い/,/日付不整合/,/0件/])assert.match(errors,re);});
+const source=fs.readFileSync(new URL('../app/app.js',import.meta.url),'utf8');
+const warning=vm.runInNewContext('('+source.slice(source.indexOf('function dataWarning('),source.indexOf('  function dataSnapshotText(')).trim()+')');
+test('取得失敗と3時間超の更新遅延を画面に区別表示',()=>{const d=fixture();assert.equal(warning(d,'0',now),'');assert.match(warning(d,'0',now+4*3600000),/更新が遅れ/);d.sources[0].fetchError='404';assert.match(warning(d,'0',now),/取得に失敗/);});
+test('週末の通常間隔を更新停止と誤判定しない',()=>assert.equal(warning({generatedAt:'2026-09-26T07:00:00Z'},'0',Date.parse('2026-09-27T03:00:00Z')),''));
