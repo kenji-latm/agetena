@@ -3820,7 +3820,7 @@
       "2026-08-31"
     ]
   },
-  "generatedAt": "2026-10-01T02:10:13.537Z",
+  "generatedAt": "2026-10-01T02:19:29.095Z",
   "source": "登記完了予定日（50法務局対応・履歴蓄積）",
   "fetchPolicy": {
     "mode": "scheduledSnapshot",
@@ -3837,7 +3837,7 @@
         "https://houmukyoku.moj.go.jp/sapporo/static/page000061.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "hakodate",
@@ -3847,7 +3847,7 @@
         "https://houmukyoku.moj.go.jp/hakodate/static/Kanryouyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "asahikawa",
@@ -3857,7 +3857,7 @@
         "https://houmukyoku.moj.go.jp/asahikawa/static/touki.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kushiro",
@@ -3867,7 +3867,7 @@
         "https://houmukyoku.moj.go.jp/kushiro/static/page000075.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "sendai",
@@ -3877,7 +3877,7 @@
         "https://houmukyoku.moj.go.jp/sendai/static/Touki_kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "fukushima",
@@ -3887,7 +3887,7 @@
         "https://houmukyoku.moj.go.jp/fukushima/static/HP.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "yamagata",
@@ -3897,7 +3897,7 @@
         "https://houmukyoku.moj.go.jp/yamagata/static/sinkanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "morioka",
@@ -3907,7 +3907,7 @@
         "https://houmukyoku.moj.go.jp/morioka/static/category_00015.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "akita",
@@ -3917,7 +3917,7 @@
         "https://houmukyoku.moj.go.jp/akita/static/newpege1.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "aomori",
@@ -3927,7 +3927,7 @@
         "https://houmukyoku.moj.go.jp/aomori/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "tokyo",
@@ -3957,7 +3957,7 @@
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "yokohama",
@@ -3967,7 +3967,7 @@
         "https://houmukyoku.moj.go.jp/yokohama/static/kanryoyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "saitama",
@@ -3977,7 +3977,7 @@
         "https://houmukyoku.moj.go.jp/saitama/content/001142352.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "chiba",
@@ -3987,7 +3987,7 @@
         "https://houmukyoku.moj.go.jp/chiba/static/kanryoyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "mito",
@@ -3997,7 +3997,7 @@
         "https://houmukyoku.moj.go.jp/mito/static/kanryouyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "utsunomiya",
@@ -4007,7 +4007,7 @@
         "https://houmukyoku.moj.go.jp/utsunomiya/static/kanryouPage.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "maebashi",
@@ -4017,7 +4017,7 @@
         "https://houmukyoku.moj.go.jp/maebashi/content/001253538.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kofu",
@@ -4027,7 +4027,7 @@
         "https://houmukyoku.moj.go.jp/kofu/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "nagano",
@@ -4037,7 +4037,7 @@
         "https://houmukyoku.moj.go.jp/nagano/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "niigata",
@@ -4047,7 +4047,7 @@
         "https://houmukyoku.moj.go.jp/niigata/static/yotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "shizuoka",
@@ -4057,7 +4057,7 @@
         "https://houmukyoku.moj.go.jp/shizuoka/static/yotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "nagoya",
@@ -4067,7 +4067,7 @@
         "https://houmukyoku.moj.go.jp/nagoya/static/toukikanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "gifu",
@@ -4077,7 +4077,7 @@
         "https://houmukyoku.moj.go.jp/gifu/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "tsu",
@@ -4087,7 +4087,7 @@
         "https://houmukyoku.moj.go.jp/tsu/static/toki_kanryo.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "fukui",
@@ -4097,7 +4097,7 @@
         "https://houmukyoku.moj.go.jp/fukui/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kanazawa",
@@ -4107,7 +4107,7 @@
         "https://houmukyoku.moj.go.jp/kanazawa/static/kanryouyoteibi.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "toyama",
@@ -4117,7 +4117,7 @@
         "https://houmukyoku.moj.go.jp/toyama/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "osaka",
@@ -4127,7 +4127,7 @@
         "https://houmukyoku.moj.go.jp/osaka/static/kanryobi.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kyoto",
@@ -4137,7 +4137,7 @@
         "https://houmukyoku.moj.go.jp/kyoto/content/001471137.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kobe",
@@ -4147,7 +4147,7 @@
         "https://houmukyoku.moj.go.jp/kobe/content/001471127.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "nara",
@@ -4157,7 +4157,7 @@
         "https://houmukyoku.moj.go.jp/nara/content/001137057.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "otsu",
@@ -4167,7 +4167,7 @@
         "https://houmukyoku.moj.go.jp/otsu/content/001471116.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "wakayama",
@@ -4177,7 +4177,7 @@
         "https://houmukyoku.moj.go.jp/wakayama/content/001153033.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "hiroshima",
@@ -4187,7 +4187,7 @@
         "https://houmukyoku.moj.go.jp/hiroshima/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "okayama",
@@ -4197,7 +4197,7 @@
         "https://houmukyoku.moj.go.jp/okayama/content/000134164.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "yamaguchi",
@@ -4207,7 +4207,7 @@
         "https://houmukyoku.moj.go.jp/yamaguchi/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "tottori",
@@ -4217,7 +4217,7 @@
         "https://houmukyoku.moj.go.jp/tottori/content/000135641.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "matsue",
@@ -4227,7 +4227,7 @@
         "https://houmukyoku.moj.go.jp/matsue/content/001471125.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "takamatsu",
@@ -4237,7 +4237,7 @@
         "https://houmukyoku.moj.go.jp/takamatsu/content/001471115.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "tokushima",
@@ -4247,7 +4247,7 @@
         "https://houmukyoku.moj.go.jp/tokushima/content/001471110.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kochi",
@@ -4257,15 +4257,17 @@
         "https://houmukyoku.moj.go.jp/kochi/content/001414262.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "matsuyama",
       "label": "松山地方法務局",
       "sourceUrl": "https://houmukyoku.moj.go.jp/matsuyama/category_00013.html",
-      "fetchedPages": [],
-      "fetchError": "松山地方法務局の取得に失敗しました: 宇和島支局の列見出しがありません。",
-      "lastSuccessfulFetchAt": "2026-09-30T15:56:34.778Z"
+      "fetchedPages": [
+        "https://houmukyoku.moj.go.jp/matsuyama/content/001469548.pdf"
+      ],
+      "fetchError": null,
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "saga",
@@ -4275,7 +4277,7 @@
         "https://houmukyoku.moj.go.jp/saga/static/saga.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "fukuoka",
@@ -4285,7 +4287,7 @@
         "https://houmukyoku.moj.go.jp/fukuoka/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "nagasaki",
@@ -4295,7 +4297,7 @@
         "https://houmukyoku.moj.go.jp/nagasaki/content/000133576.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kumamoto",
@@ -4305,7 +4307,7 @@
         "https://houmukyoku.moj.go.jp/kumamoto/content/001471123.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "oita",
@@ -4315,7 +4317,7 @@
         "https://houmukyoku.moj.go.jp/oita/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "kagoshima",
@@ -4325,7 +4327,7 @@
         "https://houmukyoku.moj.go.jp/kagoshima/content/001471126.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "miyazaki",
@@ -4335,7 +4337,7 @@
         "https://houmukyoku.moj.go.jp/miyazaki/page000082_00002.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     },
     {
       "id": "naha",
@@ -4345,19 +4347,19 @@
         "https://houmukyoku.moj.go.jp/naha/static/toukikanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-01T02:10:13.537Z"
+      "lastSuccessfulFetchAt": "2026-10-01T02:19:29.095Z"
     }
   ],
   "note": "AM/PMは区別せず、同一申請日の遅い方の完了予定日を採用。不動産（表示）登記は対象外。過去に取得できた申請日データは履歴として保持。",
   "history": {
     "enabled": true,
     "startedAt": "2026-06-24T02:45:48.241Z",
-    "previousGeneratedAt": "2026-09-30T15:56:34.778Z",
-    "currentEntries": 10513,
-    "retainedEntries": 29915,
-    "addedEntries": 348,
-    "updatedEntries": 55,
-    "totalEntries": 40428
+    "previousGeneratedAt": "2026-10-01T02:10:13.537Z",
+    "currentEntries": 10553,
+    "retainedEntries": 29907,
+    "addedEntries": 32,
+    "updatedEntries": 0,
+    "totalEntries": 40460
   },
   "jurisdictions": [
     {
@@ -5436,8 +5438,8 @@
       "commercial": 71
     },
     "utsunomiya": {
-      "realEstate": 511,
-      "commercial": 73
+      "realEstate": 518,
+      "commercial": 74
     },
     "maebashi": {
       "realEstate": 719,
@@ -5540,8 +5542,8 @@
       "commercial": 71
     },
     "matsuyama": {
-      "realEstate": 406,
-      "commercial": 54
+      "realEstate": 420,
+      "commercial": 56
     },
     "saga": {
       "realEstate": 390,
@@ -5560,8 +5562,8 @@
       "commercial": 76
     },
     "oita": {
-      "realEstate": 533,
-      "commercial": 76
+      "realEstate": 540,
+      "commercial": 77
     },
     "kagoshima": {
       "realEstate": 733,
@@ -14040,75 +14042,75 @@
     "utsunomiya": {
       "realEstate": {
         "小山出張所": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "真岡支局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "足利支局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "大田原支局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "栃木支局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "日光支局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "本局": [
-          "2026-09-18",
           "2026-09-22",
           "2026-09-24",
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ]
       },
       "commercial": {
         "本局": [
-          "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ]
       }
     },
@@ -16363,8 +16365,66 @@
       }
     },
     "matsuyama": {
-      "realEstate": {},
-      "commercial": {}
+      "realEstate": {
+        "宇和島支局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "今治支局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "四国中央支局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "西条支局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "大洲支局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "砥部出張所": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ],
+        "本局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ]
+      },
+      "commercial": {
+        "本局": [
+          "2026-09-25",
+          "2026-09-28",
+          "2026-09-29",
+          "2026-09-30",
+          "2026-10-01"
+        ]
+      }
     },
     "saga": {
       "realEstate": {
@@ -16927,7 +16987,6 @@
     "oita": {
       "realEstate": {
         "宇佐支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -16937,10 +16996,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "杵築支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -16950,10 +17009,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "佐伯支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -16963,10 +17022,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "竹田支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -16976,10 +17035,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "中津支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -16989,10 +17048,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "日田支局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -17002,10 +17061,10 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ],
         "本局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -17015,12 +17074,12 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ]
       },
       "commercial": {
         "本局": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -17030,7 +17089,8 @@
           "2026-09-25",
           "2026-09-28",
           "2026-09-29",
-          "2026-09-30"
+          "2026-09-30",
+          "2026-10-01"
         ]
       }
     },
@@ -17539,8 +17599,8 @@
       "commercial": 4
     },
     "matsuyama": {
-      "realEstate": 0,
-      "commercial": 0
+      "realEstate": 35,
+      "commercial": 5
     },
     "saga": {
       "realEstate": 35,
@@ -36347,7 +36407,8 @@
           "2026-09-25": "2026-10-09",
           "2026-09-28": "2026-10-13",
           "2026-09-29": "2026-10-15",
-          "2026-09-30": "2026-10-19"
+          "2026-09-30": "2026-10-19",
+          "2026-10-01": "2026-10-21"
         },
         "真岡支局": {
           "2026-06-16": "2026-06-29",
@@ -36422,7 +36483,8 @@
           "2026-09-25": "2026-10-06",
           "2026-09-28": "2026-10-07",
           "2026-09-29": "2026-10-08",
-          "2026-09-30": "2026-10-09"
+          "2026-09-30": "2026-10-09",
+          "2026-10-01": "2026-10-13"
         },
         "足利支局": {
           "2026-06-16": "2026-06-26",
@@ -36497,7 +36559,8 @@
           "2026-09-25": "2026-10-08",
           "2026-09-28": "2026-10-09",
           "2026-09-29": "2026-10-13",
-          "2026-09-30": "2026-10-14"
+          "2026-09-30": "2026-10-14",
+          "2026-10-01": "2026-10-15"
         },
         "大田原支局": {
           "2026-06-16": "2026-07-07",
@@ -36572,7 +36635,8 @@
           "2026-09-25": "2026-10-14",
           "2026-09-28": "2026-10-15",
           "2026-09-29": "2026-10-19",
-          "2026-09-30": "2026-10-20"
+          "2026-09-30": "2026-10-20",
+          "2026-10-01": "2026-10-21"
         },
         "栃木支局": {
           "2026-06-16": "2026-06-30",
@@ -36647,7 +36711,8 @@
           "2026-09-25": "2026-10-08",
           "2026-09-28": "2026-10-09",
           "2026-09-29": "2026-10-13",
-          "2026-09-30": "2026-10-14"
+          "2026-09-30": "2026-10-14",
+          "2026-10-01": "2026-10-15"
         },
         "日光支局": {
           "2026-06-16": "2026-06-29",
@@ -36722,7 +36787,8 @@
           "2026-09-25": "2026-10-07",
           "2026-09-28": "2026-10-08",
           "2026-09-29": "2026-10-09",
-          "2026-09-30": "2026-10-13"
+          "2026-09-30": "2026-10-13",
+          "2026-10-01": "2026-10-14"
         },
         "本局": {
           "2026-06-16": "2026-07-01",
@@ -36797,7 +36863,8 @@
           "2026-09-25": "2026-10-08",
           "2026-09-28": "2026-10-09",
           "2026-09-29": "2026-10-13",
-          "2026-09-30": "2026-10-15"
+          "2026-09-30": "2026-10-15",
+          "2026-10-01": "2026-10-16"
         }
       },
       "commercial": {
@@ -36874,7 +36941,8 @@
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
           "2026-09-29": "2026-10-05",
-          "2026-09-30": "2026-10-06"
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-09"
         }
       }
     },
@@ -52924,7 +52992,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-05",
-          "2026-09-29": "2026-10-05"
+          "2026-09-29": "2026-10-05",
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-07"
         },
         "今治支局": {
           "2026-06-23": "2026-06-24",
@@ -52984,7 +53054,9 @@
           "2026-09-24": "2026-10-01",
           "2026-09-25": "2026-10-02",
           "2026-09-28": "2026-10-02",
-          "2026-09-29": "2026-10-05"
+          "2026-09-29": "2026-10-05",
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-07"
         },
         "四国中央支局": {
           "2026-06-23": "2026-06-24",
@@ -53044,7 +53116,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
-          "2026-09-29": "2026-10-05"
+          "2026-09-29": "2026-10-05",
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-07"
         },
         "西条支局": {
           "2026-06-23": "2026-06-25",
@@ -53104,7 +53178,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
-          "2026-09-29": "2026-10-05"
+          "2026-09-29": "2026-10-05",
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-07"
         },
         "大洲支局": {
           "2026-06-23": "2026-06-24",
@@ -53164,7 +53240,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
-          "2026-09-29": "2026-10-05"
+          "2026-09-29": "2026-10-05",
+          "2026-09-30": "2026-10-06",
+          "2026-10-01": "2026-10-07"
         },
         "砥部出張所": {
           "2026-06-23": "2026-06-24",
@@ -53224,7 +53302,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-02",
           "2026-09-28": "2026-10-05",
-          "2026-09-29": "2026-10-06"
+          "2026-09-29": "2026-10-06",
+          "2026-09-30": "2026-10-07",
+          "2026-10-01": "2026-10-07"
         },
         "本局": {
           "2026-06-23": "2026-06-24",
@@ -53284,7 +53364,9 @@
           "2026-09-24": "2026-09-30",
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
-          "2026-09-29": "2026-10-06"
+          "2026-09-29": "2026-10-06",
+          "2026-09-30": "2026-10-09",
+          "2026-10-01": "2026-10-13"
         }
       },
       "commercial": {
@@ -53342,7 +53424,9 @@
           "2026-09-24": "2026-09-29",
           "2026-09-25": "2026-09-30",
           "2026-09-28": "2026-10-01",
-          "2026-09-29": "2026-10-02"
+          "2026-09-29": "2026-10-02",
+          "2026-09-30": "2026-10-05",
+          "2026-10-01": "2026-10-06"
         }
       }
     },
@@ -56747,7 +56831,8 @@
           "2026-09-25": "2026-09-30",
           "2026-09-28": "2026-10-01",
           "2026-09-29": "2026-10-02",
-          "2026-09-30": "2026-10-05"
+          "2026-09-30": "2026-10-05",
+          "2026-10-01": "2026-10-06"
         },
         "杵築支局": {
           "2026-06-10": "2026-06-15",
@@ -56825,7 +56910,8 @@
           "2026-09-25": "2026-09-30",
           "2026-09-28": "2026-10-01",
           "2026-09-29": "2026-10-02",
-          "2026-09-30": "2026-10-05"
+          "2026-09-30": "2026-10-05",
+          "2026-10-01": "2026-10-06"
         },
         "佐伯支局": {
           "2026-06-10": "2026-06-17",
@@ -56903,7 +56989,8 @@
           "2026-09-25": "2026-10-01",
           "2026-09-28": "2026-10-02",
           "2026-09-29": "2026-10-06",
-          "2026-09-30": "2026-10-07"
+          "2026-09-30": "2026-10-07",
+          "2026-10-01": "2026-10-08"
         },
         "竹田支局": {
           "2026-06-10": "2026-06-17",
@@ -56981,7 +57068,8 @@
           "2026-09-25": "2026-10-06",
           "2026-09-28": "2026-10-07",
           "2026-09-29": "2026-10-08",
-          "2026-09-30": "2026-10-09"
+          "2026-09-30": "2026-10-09",
+          "2026-10-01": "2026-10-13"
         },
         "中津支局": {
           "2026-06-10": "2026-06-15",
@@ -57059,7 +57147,8 @@
           "2026-09-25": "2026-09-30",
           "2026-09-28": "2026-10-01",
           "2026-09-29": "2026-10-02",
-          "2026-09-30": "2026-10-05"
+          "2026-09-30": "2026-10-05",
+          "2026-10-01": "2026-10-06"
         },
         "日田支局": {
           "2026-06-10": "2026-06-15",
@@ -57137,7 +57226,8 @@
           "2026-09-25": "2026-09-30",
           "2026-09-28": "2026-10-01",
           "2026-09-29": "2026-10-02",
-          "2026-09-30": "2026-10-05"
+          "2026-09-30": "2026-10-05",
+          "2026-10-01": "2026-10-06"
         },
         "本局": {
           "2026-06-10": "2026-06-23",
@@ -57215,7 +57305,8 @@
           "2026-09-25": "2026-10-08",
           "2026-09-28": "2026-10-09",
           "2026-09-29": "2026-10-13",
-          "2026-09-30": "2026-10-15"
+          "2026-09-30": "2026-10-15",
+          "2026-10-01": "2026-10-16"
         }
       },
       "commercial": {
@@ -57295,7 +57386,8 @@
           "2026-09-25": "2026-10-06",
           "2026-09-28": "2026-10-07",
           "2026-09-29": "2026-10-08",
-          "2026-09-30": "2026-10-09"
+          "2026-09-30": "2026-10-09",
+          "2026-10-01": "2026-10-14"
         }
       }
     },
