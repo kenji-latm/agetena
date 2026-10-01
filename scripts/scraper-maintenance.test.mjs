@@ -17,3 +17,17 @@ test('前橋: 午後行も同じ申請日に合算',()=>assert.equal(parse('maeb
 test('神戸: 完了日を次の申請日と扱わない',()=>assert.equal(parse('kobe').realEstate['伊丹支局']['2026-09-25'],'2026-10-06'));
 test('松江の登記完了日リンクも選べる',()=>assert.equal(extractPdfLink('<a href="/matsue/content/new.pdf">登記完了日</a>',{indexUrl:'https://houmukyoku.moj.go.jp/matsue/standard/aaaa.html'}),'https://houmukyoku.moj.go.jp/matsue/content/new.pdf'));
 test('日付の逆転を公開前に拒否',()=>{const s=makeStores(),j=JURISDICTIONS.find(j=>j.id==='nagoya');s.nagoya.realEstate['本局']={'2026-09-25':'2026-09-24'};assert.throws(()=>validateJurisdiction(s,j),/申請日より前/);});
+test('松山: 隣接2庁が一つの文字列でも日付の列を分離する',()=>{
+ const {items}=JSON.parse(fs.readFileSync(new URL('fixtures/matsuyama-20261001.json',import.meta.url)));
+ const j=JURISDICTIONS.find(j=>j.id==='matsuyama'),s=makeStores();
+ parseMatrixCoordinateItems(items,s,j);validateJurisdiction(s,j);
+ assert.equal(Object.keys(s.matsuyama.realEstate).length,7);
+ for(const dates of Object.values(s.matsuyama.realEstate))assert.equal(Object.keys(dates).length,5);
+ assert.equal(s.matsuyama.realEstate['宇和島支局']['2026-09-25'],'2026-10-01');
+ assert.equal(s.matsuyama.realEstate['砥部出張所']['2026-09-25'],'2026-10-02');
+ assert.equal(s.matsuyama.realEstate['宇和島支局']['2026-09-29'],'2026-10-05');
+ assert.equal(s.matsuyama.realEstate['砥部出張所']['2026-09-29'],'2026-10-06');
+ assert.equal(s.matsuyama.commercial['本局']['2026-10-01'],'2026-10-06');
+ const incomplete=items.filter(i=>!(i.x===494.38 && i.y===694.54));
+ assert.throws(()=>parseMatrixCoordinateItems(incomplete,makeStores(),j),/結合された庁名/);
+});
