@@ -852,7 +852,7 @@ async function pdfTextItems(buf) {
     for (const item of content.items) {
       const text = cleanText(item.str || "");
       if (!text) continue;
-      items.push({ pageNo, x: item.transform[4], y: item.transform[5], text });
+      items.push({ pageNo, x: item.transform[4], y: item.transform[5], width: item.width, text });
     }
   }
   return items;
@@ -926,8 +926,20 @@ function parseMatrixCoordinateItems(items, stores, jurisdiction) {
   const baseYear = reiwaToYear([...items].sort((a,b)=>a.pageNo-b.pageNo||b.y-a.y).map(i => i.text).join(" "));
   for (const pageNo of new Set(items.map(i => i.pageNo))) {
     const page = items.filter(i => i.pageNo === pageNo);
+    // PDF text extraction can merge adjacent office headings into one item.
+    // Recover their positions from the first date row inside that item's bounds.
+    const combinedHeaders = [];
+    for (const item of page) {
+      const names = item.text.trim().split(/\s+/);
+      if (names.length < 2 || !names.every(name => jurisdiction.pdfOffices?.includes(name)) || !(item.width > 0)) continue;
+      const below = page.filter(i => i.y < item.y && i.x >= item.x - 10 && i.x < item.x + item.width && parseMD(i.text));
+      const topY = Math.max(...below.map(i => i.y));
+      const columns = below.filter(i => Math.abs(i.y - topY) < 3).sort((a,b) => a.x-b.x);
+      if (columns.length !== names.length) throw new Error("結合された庁名の列対応が不明です。");
+      names.forEach((text,index) => combinedHeaders.push({text,x:columns[index].x,y:item.y}));
+    }
     const headers = (jurisdiction.pdfOffices || []).map(office => {
-      let hit = page.find(i => compactPdfText(i.text) === office || (office === "本局" && compactPdfText(i.text) === "本"));
+      let hit = [...page, ...combinedHeaders].find(i => compactPdfText(i.text) === office || (office === "本局" && compactPdfText(i.text) === "本"));
       if (!hit && jurisdiction.id === "miyazaki") {
         const topRight = page.filter(i=>/権/.test(i.text)).sort((a,b)=>b.y-a.y)[0];
         const columns = page.filter(i=>i.x>topRight.x+50 && Math.abs(i.y-topRight.y)<6 && parseMD(i.text)).sort((a,b)=>a.x-b.x);
