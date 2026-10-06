@@ -863,7 +863,10 @@ function parseOfficeCoordinateItems(items, stores, jurisdiction) {
   const baseYear = reiwaToYear(items.map(i=>i.text).join(" "));
   for(const pageNo of new Set(items.map(i=>i.pageNo))) {
     const page=items.filter(i=>i.pageNo===pageNo);
-    const dateItems=page.filter(i=>/^令和.*月.*日/.test(i.text));
+    // 神戸PDFでは午前/午後と日付が同じテキスト要素になることがある。
+    const dateItems=page.filter(i=>(jurisdiction.id === "kobe"
+      ? /^(?:(?:午前|午後)\s*)?令和.*月.*日/
+      : /^令和.*月.*日/).test(i.text));
     if(!dateItems.length) continue;
     const title=page.filter(i=>i.y>730).map(i=>compactPdfText(i.text)).find(t=>/^【.*(?:部門|支局|出張所)】$/.test(t)||/^(?:本局(?:不動産|法人)登記部門|[^【】]+(?:支局|出張所))$/.test(t));
     if(!title) throw new Error("PDFの庁名を特定できません。");
@@ -1641,5 +1644,5 @@ async function main() {
   }
 }
 
-export { JURISDICTIONS, makeStores, parseOfficeCoordinateItems, parseMatrixCoordinateItems, parsePdfMatrixCoordinates, parseHtmlSequentialOfficeTables, validateJurisdiction, extractPdfLink, pdfTextItems };
+export { JURISDICTIONS, makeStores, parseOfficeCoordinateItems, parseMatrixCoordinateItems, parsePdfMatrixCoordinates, parseHtmlSequentialOfficeTables, validateJurisdiction, extractPdfLink, pdfTextItems, buildOutput };
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
