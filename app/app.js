@@ -9,7 +9,9 @@
     ? window.TOUKI_APP_CONFIG
     : {};
   const FORCE_LOCAL_ONLY = APP_CONFIG.forceLocalOnly === true;
-  const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+  // 認証ライブラリは版を固定し、SRIハッシュで配信内容の改ざんを検知する。
+  const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1/dist/umd/supabase.js";
+  const SUPABASE_SRI = "sha384-K1nraABOP/zFehpLIUksXebbs7jMpB8gYMlb+uhVKZcWT/9Vkq1+qhv6ndC+1Yuz";
   const DEFAULT_JURISDICTION = "tokyo";
   const DEFAULT_TYPE = "realEstate";
   const METHOD_REGISTRY = "registryData";
@@ -650,7 +652,45 @@
     configured: false,
     snapshotColumnsReady: true,
     applicationMethodColumnReady: true,
+    // ログアウト・事務所切替のたびに進める。古い通信の応答を画面へ戻さないため。
+    generation: 0,
+    loggedViews: new Set(),
   };
+
+  function sharedRequestToken() {
+    return { generation: shared.generation, userId: shared.user?.id || "", officeId: shared.officeId };
+  }
+  function isCurrentSharedRequest(token) {
+    return token.generation === shared.generation
+      && token.userId === (shared.user?.id || "")
+      && token.officeId === shared.officeId
+      && storageMode === "shared"
+      && Boolean(shared.session);
+  }
+  function bumpSharedGeneration() {
+    shared.generation += 1;
+  }
+  // 書込み中にログアウト・切替があったら、以降の画面更新・端末保存をさせずに中断する。
+  function throwIfStaleSharedRequest(token) {
+    if (isCurrentSharedRequest(token)) return;
+    const error = new Error("ログイン状態または事務所が切り替わったため、処理を中断しました。");
+    error.staleShared = true;
+    throw error;
+  }
+
+  // アクセスログ（事務所共有モードのみ）。DB側の関数が未設定でもアプリは止めない。
+  // 記録が遅くても操作を止めないよう、待つのは最大3秒まで。
+  async function logSharedAccess(action, officeId = shared.officeId) {
+    if (!shared.client || !shared.session || !officeId) return;
+    try {
+      const call = shared.client.rpc("log_office_access", { target_office_id: officeId, access_action: action });
+      const timeout = new Promise((resolve) => setTimeout(() => resolve({ error: { message: "timeout" } }), 3000));
+      const { error } = await Promise.race([call, timeout]);
+      if (error) console.warn("アクセスログを記録できませんでした。", error.message || error);
+    } catch (e) {
+      console.warn("アクセスログを記録できませんでした。", e);
+    }
+  }
 
   function getSharedConfig() {
     const cfg = window.TOUKI_SHARED_CONFIG && typeof window.TOUKI_SHARED_CONFIG === "object"
@@ -705,6 +745,9 @@
     shared.scriptPromise = new Promise((resolve, reject) => {
       const script = document.createElement("script");
       script.src = SUPABASE_CDN;
+      script.integrity = SUPABASE_SRI;
+      script.crossOrigin = "anonymous";
+      script.referrerPolicy = "no-referrer";
       script.async = true;
       script.onload = () => resolve();
       script.onerror = () => reject(new Error("共有機能の読込に失敗しました。ネットワークを確認してください。"));
@@ -724,6 +767,7 @@
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
     });
     shared.client.auth.onAuthStateChange((_event, session) => {
+      if ((session?.user?.id || "") !== (shared.user?.id || "")) bumpSharedGeneration();
       shared.session = session;
       shared.user = session?.user || null;
       if (storageMode === "shared") {
@@ -746,11 +790,13 @@
   async function loadSharedMemberships() {
     const client = await ensureSharedClient();
     if (!shared.user) return [];
+    const token = sharedRequestToken();
     const { data, error } = await client
       .from("office_members")
       .select("office_id, role, display_name, office:offices(name)")
       .eq("user_id", shared.user.id);
     if (error) throw error;
+    if (token.generation !== shared.generation || token.userId !== (shared.user?.id || "")) return shared.memberships;
     shared.memberships = (data || []).map(membershipFromRow).filter((m) => m.officeId);
     const ids = shared.memberships.map((m) => m.officeId);
     if (!ids.includes(shared.officeId)) {
@@ -811,19 +857,28 @@
       cases = [];
       return;
     }
+    const token = sharedRequestToken();
     const { data, error } = await client
       .from("office_cases")
       .select("*")
-      .eq("office_id", shared.officeId)
+      .eq("office_id", token.officeId)
       .order("due_date", { ascending: true })
       .order("created_at", { ascending: false });
     if (error) throw error;
+    // 通信中にログアウト・事務所切替があった場合は、古い応答を捨てる。
+    if (!isCurrentSharedRequest(token)) return;
+    const viewKey = `${token.userId}:${token.officeId}`;
+    if (!shared.loggedViews.has(viewKey)) {
+      shared.loggedViews.add(viewKey);
+      logSharedAccess("view", token.officeId);
+    }
     const deduped = dedupeCaseList((data || []).map(rowToCase).filter(Boolean));
     cases = deduped.list;
     if (deduped.removedIds.length) {
       try {
         await Promise.all(deduped.removedIds.map((id) => deleteSharedCase(id)));
       } catch (e) {
+        if (e?.staleShared) throw e;
         console.warn("重複した共有案件の整理に失敗しました。", e);
         shared.error = "重複した共有案件の整理に失敗しました。表示上は1件にまとめています。";
       }
@@ -893,6 +948,7 @@
   }
 
   function switchToLocalMode() {
+    bumpSharedGeneration();
     storageMode = "local";
     localStorage.setItem(STORAGE_MODE_KEY, storageMode);
     shared.error = "";
@@ -903,6 +959,13 @@
   }
 
   function handleSharedError(e) {
+    if (e?.staleShared) {
+      shared.loading = false;
+      renderStoragePanel();
+      render();
+      updateResult();
+      return;
+    }
     console.warn("共有モードでエラーが発生しました。", e);
     shared.loading = false;
     shared.error = e?.message || "共有モードで処理できませんでした。";
@@ -923,29 +986,52 @@
       const client = await ensureSharedClient();
       const { data, error } = await client.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      bumpSharedGeneration();
       shared.session = data.session;
       shared.user = data.user;
       if ($("shared-password")) $("shared-password").value = "";
+      await loadSharedMemberships();
+      await logSharedAccess("login");
       await loadSharedAfterAuth();
     } catch (e) {
       handleSharedError(e);
     }
   }
 
+  function clearSharedSessionState() {
+    bumpSharedGeneration();
+    shared.session = null;
+    shared.user = null;
+    shared.memberships = [];
+    shared.loggedViews.clear();
+    cases = [];
+  }
+
   async function signOutShared() {
+    let warning = "";
+    const officeId = shared.officeId;
+    // 先に世代を進め、ログアウト処理中に届いた応答を画面へ戻さない。
+    bumpSharedGeneration();
     try {
       const client = await ensureSharedClient();
-      await client.auth.signOut();
-      shared.session = null;
-      shared.user = null;
-      shared.memberships = [];
-      cases = [];
-      renderStoragePanel();
-      render();
-      updateResult();
+      await logSharedAccess("logout", officeId);
+      const { error } = await client.auth.signOut();
+      if (error) {
+        // サーバー側の失効に失敗しても、この端末のログイン情報は必ず消す。
+        const local = await client.auth.signOut({ scope: "local" });
+        if (local.error) throw local.error;
+        warning = "この端末からはログアウトしました。通信エラーのため、サーバー側のログイン失効は確認できませんでした。";
+      }
     } catch (e) {
-      handleSharedError(e);
+      clearSharedSessionState();
+      handleSharedError(new Error(`ログアウトを完了できませんでした。ブラウザを閉じ、サイトデータを削除してください。（${e?.message || e}）`));
+      return;
     }
+    clearSharedSessionState();
+    shared.error = warning;
+    renderStoragePanel();
+    render();
+    updateResult();
   }
 
   async function refreshSharedFromButton() {
@@ -967,6 +1053,7 @@
   async function changeSharedOffice() {
     const value = $("shared-office")?.value || "";
     if (!value || value === shared.officeId) return;
+    bumpSharedGeneration();
     shared.officeId = value;
     localStorage.setItem(SHARED_OFFICE_KEY, value);
     await refreshSharedFromButton();
@@ -982,6 +1069,7 @@
 
   async function createSharedCase(c) {
     const client = await ensureSharedClient();
+    const token = sharedRequestToken();
     let data = null;
     let error = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -1007,20 +1095,25 @@
       break;
     }
     if (error) throw error;
+    throwIfStaleSharedRequest(token);
     const saved = rowToCase(data);
     if (saved) cases.push(saved);
   }
   async function updateSharedCase(id, patch) {
     const client = await ensureSharedClient();
+    const token = sharedRequestToken();
     const payload = { ...patch, updated_by: shared.user?.id, updated_at: new Date().toISOString() };
-    const { error } = await client.from("office_cases").update(payload).eq("id", id).eq("office_id", shared.officeId);
+    const { error } = await client.from("office_cases").update(payload).eq("id", id).eq("office_id", token.officeId);
     if (error) throw error;
+    throwIfStaleSharedRequest(token);
   }
 
   async function deleteSharedCase(id) {
     const client = await ensureSharedClient();
-    const { error } = await client.from("office_cases").delete().eq("id", id).eq("office_id", shared.officeId);
+    const token = sharedRequestToken();
+    const { error } = await client.from("office_cases").delete().eq("id", id).eq("office_id", token.officeId);
     if (error) throw error;
+    throwIfStaleSharedRequest(token);
   }
 
   function renderStoragePanel() {
@@ -1502,6 +1595,7 @@
       try {
         await Promise.all(deduped.removedIds.map((id) => deleteSharedCase(id)));
       } catch (e) {
+        if (e?.staleShared) throw e;
         console.warn("重複した共有案件の整理に失敗しました。", e);
         shared.error = "重複した共有案件の整理に失敗しました。表示上は1件にまとめています。";
         renderStoragePanel();
@@ -1765,7 +1859,7 @@
     } catch (e) {
       if (popup) popup.close();
       handleSharedError(e);
-      alert("案件一覧への保存に失敗しました。保存先の状態を確認してください。");
+      if (!e?.staleShared) alert("案件一覧への保存に失敗しました。保存先の状態を確認してください。");
     } finally {
       if (button) {
         button.disabled = false;

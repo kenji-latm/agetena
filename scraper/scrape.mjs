@@ -409,20 +409,59 @@ async function waitForPoliteInterval() {
   lastRequestAt = Date.now();
 }
 
+// 取得先は法務省（moj.go.jp）のHTTPSだけに限る。掲載ページのリンクが差し替えられても、
+// 別ホストや内部アドレスへアクセスしないため。リダイレクト先も1段ごとに検証する。
+const MAX_RESPONSE_BYTES = 20 * 1024 * 1024;
+const MAX_REDIRECTS = 5;
+
+export function assertAllowedSourceUrl(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error(`取得先URLが不正です: ${url}`);
+  }
+  const host = parsed.hostname.toLowerCase();
+  const allowedHost = host === "moj.go.jp" || host.endsWith(".moj.go.jp");
+  if (parsed.protocol !== "https:" || !allowedHost || parsed.username || parsed.password || (parsed.port && parsed.port !== "443")) {
+    throw new Error(`許可していない取得先です: ${url}`);
+  }
+  return parsed.toString();
+}
+
+async function fetchAllowed(url) {
+  let current = assertAllowedSourceUrl(url);
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    const res = await fetch(current, {
+      redirect: "manual",
+      signal: AbortSignal.timeout(30_000),
+      headers: {
+        "User-Agent": "Mozilla/5.0 touki-kanryo-app (+https://tools.ishimoto-legal.com/)",
+      },
+    });
+    if (res.status >= 300 && res.status < 400 && res.headers.get("location")) {
+      current = assertAllowedSourceUrl(new URL(res.headers.get("location"), current).toString());
+      continue;
+    }
+    return res;
+  }
+  throw new Error(`リダイレクトが多すぎます: ${url}`);
+}
+
 async function getBuf(url) {
   let lastError;
   for (let i = 1; i <= 3; i++) {
     try {
       await waitForPoliteInterval();
-      const res = await fetch(url, {
-        signal: AbortSignal.timeout(30_000),
-        headers: {
-          "User-Agent": "Mozilla/5.0 touki-kanryo-app (+https://tools.ishimoto-legal.com/)",
-        },
-      });
+      const res = await fetchAllowed(url);
       if (!res.ok) throw new Error(`${res.status} ${url}`);
-      return Buffer.from(await res.arrayBuffer());
+      const declared = Number(res.headers.get("content-length") || 0);
+      if (declared > MAX_RESPONSE_BYTES) throw new Error(`応答が大きすぎます（${declared} bytes）: ${url}`);
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (buf.length > MAX_RESPONSE_BYTES) throw new Error(`応答が大きすぎます（${buf.length} bytes）: ${url}`);
+      return buf;
     } catch (e) {
+      if (/許可していない取得先|取得先URLが不正/.test(e?.message || "")) throw e;
       lastError = e;
       if (i < 3) await sleep(700 * i);
     }

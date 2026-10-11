@@ -18,7 +18,13 @@ async function getBuf(url, retries = 3) {
   let lastError;
   for (let i = 1; i <= retries; i++) {
     try {
+      const parsed = new URL(url);
+      const host = parsed.hostname.toLowerCase();
+      if (parsed.protocol !== "https:" || !(host === "moj.go.jp" || host.endsWith(".moj.go.jp"))) {
+        throw new Error(`許可していない取得先です: ${url}`);
+      }
       const res = await fetch(url, {
+        redirect: "error",
         headers: { "User-Agent": "Mozilla/5.0 touki-kanryo-app inventory" },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

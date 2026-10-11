@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <title>トウシテナ</title>
@@ -1900,6 +1902,16 @@
         .map((item) => item.entry);
     }
 
+    // 外部リンクは http(s) だけをリンク化する（掲載データにjavascript:等が混じっても動かさない）
+    function safeHttpsUrl(value) {
+      try {
+        const url = new URL(String(value || ""));
+        return url.protocol === "https:" || url.protocol === "http:" ? url.href : "";
+      } catch {
+        return "";
+      }
+    }
+
     function availableInContext(entry, selectedContext) {
       return selectedContext === "all" || entry.contexts.includes(selectedContext);
     }
@@ -1943,8 +1955,8 @@
       }
 
       resultsEl.innerHTML = matches.slice(0, 10).map((entry) => {
-        const link = entry.link
-          ? `<a href="${escapeHtml(entry.link)}" target="_blank" rel="noreferrer">サービスページ</a>`
+        const link = safeHttpsUrl(entry.link)
+          ? `<a href="${escapeHtml(safeHttpsUrl(entry.link))}" target="_blank" rel="noreferrer">サービスページ</a>`
           : `<a href="${SOURCE_URL}" target="_blank" rel="noreferrer">法務省ページ</a>`;
         return `
           <article class="result-card">
@@ -1977,7 +1989,7 @@
       countEl.textContent = `${visible.length}件`;
       directoryBody.innerHTML = visible.map((entry) => `
         <tr>
-          <td>${entry.link ? `<a href="${escapeHtml(entry.link)}" target="_blank" rel="noreferrer">${escapeHtml(entry.name)}</a>` : escapeHtml(entry.name)}</td>
+          <td>${safeHttpsUrl(entry.link) ? `<a href="${escapeHtml(safeHttpsUrl(entry.link))}" target="_blank" rel="noreferrer">${escapeHtml(entry.name)}</a>` : escapeHtml(entry.name)}</td>
           <td>${escapeHtml(entry.kind)}</td>
           <td><div class="badge-row">${contextBadges(entry, selectedContext)}</div></td>
           <td>${escapeHtml(entry.provider || certificatesText(entry))}</td>

@@ -2,12 +2,12 @@
 const SCOPE_PATH = new URL(self.registration.scope).pathname;
 const IS_AGETENA_PATH = /\/agetena\/$/.test(SCOPE_PATH);
 const CACHE_PREFIX = IS_AGETENA_PATH ? "agetena-touki-kanryo-" : "touki-kanryo-root-";
-const CACHE = `${CACHE_PREFIX}v44-v1314-edit-report`;
+const CACHE = `${CACHE_PREFIX}v45-v1317-security`;
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css?v=20260913-native-date",
-  "./app.js?v=20260928-maintenance",
+  "./app.js?v=20261011-v1317-security",
   "./shared-config.js?v=20260803-v137",
   "./data/holidays.js",
   "./data/business-days.js?v=20260915-holidays",
@@ -65,8 +65,11 @@ self.addEventListener("fetch", (e) => {
     e.respondWith(
       fetch(e.request)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy));
+          // エラーページ（404等）や別オリジンの応答はキャッシュしない
+          if (res.ok && res.type === "basic" && url.origin === self.location.origin) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, copy));
+          }
           return res;
         })
         .catch(() => caches.match(e.request))
