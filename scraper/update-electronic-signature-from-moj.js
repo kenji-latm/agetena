@@ -39,10 +39,12 @@ function textLines(html) {
 function firstHref(html) {
   const match = String(html || '').match(/href=["']([^"']+)["']/i);
   if (!match) return '';
+  // 掲載するリンクは http(s) だけ。javascript: や data: などはリンク化しない。
   try {
-    return new URL(decodeHtml(match[1]), SOURCE_URL).href;
+    const url = new URL(decodeHtml(match[1]), SOURCE_URL);
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : '';
   } catch {
-    return decodeHtml(match[1]);
+    return '';
   }
 }
 

@@ -12,10 +12,9 @@ on:
 env:
   NODE_OPTIONS: --use-system-ca
 
+# 権限は各ジョブで必要な分だけ付ける
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: pages
@@ -25,6 +24,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: write
     steps:
       - name: リポジトリを取得
         uses: actions/checkout@v4
@@ -41,7 +42,7 @@ jobs:
         run: npm ci --omit=optional
 
       - name: PDF読取用ライブラリを追加
-        run: npm install --no-save --package-lock=false @napi-rs/canvas
+        run: npm install --no-save --package-lock=false --ignore-scripts @napi-rs/canvas@1.0.9
 
       - name: 取得・監査ロジックの回帰テスト
         run: node --test scripts/*test.mjs
@@ -101,6 +102,9 @@ jobs:
           path: _site
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -114,6 +118,8 @@ jobs:
   audit:
     needs: deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
