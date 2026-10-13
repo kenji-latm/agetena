@@ -3698,7 +3698,7 @@
       "2026-08-31"
     ]
   },
-  "generatedAt": "2026-10-13T11:08:44.057Z",
+  "generatedAt": "2026-10-13T11:46:37.583Z",
   "source": "登記完了予定日（50法務局対応・履歴蓄積）",
   "fetchPolicy": {
     "mode": "scheduledSnapshot",
@@ -3715,7 +3715,7 @@
         "https://houmukyoku.moj.go.jp/sapporo/static/page000061.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "hakodate",
@@ -3725,7 +3725,7 @@
         "https://houmukyoku.moj.go.jp/hakodate/static/Kanryouyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "asahikawa",
@@ -3735,7 +3735,7 @@
         "https://houmukyoku.moj.go.jp/asahikawa/static/touki.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kushiro",
@@ -3745,7 +3745,7 @@
         "https://houmukyoku.moj.go.jp/kushiro/static/page000075.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "sendai",
@@ -3755,7 +3755,7 @@
         "https://houmukyoku.moj.go.jp/sendai/static/Touki_kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "fukushima",
@@ -3765,7 +3765,7 @@
         "https://houmukyoku.moj.go.jp/fukushima/static/HP.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "yamagata",
@@ -3775,7 +3775,7 @@
         "https://houmukyoku.moj.go.jp/yamagata/static/sinkanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "morioka",
@@ -3785,7 +3785,7 @@
         "https://houmukyoku.moj.go.jp/morioka/static/category_00015.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "akita",
@@ -3795,7 +3795,7 @@
         "https://houmukyoku.moj.go.jp/akita/static/newpege1.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "aomori",
@@ -3805,7 +3805,7 @@
         "https://houmukyoku.moj.go.jp/aomori/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "tokyo",
@@ -3837,7 +3837,7 @@
         "https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "yokohama",
@@ -3847,7 +3847,7 @@
         "https://houmukyoku.moj.go.jp/yokohama/static/kanryoyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "saitama",
@@ -3857,7 +3857,7 @@
         "https://houmukyoku.moj.go.jp/saitama/content/001142352.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "chiba",
@@ -3867,7 +3867,7 @@
         "https://houmukyoku.moj.go.jp/chiba/static/kanryoyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "mito",
@@ -3877,7 +3877,7 @@
         "https://houmukyoku.moj.go.jp/mito/static/kanryouyoteibi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "utsunomiya",
@@ -3887,7 +3887,7 @@
         "https://houmukyoku.moj.go.jp/utsunomiya/static/kanryouPage.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "maebashi",
@@ -3897,7 +3897,7 @@
         "https://houmukyoku.moj.go.jp/maebashi/content/001253538.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kofu",
@@ -3907,7 +3907,7 @@
         "https://houmukyoku.moj.go.jp/kofu/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "nagano",
@@ -3917,7 +3917,7 @@
         "https://houmukyoku.moj.go.jp/nagano/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "niigata",
@@ -3927,7 +3927,7 @@
         "https://houmukyoku.moj.go.jp/niigata/static/yotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "shizuoka",
@@ -3937,7 +3937,7 @@
         "https://houmukyoku.moj.go.jp/shizuoka/static/yotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "nagoya",
@@ -3947,7 +3947,7 @@
         "https://houmukyoku.moj.go.jp/nagoya/static/toukikanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "gifu",
@@ -3957,7 +3957,7 @@
         "https://houmukyoku.moj.go.jp/gifu/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "tsu",
@@ -3967,7 +3967,7 @@
         "https://houmukyoku.moj.go.jp/tsu/static/toki_kanryo.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "fukui",
@@ -3977,7 +3977,7 @@
         "https://houmukyoku.moj.go.jp/fukui/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kanazawa",
@@ -3987,7 +3987,7 @@
         "https://houmukyoku.moj.go.jp/kanazawa/static/kanryouyoteibi.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "toyama",
@@ -3997,7 +3997,7 @@
         "https://houmukyoku.moj.go.jp/toyama/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "osaka",
@@ -4007,7 +4007,7 @@
         "https://houmukyoku.moj.go.jp/osaka/static/kanryobi.html"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kyoto",
@@ -4017,7 +4017,7 @@
         "https://houmukyoku.moj.go.jp/kyoto/content/001471820.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kobe",
@@ -4027,7 +4027,7 @@
         "https://houmukyoku.moj.go.jp/kobe/content/001471818.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "nara",
@@ -4037,7 +4037,7 @@
         "https://houmukyoku.moj.go.jp/nara/content/001137057.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "otsu",
@@ -4047,7 +4047,7 @@
         "https://houmukyoku.moj.go.jp/otsu/content/001471810.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "wakayama",
@@ -4057,7 +4057,7 @@
         "https://houmukyoku.moj.go.jp/wakayama/content/001153033.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "hiroshima",
@@ -4067,7 +4067,7 @@
         "https://houmukyoku.moj.go.jp/hiroshima/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "okayama",
@@ -4077,7 +4077,7 @@
         "https://houmukyoku.moj.go.jp/okayama/content/000134164.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "yamaguchi",
@@ -4087,7 +4087,7 @@
         "https://houmukyoku.moj.go.jp/yamaguchi/static/kanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "tottori",
@@ -4097,7 +4097,7 @@
         "https://houmukyoku.moj.go.jp/tottori/content/000135641.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "matsue",
@@ -4107,7 +4107,7 @@
         "https://houmukyoku.moj.go.jp/matsue/content/001471125.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "takamatsu",
@@ -4125,7 +4125,7 @@
         "https://houmukyoku.moj.go.jp/tokushima/content/001471801.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kochi",
@@ -4135,7 +4135,7 @@
         "https://houmukyoku.moj.go.jp/kochi/content/001414262.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "matsuyama",
@@ -4145,7 +4145,7 @@
         "https://houmukyoku.moj.go.jp/matsuyama/content/001469548.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "saga",
@@ -4155,7 +4155,7 @@
         "https://houmukyoku.moj.go.jp/saga/static/saga.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "fukuoka",
@@ -4165,7 +4165,7 @@
         "https://houmukyoku.moj.go.jp/fukuoka/static/kanryoubi.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "nagasaki",
@@ -4175,7 +4175,7 @@
         "https://houmukyoku.moj.go.jp/nagasaki/content/000133576.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kumamoto",
@@ -4185,7 +4185,7 @@
         "https://houmukyoku.moj.go.jp/kumamoto/content/001471804.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "oita",
@@ -4195,7 +4195,7 @@
         "https://houmukyoku.moj.go.jp/oita/static/kanryoyotei.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "kagoshima",
@@ -4205,7 +4205,7 @@
         "https://houmukyoku.moj.go.jp/kagoshima/content/001471813.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "miyazaki",
@@ -4215,7 +4215,7 @@
         "https://houmukyoku.moj.go.jp/miyazaki/page000082_00002.pdf"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     },
     {
       "id": "naha",
@@ -4225,17 +4225,17 @@
         "https://houmukyoku.moj.go.jp/naha/static/toukikanryou.htm"
       ],
       "fetchError": null,
-      "lastSuccessfulFetchAt": "2026-10-13T11:08:44.057Z"
+      "lastSuccessfulFetchAt": "2026-10-13T11:46:37.583Z"
     }
   ],
   "note": "AM/PMは区別せず、同一申請日の遅い方の完了予定日を採用。不動産（表示）登記は対象外。過去に取得できた申請日データは履歴として保持。",
   "history": {
     "enabled": true,
     "startedAt": "2026-06-24T02:45:48.241Z",
-    "previousGeneratedAt": "2026-10-13T03:34:03.486Z",
+    "previousGeneratedAt": "2026-10-13T11:08:44.057Z",
     "currentEntries": 10922,
     "retainedEntries": 33057,
-    "addedEntries": 28,
+    "addedEntries": 0,
     "updatedEntries": 0,
     "totalEntries": 43979
   },
