@@ -888,10 +888,17 @@ async function pdfTextItems(buf) {
   for (let pageNo = 1; pageNo <= pdf.numPages; pageNo++) {
     const page = await pdf.getPage(pageNo);
     const content = await page.getTextContent();
+    // Coordinate parsers use the displayed page with a bottom-left origin.
+    // A rotated PDF (e.g. Okayama) stores text in unrotated page coordinates.
+    const viewport = page.rotate ? page.getViewport({ scale: 1 }) : null;
     for (const item of content.items) {
       const text = cleanText(item.str || "");
       if (!text) continue;
-      items.push({ pageNo, x: item.transform[4], y: item.transform[5], width: item.width, text });
+      const [x, viewportY] = viewport
+        ? viewport.convertToViewportPoint(item.transform[4], item.transform[5])
+        : [item.transform[4], item.transform[5]];
+      const y = viewport ? viewport.height - viewportY : viewportY;
+      items.push({ pageNo, x, y, width: item.width, text });
     }
   }
   return items;
