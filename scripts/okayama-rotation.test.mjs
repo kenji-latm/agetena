@@ -8,6 +8,23 @@ import { JURISDICTIONS, makeStores, pdfTextItems, parseMatrixCoordinateItems, va
 const fixture = JSON.parse(fs.readFileSync(new URL('fixtures/okayama-20261016.json', import.meta.url)));
 const pdf = fs.readFileSync(new URL('fixtures/okayama-20261016.pdf', import.meta.url));
 const jurisdiction = JURISDICTIONS.find(j => j.id === 'okayama');
+const recoveryFixture = JSON.parse(fs.readFileSync(new URL('fixtures/okayama-recovery.json', import.meta.url)));
+function recoveryHistory(takamatsuMissing) {
+  const data = Object.fromEntries(JURISDICTIONS.map(({ id }) => [id, id === 'okayama'
+    ? structuredClone(recoveryFixture.okayama)
+    : { realEstate: { '本局': { ...recoveryFixture.otherOfficeDates } }, commercial: {} }]));
+  const publishedDates = {}, publishedTotals = {};
+  for (const { id } of JURISDICTIONS) {
+    publishedDates[id] = {};
+    publishedTotals[id] = {};
+    for (const [type, offices] of Object.entries(data[id])) {
+      publishedDates[id][type] = id === 'takamatsu' && takamatsuMissing ? {}
+        : Object.fromEntries(Object.entries(offices).map(([office, dates]) => [office, Object.keys(dates)]));
+      publishedTotals[id][type] = Object.values(publishedDates[id][type]).reduce((n, dates) => n + dates.length, 0);
+    }
+  }
+  return { generatedAt: recoveryFixture.now, parserRevision: 'coordinates-20260928', data, publishedDates, publishedTotals };
+}
 // Transcribed from the rendered official PDF; display-registration rows are excluded.
 const expected = {
   realEstate: {
@@ -38,8 +55,9 @@ test('Okayama: rotated official PDF extracts in displayed coordinates and parses
   }
 });
 
-test('Okayama: recovery retains history and leaves the other 49 jurisdictions unchanged', () => {
-  const previous = JSON.parse(fs.readFileSync(new URL('../app/data/kanryo.json', import.meta.url)));
+for (const takamatsuMissing of [false, true]) {
+test(`Okayama: fixed history survives recovery with other 49 jurisdictions unchanged (Takamatsu missing: ${takamatsuMissing})`, () => {
+  const previous = recoveryHistory(takamatsuMissing);
   const before = structuredClone(previous), stores = makeStores();
   for (const [id, types] of Object.entries(previous.publishedDates)) {
     if (id === 'okayama') continue;
@@ -50,7 +68,8 @@ test('Okayama: recovery retains history and leaves the other 49 jurisdictions un
     }
   }
   parseMatrixCoordinateItems(fixture.items, stores, jurisdiction);
-  const output = buildOutput(stores, {}, previous);
+  const fetchErrors = takamatsuMissing ? { takamatsu: 'fixture fetch failure' } : {};
+  const output = buildOutput(stores, {}, previous, fetchErrors);
   assert.deepEqual(output.publishedTotals.okayama, { realEstate: 18, commercial: 3 });
   for (const [type, offices] of Object.entries(previous.data.okayama)) {
     for (const [office, dates] of Object.entries(offices)) {
@@ -64,6 +83,10 @@ test('Okayama: recovery retains history and leaves the other 49 jurisdictions un
     assert.deepEqual(output.publishedDates[j.id], previous.publishedDates[j.id]);
     assert.deepEqual(output.publishedTotals[j.id], previous.publishedTotals[j.id]);
   }
-  assert.deepEqual(auditData(output, Date.parse(output.generatedAt)).issues, []);
+  // Freeze the audit clock with the fixture; production auditing still uses real time and data.
+  const audited = { ...output, generatedAt: recoveryFixture.now };
+  assert.deepEqual(auditData(audited, Date.parse(recoveryFixture.now)).issues, takamatsuMissing
+    ? ['高松法務局: fixture fetch failure', '高松法務局: 現在取得できた日付が0件です'] : []);
   assert.deepEqual(previous, before);
 });
+}
