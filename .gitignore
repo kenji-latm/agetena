@@ -1,5 +1,6 @@
 dist/
 _site/
+.scrape-diagnostics/
 node_modules/
 scraper/_probe*.mjs
 scraper/_sample.bin
