@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
+import { createPdfDiagnostics } from "./pdf-diagnostics.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(__dirname, "..", "app", "data", "kanryo.json");
@@ -1318,9 +1319,14 @@ function validateJurisdiction(stores, jurisdiction) {
   }
 }
 
-async function scrapeJurisdiction(stores, jurisdiction) {
+async function scrapeJurisdiction(stores, jurisdiction, diagnostics) {
   console.log(`\n${jurisdiction.label}を取得中…`);
   const sourcePages = [];
+  const getPdf = async (url) => {
+    const buffer = await getBuf(url);
+    diagnostics.record(url, buffer);
+    return buffer;
+  };
 
   if (jurisdiction.kind === "indexLinks") {
     const idx = dec(await getBuf(jurisdiction.indexUrl));
@@ -1358,47 +1364,47 @@ async function scrapeJurisdiction(stores, jurisdiction) {
   } else if (jurisdiction.kind === "pdfDirect") {
     const pdfUrl = jurisdiction.pdfUrl;
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdf(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdf(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfMatrixCoordinates") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
-    await parsePdfMatrixCoordinates(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfMatrixCoordinates(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfMatrixRows") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfMatrixRows(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfMatrixRows(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfSaitama") {
     const pdfUrl = jurisdiction.pdfUrl;
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfSaitama(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfSaitama(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfKobe") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfKobe(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfKobe(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfKyotoColumns") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfKyotoColumns(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfKyotoColumns(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfOkayama") {
     const pdfUrl = jurisdiction.pdfUrl || extractPdfLink(dec(await getBuf(jurisdiction.indexUrl)), jurisdiction);
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfOkayama(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfOkayama(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfNagasaki") {
     const pdfUrl = jurisdiction.pdfUrl;
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdfNagasaki(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdfNagasaki(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else if (jurisdiction.kind === "pdfFromIndex") {
     const idx = dec(await getBuf(jurisdiction.indexUrl));
     const pdfUrl = extractPdfLink(idx, jurisdiction);
     console.log(`PDF: ${pdfUrl}`);
-    await parsePdf(await getBuf(pdfUrl), stores, jurisdiction);
+    await parsePdf(await getPdf(pdfUrl), stores, jurisdiction);
     sourcePages.push(pdfUrl);
   } else {
     throw new Error(`未対応の取得形式です: ${jurisdiction.kind}`);
@@ -1657,14 +1663,20 @@ async function main() {
   const previousOutput = readPreviousOutput();
 
   for (const jurisdiction of JURISDICTIONS) {
+    const diagnostics = createPdfDiagnostics(jurisdiction.id);
     try {
       const candidate = makeStores();
-      sourcePages[jurisdiction.id] = await scrapeJurisdiction(candidate, jurisdiction);
+      sourcePages[jurisdiction.id] = await scrapeJurisdiction(candidate, jurisdiction, diagnostics);
       stores[jurisdiction.id] = candidate[jurisdiction.id];
     } catch (e) {
       const message = `${jurisdiction.label}の取得に失敗しました: ${e.message}`;
       fetchErrors[jurisdiction.id] = message;
       console.warn(`WARN: ${message}`);
+      try {
+        diagnostics.saveFailure();
+      } catch {
+        console.warn(`WARN: ${jurisdiction.id}: 診断用PDFを保存できませんでした。`);
+      }
     }
   }
 

@@ -49,7 +49,20 @@ jobs:
 
       - name: 複数法務局から最新データを取得
         if: github.event_name != 'push'
+        env:
+          TOUKI_DIAGNOSTICS_DIR: .scrape-diagnostics
         run: npm run scrape
+
+      - name: 取得失敗局の取得済みPDFを診断用に保存
+        if: always() && github.event_name != 'push'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-pdf-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .scrape-diagnostics/*/*
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 3
 
       - name: 法務省電子署名一覧を取得
         if: github.event_name != 'push'
