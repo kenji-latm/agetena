@@ -1205,6 +1205,29 @@
     el.className = `save-message${tone ? ` save-message--${tone}` : ""}`;
   }
 
+  function renderOfficialSource(container, jurisdictionId) {
+    if (!container) return;
+    container.replaceChildren();
+    container.hidden = true;
+    const source = Array.isArray(META.sources)
+      ? META.sources.find((entry) => entry?.id === jurisdictionId)
+      : null;
+    if (!dataIntegrityOk || typeof source?.sourceUrl !== "string") return;
+    let url;
+    try { url = new URL(source.sourceUrl); } catch { return; }
+    if (url.protocol !== "https:" || url.hostname !== "houmukyoku.moj.go.jp" || url.username || url.password || url.port) return;
+    const link = document.createElement("a");
+    link.href = url.href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = `${jurisdictionLabel(jurisdictionId)}の公式完了予定日情報（別タブ）`;
+    container.appendChild(link);
+    const note = document.createElement("span");
+    note.textContent = "公式ページは現在の掲載情報です。過去取得・保存時点の予定日や推定・仮登録・レターパック申請の表示日とは異なる場合があります。";
+    container.appendChild(note);
+    container.hidden = false;
+  }
+
   function updateResult() {
     const jurisdictionId = selectedJurisdiction();
     const typeId = selectedType();
@@ -1216,6 +1239,7 @@
     const hintEl = $("result-hint");
     const addBtn = $("f-add");
     hideResultCalendarButton();
+    renderOfficialSource($("result-source"), jurisdictionId);
     setSaveMessage();
     const isLetterPack = isLetterPackMethod(method);
 
@@ -1943,6 +1967,7 @@
         <div class="item__office"></div>
         <div class="item__row">申請日 <span class="apply"></span></div>
         <div class="item__due">保存時の完了予定日 <b class="due"></b><span class="item__source"></span></div>
+        <div class="official-source item__official-source" hidden></div>
         <div class="item__latest" hidden></div>
         <div class="item__snapshot"></div>
         <div class="item__actions"></div>`;
@@ -1952,6 +1977,7 @@
       el.querySelector(".item__office").textContent = `${jurisdictionLabel(c.jurisdiction || DEFAULT_JURISDICTION)} ｜ ${typeLabel(c.registrationType || DEFAULT_TYPE)} ｜ ${c.office}${methodText}`;
       el.querySelector(".apply").textContent = fmtJP(c.applyDate);
       el.querySelector(".due").textContent = c.dueDate ? `${isCalendarDraftCase(c) ? "仮 " : ""}${fmtJP(c.dueDate)}` : "未取得";
+      renderOfficialSource(el.querySelector(".item__official-source"), c.jurisdiction || DEFAULT_JURISDICTION);
       const sourceEl = el.querySelector(".item__source");
       sourceEl.textContent = isCalendarDraftCase(c) ? "仮登録日" : "保存時点";
       const snapshotEl = el.querySelector(".item__snapshot");

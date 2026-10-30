@@ -892,3 +892,10 @@ button, input, select { font: inherit; }
 .feature-request__link:hover { background:var(--surface-soft); }
 .feature-request__link:focus-visible { outline:2px solid var(--focus); outline-offset:3px; }
 @media(min-width:960px) { .feature-request { flex-direction:row; align-items:center; justify-content:space-between; gap:24px; } .feature-request__link { flex-shrink:0; } }
+
+/* 公式情報は、保存・推定した日付の根拠と区別して表示する。 */
+.official-source { margin-top: 10px; font-size: 13px; line-height: 1.6; }
+.official-source[hidden] { display: none; }
+.official-source a { display: inline-block; padding: 8px 0; color: var(--text); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.official-source a:focus-visible { outline: 3px solid #678a36; outline-offset: 3px; border-radius: 2px; }
+.official-source span { display: block; color: var(--text-secondary); font-size: 12px; }
