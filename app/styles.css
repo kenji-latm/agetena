@@ -909,7 +909,7 @@ button, input, select { font: inherit; }
   text-decoration: underline; text-underline-offset: 3px; list-style: none;
 }
 .office-contact__toggle::-webkit-details-marker { display: none; }
-.office-contact__toggle:focus-visible, .office-contact__copy:focus-visible {
+.office-contact__toggle:focus-visible {
   outline: 3px solid #678a36; outline-offset: 3px; border-radius: 4px;
 }
 .office-contact__panel {
@@ -919,20 +919,18 @@ button, input, select { font: inherit; }
 }
 .office-contact__panel p { margin: 5px 0; }
 .office-contact__panel .office-contact__number {
-  color: var(--text); font-size: 21px; font-weight: 650; user-select: all;
+  color: var(--text); font-size: 24px; font-weight: 650;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.025em; user-select: text;
 }
-.office-contact__actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 7px; }
-.office-contact__copy {
-  padding: 8px 12px; min-height: 44px; border: 1px solid #d3dcc6;
-  border-radius: 8px; background: white; color: #476521; font: inherit; cursor: pointer;
+.office-contact__panel a.office-contact__call {
+  display: none; min-height: 44px; min-width: 132px; margin: 8px 0;
+  padding: 10px 16px; border-radius: 10px; background: #476521; color: #fff;
+  font-weight: 650; text-decoration: none; align-items: center; justify-content: center;
 }
-.office-contact__panel a.office-contact__call { display: none; }
-.office-contact__status, .office-contact__verified, .office-contact__scope,
+.office-contact__verified, .office-contact__scope,
 .office-contact__evidence, .office-contact__updated {
   color: var(--text-secondary); font-size: 12px;
 }
-.office-contact__status:empty { display: none; }
-.office-contact__copy-buffer { position: fixed; top: 0; left: -9999px; }
 @media (max-width: 700px), (pointer: coarse) {
-  .office-contact__panel a.office-contact__call { display: inline-block; min-height: 44px; padding: 10px 4px; }
+  .office-contact__panel a.office-contact__call { display: flex; width: fit-content; }
 }

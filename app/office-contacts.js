@@ -50,20 +50,6 @@
     el.href = href; el.target = "_blank"; el.rel = "noopener noreferrer";
     return el;
   }
-  async function copyNumber(number) {
-    if (!phoneHref(number)) throw new Error("invalid phone");
-    if (root.navigator.clipboard?.writeText) {
-      await root.navigator.clipboard.writeText(number);
-      return;
-    }
-    const input = node("textarea", "office-contact__copy-buffer");
-    input.value = number;
-    document.body.appendChild(input);
-    try {
-      input.select();
-      if (!document.execCommand("copy")) throw new Error("copy failed");
-    } finally { input.remove(); }
-  }
   function render(container, jurisdictionId, officeName, typeId) {
     if (!container) return;
     const resolved = resolve(root.TOUKI_OFFICE_CONTACTS, jurisdictionId, officeName, typeId);
@@ -92,23 +78,10 @@
         const number = node("span", "office-contact__number", contact.number);
         row.appendChild(number);
         if (contact.instructions) row.appendChild(node("p", "", contact.instructions));
-        const actions = node("div", "office-contact__actions");
         const call = node("a", "office-contact__call", "電話する");
         call.href = phoneHref(contact.number);
         call.setAttribute("aria-label", contact.desk + " " + contact.number + " に電話する");
-        actions.appendChild(call);
-        const copy = node("button", "office-contact__copy", "番号をコピー");
-        copy.type = "button";
-        copy.setAttribute("aria-label", contact.desk + " " + contact.number + " をコピー");
-        const status = node("p", "office-contact__status");
-        status.setAttribute("role", "status");
-        copy.addEventListener("click", async () => {
-          copy.disabled = true; status.textContent = "";
-          try { await copyNumber(contact.number); status.textContent = "番号をコピーしました"; }
-          catch { status.textContent = "コピーできませんでした。表示された番号を選択してコピーしてください。"; }
-          finally { copy.disabled = false; if (copy.isConnected && details.open) copy.focus(); }
-        });
-        actions.appendChild(copy); row.appendChild(actions); row.appendChild(status);
+        row.appendChild(call);
         row.appendChild(link("公式出典（別タブ）", officialUrl(contact.sourceUrl)));
         const indexed = contact.evidenceMethod === "official_indexed_body";
         row.appendChild(node("p", "office-contact__verified",
