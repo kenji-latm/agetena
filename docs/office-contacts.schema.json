@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agetena public office contacts registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "offices"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "offices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "jurisdictionId",
+          "officeNames",
+          "name",
+          "contacts"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "jurisdictionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "officeNames": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "kind",
+                "number",
+                "desk",
+                "purpose",
+                "registrationTypes",
+                "sourceUrl",
+                "verifiedOn",
+                "verificationStatus",
+                "status",
+                "supersedes",
+                "withdrawnOn",
+                "evidenceMethod",
+                "retrievedOn",
+                "sourceUpdatedOn",
+                "liveVerified"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "phone",
+                    "fax"
+                  ]
+                },
+                "number": {
+                  "type": "string",
+                  "description": "Phone rendering requires a validated domestic 10/11-digit hyphenated number; FAX is not dialed."
+                },
+                "desk": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "purpose": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "instructions": {
+                  "type": "string"
+                },
+                "registrationTypes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "enum": [
+                      "realEstate",
+                      "commercial"
+                    ]
+                  }
+                },
+                "sourceUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://houmukyoku\\.moj\\.go\\.jp/"
+                },
+                "verifiedOn": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "retrievedOn": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "sourceUpdatedOn": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date"
+                },
+                "evidenceMethod": {
+                  "enum": [
+                    "official_live",
+                    "official_indexed_body"
+                  ]
+                },
+                "verificationStatus": {
+                  "enum": [
+                    "verified",
+                    "unverified"
+                  ]
+                },
+                "status": {
+                  "enum": [
+                    "active",
+                    "withdrawn"
+                  ]
+                },
+                "supersedes": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "withdrawnOn": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "date"
+                },
+                "liveVerified": {
+                  "type": "boolean"
+                },
+                "registrationTypeSourceUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://houmukyoku\\.moj\\.go\\.jp/"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "description": "Coverage counts and explicit unsupported bureau/office/type combinations."
+    }
+  }
+}

@@ -899,3 +899,40 @@ button, input, select { font: inherit; }
 .official-source a { display: inline-block; padding: 8px 0; color: var(--text); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
 .official-source a:focus-visible { outline: 3px solid #678a36; outline-offset: 3px; border-radius: 2px; }
 .official-source span { display: block; color: var(--text-secondary); font-size: 12px; }
+
+/* 連絡先は公式情報の隣の控えめな入口から展開する。 */
+.office-contact { display: inline; margin-left: 14px; text-align: left; }
+.office-contact[open] { display: block; margin: 0; }
+.office-contact__toggle {
+  display: inline-block; padding: 10px 2px; min-height: 44px;
+  color: var(--text-secondary); font-size: 13px; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px; list-style: none;
+}
+.office-contact__toggle::-webkit-details-marker { display: none; }
+.office-contact__toggle:focus-visible, .office-contact__copy:focus-visible {
+  outline: 3px solid #678a36; outline-offset: 3px; border-radius: 4px;
+}
+.office-contact__panel {
+  margin: 3px 0 10px; padding: 12px 14px; border: 1px solid #dce5ce;
+  border-radius: 12px; background: #f8faf5; color: var(--text);
+  line-height: 1.6; overflow-wrap: anywhere;
+}
+.office-contact__panel p { margin: 5px 0; }
+.office-contact__panel .office-contact__number {
+  color: var(--text); font-size: 21px; font-weight: 650; user-select: all;
+}
+.office-contact__actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 7px; }
+.office-contact__copy {
+  padding: 8px 12px; min-height: 44px; border: 1px solid #d3dcc6;
+  border-radius: 8px; background: white; color: #476521; font: inherit; cursor: pointer;
+}
+.office-contact__panel a.office-contact__call { display: none; }
+.office-contact__status, .office-contact__verified, .office-contact__scope,
+.office-contact__evidence, .office-contact__updated {
+  color: var(--text-secondary); font-size: 12px;
+}
+.office-contact__status:empty { display: none; }
+.office-contact__copy-buffer { position: fixed; top: 0; left: -9999px; }
+@media (max-width: 700px), (pointer: coarse) {
+  .office-contact__panel a.office-contact__call { display: inline-block; min-height: 44px; padding: 10px 4px; }
+}

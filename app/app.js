@@ -1205,7 +1205,7 @@
     el.className = `save-message${tone ? ` save-message--${tone}` : ""}`;
   }
 
-  function renderOfficialSource(container, jurisdictionId) {
+  function renderOfficialSource(container, jurisdictionId, office = "", typeId = "") {
     if (!container) return;
     container.replaceChildren();
     container.hidden = true;
@@ -1224,6 +1224,7 @@
     container.appendChild(link);
     const note = document.createElement("span");
     note.textContent = "公式ページは現在の掲載情報です。過去取得・保存時点の予定日や推定・仮登録・レターパック申請の表示日とは異なる場合があります。";
+    if (typeof window !== "undefined") window.TOUKI_CONTACTS?.render(container, jurisdictionId, office, typeId);
     container.appendChild(note);
     container.hidden = false;
   }
@@ -1239,7 +1240,7 @@
     const hintEl = $("result-hint");
     const addBtn = $("f-add");
     hideResultCalendarButton();
-    renderOfficialSource($("result-source"), jurisdictionId);
+    renderOfficialSource($("result-source"), jurisdictionId, office, typeId);
     setSaveMessage();
     const isLetterPack = isLetterPackMethod(method);
 
@@ -1977,7 +1978,7 @@
       el.querySelector(".item__office").textContent = `${jurisdictionLabel(c.jurisdiction || DEFAULT_JURISDICTION)} ｜ ${typeLabel(c.registrationType || DEFAULT_TYPE)} ｜ ${c.office}${methodText}`;
       el.querySelector(".apply").textContent = fmtJP(c.applyDate);
       el.querySelector(".due").textContent = c.dueDate ? `${isCalendarDraftCase(c) ? "仮 " : ""}${fmtJP(c.dueDate)}` : "未取得";
-      renderOfficialSource(el.querySelector(".item__official-source"), c.jurisdiction || DEFAULT_JURISDICTION);
+      renderOfficialSource(el.querySelector(".item__official-source"), c.jurisdiction || DEFAULT_JURISDICTION, c.office, c.registrationType || DEFAULT_TYPE);
       const sourceEl = el.querySelector(".item__source");
       sourceEl.textContent = isCalendarDraftCase(c) ? "仮登録日" : "保存時点";
       const snapshotEl = el.querySelector(".item__snapshot");

@@ -13,6 +13,7 @@ const agetenaFiles = [
   "privacy.html",
   "styles.css",
   "app.js",
+  "office-contacts.js",
   "shared-config.js",
   "sw.js",
   "manifest.webmanifest",
