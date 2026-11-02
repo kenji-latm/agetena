@@ -13070,7 +13070,40 @@
           "contactId": "osaka-9814365656c9-public-bfe039e86babce78e82c",
           "evidencePreference": "collected_official_indexed_body"
         }
-      ]
+      ],
+      "fieldOverrides": {
+        "sourceUrl": {
+          "value": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+          "reason": "旧PDFはHTTP404。HTTP200の公式本局案内が現行PDFへ直接リンクしており、将来の資料差替え時も案内できるHTMLページを採用。"
+        },
+        "sourceUpdatedOn": {
+          "value": "2026-07-08",
+          "reason": "公式本局案内ページに更新日2026年7月8日と記載。"
+        },
+        "evidenceMethod": {
+          "value": "official_live",
+          "reason": "公式HTMLとそこからリンクされた現行PDFを直接取得し、実ピクセルと本文で番号・用途を確認。"
+        },
+        "liveVerified": {
+          "value": true,
+          "reason": "公式HTML/PDFのHTTP200と番号・用途を直接確認。"
+        },
+        "purpose": {
+          "value": "申請中の権利登記の補正・完了確認、法定相続情報証明制度に関するお問い合わせ",
+          "reason": "現行公式PDFの当該行に合わせ用途を限定。一般的な不動産照会用ではない。"
+        }
+      },
+      "evidenceReview": {
+        "status": "confirmed",
+        "checkedOn": "2026-11-02",
+        "oldSourceUrl": "https://houmukyoku.moj.go.jp/osaka/content/001368808.pdf",
+        "oldHttpStatus": 404,
+        "sourceUrl": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+        "sourceHttpStatus": 200,
+        "documentUrl": "https://houmukyoku.moj.go.jp/osaka/content/001466411.pdf",
+        "documentHttpStatus": 200,
+        "documentSha256": "0d5022064271dd69ab0600fc897286ca3a7a2e0494b58881177d166f98accdef"
+      }
     },
     {
       "candidateIndex": 136,
@@ -13082,7 +13115,36 @@
           "contactId": "osaka-9814365656c9-public-bcf33ccd7b4a5604acfb",
           "evidencePreference": "collected_official_indexed_body"
         }
-      ]
+      ],
+      "fieldOverrides": {
+        "sourceUrl": {
+          "value": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+          "reason": "旧PDFはHTTP404。HTTP200の公式本局案内が現行PDFへ直接リンクしており、将来の資料差替え時も案内できるHTMLページを採用。"
+        },
+        "sourceUpdatedOn": {
+          "value": "2026-07-08",
+          "reason": "公式本局案内ページに更新日2026年7月8日と記載。"
+        },
+        "evidenceMethod": {
+          "value": "official_live",
+          "reason": "公式HTMLとそこからリンクされた現行PDFを直接取得し、実ピクセルと本文で番号・用途を確認。"
+        },
+        "liveVerified": {
+          "value": true,
+          "reason": "公式HTML/PDFのHTTP200と番号・用途を直接確認。"
+        }
+      },
+      "evidenceReview": {
+        "status": "confirmed",
+        "checkedOn": "2026-11-02",
+        "oldSourceUrl": "https://houmukyoku.moj.go.jp/osaka/content/001368808.pdf",
+        "oldHttpStatus": 404,
+        "sourceUrl": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+        "sourceHttpStatus": 200,
+        "documentUrl": "https://houmukyoku.moj.go.jp/osaka/content/001466411.pdf",
+        "documentHttpStatus": 200,
+        "documentSha256": "0d5022064271dd69ab0600fc897286ca3a7a2e0494b58881177d166f98accdef"
+      }
     },
     {
       "candidateIndex": 137,
@@ -13094,7 +13156,36 @@
           "contactId": "osaka-9814365656c9-public-8f35f0421a60d0a48d0a",
           "evidencePreference": "collected_official_indexed_body"
         }
-      ]
+      ],
+      "fieldOverrides": {
+        "sourceUrl": {
+          "value": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+          "reason": "旧PDFはHTTP404。HTTP200の公式本局案内が現行PDFへ直接リンクしており、将来の資料差替え時も案内できるHTMLページを採用。"
+        },
+        "sourceUpdatedOn": {
+          "value": "2026-07-08",
+          "reason": "公式本局案内ページに更新日2026年7月8日と記載。"
+        },
+        "evidenceMethod": {
+          "value": "official_live",
+          "reason": "公式HTMLとそこからリンクされた現行PDFを直接取得し、実ピクセルと本文で番号・用途を確認。"
+        },
+        "liveVerified": {
+          "value": true,
+          "reason": "公式HTML/PDFのHTTP200と番号・用途を直接確認。"
+        }
+      },
+      "evidenceReview": {
+        "status": "confirmed",
+        "checkedOn": "2026-11-02",
+        "oldSourceUrl": "https://houmukyoku.moj.go.jp/osaka/content/001368808.pdf",
+        "oldHttpStatus": 404,
+        "sourceUrl": "https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html",
+        "sourceHttpStatus": 200,
+        "documentUrl": "https://houmukyoku.moj.go.jp/osaka/content/001466411.pdf",
+        "documentHttpStatus": 200,
+        "documentSha256": "0d5022064271dd69ab0600fc897286ca3a7a2e0494b58881177d166f98accdef"
+      }
     },
     {
       "candidateIndex": 138,
