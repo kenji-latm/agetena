@@ -1,0 +1,33 @@
+# 連絡先台帳
+
+2026-11-02の全国公開情報収集を統合しています。50法務局・413管轄、既存501管轄種別組合せのうち495組に番号を表示し、対応が一致しない6組には番号を割り当てません。全国のすべての官署・用途・番号を網羅したという意味ではありません。
+
+除外は青森のむつ・五所川原・弘前・十和田・八戸のcommercialと、大阪の天王寺commercialです。公式の連絡先・管轄案内へ誘導します。既存の完了予定日データや候補一覧を変更して補正しません。
+
+公開候補421件を台帳へ対応付けました。板橋のrealEstateは既存のofficial_live詳細案内を優先し、同じ候補のcommercialを別レコードにしたため台帳は422連絡先（official_live 1、official_indexed_body 421）です。重複するofficeレコードは作らず、各官署のcontactsへ用途別に保持します。代表は代表として表示し、直通と呼びません。不動産表示登記など用途の異なる窓口も用途を明記します。
+
+広島本局法人の音声案内2→3は、保存済み検索本文west-evidence/west_re1.raw.jsonの会社・法人登記申請中書類の欄と独立レビューで裏付けを確認し、収集どおり保持しています。ledgerのevidenceReviewに確認根拠を記録しています。
+
+## 証拠区分と表示
+
+official_live は公式ページを直接取得した確認、official_indexed_body は公式ページの検索インデックス本文で番号・窓口・用途を確認したものです。後者をライブ確認済みと表示しません。検索断片だけの番号や推測対応は採用しません。画面にも検索経由である旨と、現在の番号・案内を公式ページで確認する案内を表示します。
+
+verifiedOnは情報を確認した日、retrievedOnは取得日、sourceUpdatedOnは元ページ更新日（不明はnull）です。確認日の未来判定にはAsia/Tokyoの日付を使います。verificationStatus=verifiedは採用した証拠の確認を意味し、liveVerifiedとは別です。official_indexed_bodyはliveVerified=false、official_liveはtrueのみ表示します。
+
+公式HTTPS出典の許可ホストはhoumukyoku.moj.go.jpです。公式以外の公開元を採用する場合は別途安全性・現行性レビューが必要です。会員配布FAX資料や候補FAX番号は含めていません。FAXは今回未収録で、電話として表示・発信しません。
+
+板橋の直接取得済み出典は https://houmukyoku.moj.go.jp/tokyo/table/shikyokutou/all/itabashi.html です。代表03-3964-5385の音声3番は補正・登記完了確認用です。realEstateの詳細音声案内と完了予定日前の問合せを控える案内を保持しています。
+
+## データと更新
+
+app/data/office-contacts.jsは完了予定日データと独立した台帳です。安定office/contact ID、法務局ID、管轄名の完全一致別名、窓口・用途、対象種別、phone/fax、出典、証拠区分、確認日、取得日、元更新日、状態を持ちます。docs/office-contacts.schema.jsonが構造の仕様です。
+
+scripts/fixtures/office-contact-collection.jsonは採用元の公開候補、全501組のcoverage、候補421件からUIレコードへの対応ledgerを保持します。元資料はLibrary libfile_6c04268b8dfc8191a4d97a0853f68951 版1です。全候補をresolverへ突合し、DOMの番号・tel値・除外6組の案内まで照合する回帰テストがあります。
+
+訂正は旧レコードをstatus=withdrawn、withdrawnOnに廃止日、新レコードのsupersedesに旧IDを記録できます。未確認はverificationStatus=unverifiedとし、画面はactiveかつverifiedのみです。変更時はindex.htmlとsw.jsのファイルクエリ版・キャッシュ版を揃えて更新してください。
+
+追加・訂正は既存の機能リクエストから受け付けます。共同投稿フォームや自動採用はありません。番号には内線・URIパラメータ・制御文字を許可せず、表示番号をコピーし、検証済み数字だけをtelへ使います。
+
+入口は検索結果・保存案件の公式情報付近です。管轄未選択では非表示、管轄・種別切替で閉じます。保存案件は自身の管轄・種別で解決します。700px以下またはcoarse pointerでは電話リンクを表示し、PCではコピーを表示します。端末判定は表示上の目安です。
+
+Web・単体HTMLで連絡先UIを提供します。拡張版は既存テンプレートに公式情報欄がないため今回UI対象外ですが配布ビルドは検証します。

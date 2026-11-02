@@ -46,7 +46,7 @@ html = html.replace(
 );
 
 // 営業日計算・公式祝日一覧もオフライン版に含める
-for (const file of ["data/holidays.js", "data/business-days.js"]) {
+for (const file of ["data/holidays.js", "data/business-days.js", "data/office-contacts.js", "office-contacts.js"]) {
   const tag = new RegExp('<script src="' + file.replaceAll('.', '\\.') + '(?:\\?[^\"]+)?"><\/script>', 'i');
   html = html.replace(tag, () => '<script>\n' + read(file) + '\n</script>');
 }
