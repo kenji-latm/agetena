@@ -142,6 +142,31 @@ test("Hiroshima commercial voice menu preserves independently confirmed indexed 
   assert.equal(resolved.contacts[0].evidenceMethod,"official_indexed_body");
 });
 
+test("Osaka main office uses its current official landing page instead of removed PDF", () => {
+  const expected="https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html";
+  for(const [type,numbers] of [["realEstate",["06-6942-9476","06-6942-9474"]],["commercial",["06-6942-1480"]]]){
+    const contacts=api.resolve(registry,"osaka","本局",type).contacts;
+    assert.deepEqual(Array.from(contacts,c=>c.number).sort(),numbers.sort());
+    for(const contact of contacts){
+      assert.equal(contact.sourceUrl,expected);
+      assert.equal(contact.evidenceMethod,"official_live");
+      assert.equal(contact.liveVerified,true);
+      assert.equal(contact.sourceUpdatedOn,"2026-07-08");
+    }
+  }
+  assert.ok(registry.offices.flatMap(o=>o.contacts).every(c=>c.sourceUrl!=="https://houmukyoku.moj.go.jp/osaka/content/001368808.pdf"));
+});
+
+test("Osaka rights phone scope is pending corrections/completion and inheritance information", () => {
+  const contacts=api.resolve(registry,"osaka","本局","realEstate").contacts;
+  const contact=contacts.find(c=>c.number==="06-6942-9476");
+  assert.ok(contact);
+  assert.match(contact.purpose,/申請中の権利登記の補正・完了確認/);
+  assert.match(contact.purpose,/法定相続情報証明制度/);
+  assert.doesNotMatch(contact.purpose,/^不動産権利登記に関するお問い合わせ/);
+  assert.deepEqual(Array.from(contact.registrationTypes),["realEstate"]);
+});
+
 test("495 targets expose exactly collected numbers; six excluded combinations only fall back", () => {
   const collection = JSON.parse(read("./fixtures/office-contact-collection.json"));
   let adopted=0,excluded=0;

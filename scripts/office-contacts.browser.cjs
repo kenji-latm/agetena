@@ -121,9 +121,30 @@ const {pathToFileURL}=require('node:url');
   // Unknown office and bureau have no inferred numbers. User-supplied labels remain text.
   await page.evaluate(()=>{const c=document.createElement('div');c.id='unknown-contact';document.body.appendChild(c);TOUKI_CONTACTS.render(c,'unknown','板橋出張所','realEstate')});
   assert.equal(await page.locator('#unknown-contact [href^="tel:"]').count(),0);
+  await page.locator('#unknown-contact').evaluate(el=>el.remove());
+  await page.selectOption('#f-jurisdiction','osaka');
+  await selectOffice('本局');
+  await summary.click();
+  assert.equal(await page.locator('#result-source .office-contact__number').textContent(),'06-6942-1480');
+  assert.equal(await page.locator('#result-source .office-contact__source').getAttribute('href'),'https://houmukyoku.moj.go.jp/osaka/table/shikyokutou/all/osaka_lab.html');
+  assert.match(await page.locator('#result-source .office-contact__panel').textContent(),/公式ページを直接取得/);
+  if(process.env.QA_SCREENSHOT_DIR){
+   await page.evaluate(()=>scrollTo(0,0));
+   await page.screenshot({path:path.join(process.env.QA_SCREENSHOT_DIR,name+'-osaka-source.png'),fullPage:true});
+  }
+  await page.locator('input[name=registration-type][value=realEstate]').locator('..').click();
+  await selectOffice('本局');
+  await summary.click();
+  const rightsEntry=page.locator('#result-source .office-contact__entry').filter({hasText:'06-6942-9476'});
+  assert.match(await rightsEntry.textContent(),/申請中の権利登記の補正・完了確認、法定相続情報証明制度/);
+  assert.doesNotMatch(await rightsEntry.textContent(),/不動産権利登記に関するお問い合わせ/);
+  if(process.env.QA_SCREENSHOT_DIR){
+   await page.evaluate(()=>scrollTo(0,0));
+   await page.screenshot({path:path.join(process.env.QA_SCREENSHOT_DIR,name+'-osaka-rights-purpose.png'),fullPage:true});
+  }
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   assert.deepEqual(errors,[]);
-  results.push({viewport:name,passed:['all 501 DOM phone/tel and six excluded fallbacks','no contact copy buttons in all targets','all adopted records and evidence labels','repeat open/close','Enter/Space/Escape','focus return and Tab order','validated tel and responsive call','normal mouse text selection and OS keyboard copy','office/type switch closes','indexed-source labeling','saved-case mapping independent','four existing case actions','unselected hides','unknown bureau','no overflow','no JS errors']});
+  results.push({viewport:name,passed:['all 501 DOM phone/tel and six excluded fallbacks','Osaka commercial current official source link','Osaka rights purpose limited to pending cases and inheritance information','no contact copy buttons in all targets','all adopted records and evidence labels','repeat open/close','Enter/Space/Escape','focus return and Tab order','validated tel and responsive call','normal mouse text selection and OS keyboard copy','office/type switch closes','indexed-source labeling','saved-case mapping independent','four existing case actions','unselected hides','unknown bureau','no overflow','no JS errors']});
   await context.close();
  }
  console.log(JSON.stringify(results,null,2));
