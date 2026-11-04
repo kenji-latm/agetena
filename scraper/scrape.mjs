@@ -994,7 +994,8 @@ function parseMatrixCoordinateItems(items, stores, jurisdiction) {
         const topRight = page.filter(i=>/権/.test(i.text)).sort((a,b)=>b.y-a.y)[0];
         const columns = page.filter(i=>i.x>topRight.x+50 && Math.abs(i.y-topRight.y)<6 && parseMD(i.text)).sort((a,b)=>a.x-b.x);
         for (const column of columns) {
-          const fragments = page.filter(i=>i.y>topRight.y+8 && i.y<topRight.y+35 && i.x>=column.x-1 && i.x<column.x+50);
+          // Office labels occupy two lines below the separate 庁名 heading.
+          const fragments = page.filter(i=>i.y>topRight.y+8 && i.y<topRight.y+28 && i.x>=column.x-1 && i.x<column.x+50);
           const label = fragments.sort((a,b)=>Math.abs(a.y-b.y)<4?a.x-b.x:b.y-a.y).map(i=>compactPdfText(i.text)).join("");
           if (label===office) hit={x:column.x,y:topRight.y+20};
         }
