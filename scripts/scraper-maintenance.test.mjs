@@ -8,6 +8,32 @@ const parse = id => {
  (['maebashi','kobe'].includes(id)?parseOfficeCoordinateItems:parseMatrixCoordinateItems)(items,s,j);
  validateJurisdiction(s,j); return s[id];
 };
+test('宮崎: 2026-11-04 PDFの庁名上段を混入せず全9行・6列と商業本局を読む',()=>{
+ const {items}=JSON.parse(fs.readFileSync(new URL('fixtures/miyazaki-20261104.json',import.meta.url)));
+ const j=JURISDICTIONS.find(j=>j.id==='miyazaki'),s=makeStores();
+ parseMatrixCoordinateItems(items,s,j);validateJurisdiction(s,j);
+ // Transcribed from the preserved official PDF: 権利 rows only, in visual column order.
+ const offices=['本局','都城支局','延岡支局','日南支局','高鍋出張所','小林出張所'];
+ const applications=['10-22','10-23','10-26','10-27','10-28','10-29','10-30','11-02','11-04'];
+ const rows=[
+  ['10-29','10-29','10-28','10-27','10-30','10-29'],
+  ['11-02','10-30','10-29','10-28','11-02','10-30'],
+  ['11-04','11-02','10-30','10-29','11-04','11-02'],
+  ['11-05','11-04','11-02','10-30','11-05','11-04'],
+  ['11-06','11-05','11-04','11-02','11-06','11-05'],
+  ['11-09','11-06','11-05','11-04','11-09','11-06'],
+  ['11-10','11-09','11-06','11-05','11-10','11-09'],
+  ['11-11','11-10','11-09','11-06','11-11','11-10'],
+  ['11-12','11-10','11-10','11-11','11-12','11-11']
+ ];
+ const expected={realEstate:{},commercial:{本局:{}}};
+ offices.forEach((office,c)=>expected.realEstate[office]=Object.fromEntries(applications.map((a,r)=>['2026-'+a,'2026-'+rows[r][c]])));
+ const commercial=['10-29','10-29','10-30','11-02','11-04','11-05','11-06','11-09','11-11'];
+ applications.forEach((a,r)=>expected.commercial.本局['2026-'+a]='2026-'+commercial[r]);
+ assert.deepEqual(s.miyazaki,expected);
+ // Restricting the band must still reject an incomplete office label.
+ assert.throws(()=>parseMatrixCoordinateItems(items.filter(i=>i.text!=='都'),makeStores(),j),/都城支局の列見出しがありません/);
+});
 for(const id of ['okayama','matsue','tokushima','matsuyama','nara','miyazaki','maebashi','kobe'])test(`${id}: 公式PDFの全申請日・列を読み取る`,()=>{const d=parse(id);for(const os of Object.values(d))for(const ds of Object.values(os))for(const [a,b]of Object.entries(ds)){assert.ok(a.startsWith('2026-'));assert.ok(a<=b);assert.ok(a<='2026-09-28');}});
 test('岡山の新しい縦表',()=>{const d=parse('okayama');assert.equal(d.commercial['本局']['2026-09-25'],'2026-10-02');assert.equal(d.realEstate['倉敷支局']['2026-09-28'],'2026-10-07');});
 test('徳島: 高さが1pt違う申請日を欠落させない',()=>assert.equal(parse('tokushima').commercial['本局']['2026-09-18'],'2026-09-28'));
