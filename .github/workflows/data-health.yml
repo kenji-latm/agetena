@@ -23,9 +23,9 @@ jobs:
         id: audit
         continue-on-error: true
         env:
-  # データ更新は夜間に止まるため、失敗判定の鮮度は夜間の停止時間も織り込む
-  AUDIT_MAX_AGE_HOURS: "14"
-
+          # データ更新は夜間に止まるため、失敗判定の鮮度は夜間の停止時間も織り込む。
+          # 再取得の起動判定（stale）は従来どおり3時間超で維持される。
+          AUDIT_MAX_AGE_HOURS: "14"
         run: node --use-system-ca scripts/audit-data.mjs https://tools.ishimoto-legal.com/agetena/data/kanryo.json
       - name: 更新が止まっていれば再取得を起動
         if: steps.audit.outputs.stale == 'true'
