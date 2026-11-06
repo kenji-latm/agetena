@@ -27,7 +27,8 @@ async function main() {
  const response=remote?await fetch(target+'?_='+Date.now(),{signal:AbortSignal.timeout(30000)}):null;
  if(response&&!response.ok)throw new Error('公開データ HTTP '+response.status);
  const meta=JSON.parse(remote?await response.text():fs.readFileSync(target,'utf8'));
- const result=auditData(meta,Date.now(),Number(process.env.AUDIT_MAX_AGE_HOURS||3));
+ const maxAgeHours=Number(process.env.AUDIT_MAX_AGE_HOURS||3);
+ const result=auditData(meta,Date.now(),maxAgeHours);
  if(remote){
   const integrity=await fetch(new URL('kanryo-integrity.js?_='+Date.now(),target),{signal:AbortSignal.timeout(30000)});
   if(!integrity.ok)throw new Error('検証用データ HTTP '+integrity.status);
@@ -35,7 +36,8 @@ async function main() {
   const hash=crypto.createHash('sha256').update(JSON.stringify(meta)).digest('hex');
   if(!text.includes(hash))result.issues.push('公開JSONと検証用ハッシュが一致しません');
  }
- if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`stale=${result.ageHours>3}\n`);
+ // staleは再取得を起動するための出力で、失敗判定のしきい値（AUDIT_MAX_AGE_HOURS）とは独立に保つ
+ if(process.env.GITHUB_OUTPUT)fs.appendFileSync(process.env.GITHUB_OUTPUT,`stale=${result.ageHours>Number(process.env.AUDIT_STALE_HOURS||3)}\n`);
  console.log(JSON.stringify(result,null,2));
  if(process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`## 完了予定日データ監査\n最終取得: ${result.generatedAt}\n\n|法務局|取得件数|最新申請日|\n|---|---:|---|\n`+result.rows.map(r=>`|${r.label}|${r.count}|${r.latest||'なし'}|`).join('\n')+'\n\n'+result.issues.join('\n'));
  if(result.issues.length)process.exitCode=1;

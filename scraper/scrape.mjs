@@ -1300,10 +1300,24 @@ function countEntries(store) {
 }
 
 function validateJurisdiction(stores, jurisdiction) {
-  for (const offices of Object.values(stores[jurisdiction.id])) for (const [office, dates] of Object.entries(offices)) {
+  const reversed = [];
+  for (const [type, offices] of Object.entries(stores[jurisdiction.id])) for (const [office, dates] of Object.entries(offices)) {
     for (const [applied, due] of Object.entries(dates)) {
-      if (due < applied) throw new Error(office + "の完了日が申請日より前です: " + applied + " / " + due);
+      if (due < applied) reversed.push({ type, office, applied, due });
     }
+  }
+  // 逆転が多ければ列ズレなど系統的な異常の可能性が高いため、局ごと取得を中止する。
+  // 少なければ元データ側の一時的な異常とみて、該当ペアだけを隔離して残りを生かす。
+  if (reversed.length > 2) {
+    const first = reversed[0];
+    throw new Error(
+      `${jurisdiction.label}: 完了日が申請日より前です（${reversed.length}件、例: ${first.office}: ${first.applied} / ${first.due}）。` +
+      "系統的な異常の可能性があるため取得を中止しました"
+    );
+  }
+  for (const r of reversed) {
+    delete stores[jurisdiction.id][r.type][r.office][r.applied];
+    console.warn(`警告: ${jurisdiction.label} ${r.office}の完了日が申請日より前のペアを隔離しました: ${r.applied} / ${r.due}`);
   }
   for (const type of TYPES) {
     const min = jurisdiction.minimums?.[type.id];
@@ -1318,6 +1332,7 @@ function validateJurisdiction(stores, jurisdiction) {
       );
     }
   }
+  return reversed;
 }
 
 async function scrapeJurisdiction(stores, jurisdiction, diagnostics) {
