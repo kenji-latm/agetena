@@ -24,6 +24,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      # Preserve the producing attempt when only deploy is re-run.
+      pages_artifact_name: github-pages-${{ github.run_attempt }}
     permissions:
       contents: write
     steps:
@@ -112,6 +115,7 @@ jobs:
       - name: 公開ファイルをアップロード
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ github.run_attempt }}
           path: _site
 
   deploy:
@@ -127,6 +131,8 @@ jobs:
       - name: GitHub Pagesへ公開
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ needs.build.outputs.pages_artifact_name }}
 
   audit:
     needs: deploy
