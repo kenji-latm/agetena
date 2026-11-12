@@ -42,7 +42,8 @@ test('宮崎: 注意書きの令和6年ではなく表の令和8年・高鍋と�
 test('前橋: 午後行も同じ申請日に合算',()=>assert.equal(parse('maebashi').realEstate['本局登記部門']['2026-09-25'],'2026-10-13'));
 test('神戸: 完了日を次の申請日と扱わない',()=>assert.equal(parse('kobe').realEstate['伊丹支局']['2026-09-25'],'2026-10-06'));
 test('松江の登記完了日リンクも選べる',()=>assert.equal(extractPdfLink('<a href="/matsue/content/new.pdf">登記完了日</a>',{indexUrl:'https://houmukyoku.moj.go.jp/matsue/standard/aaaa.html'}),'https://houmukyoku.moj.go.jp/matsue/content/new.pdf'));
-test('日付の逆転を公開前に拒否',()=>{const s=makeStores(),j=JURISDICTIONS.find(j=>j.id==='nagoya');s.nagoya.realEstate['本局']={'2026-09-25':'2026-09-24'};assert.throws(()=>validateJurisdiction(s,j),/申請日より前/);});
+test('日付の逆転が少なければ該当ペアだけを隔離して残りを生かす',()=>{const s=makeStores(),j=JURISDICTIONS.find(j=>j.id==='hakodate');s.hakodate.realEstate['本局']={'2026-09-25':'2026-09-24','2026-09-28':'2026-10-05','2026-09-29':'2026-10-06','2026-09-30':'2026-10-07'};const removed=validateJurisdiction(s,j);assert.equal(removed.length,1);assert.equal(s.hakodate.realEstate['本局']['2026-09-25'],undefined);assert.equal(s.hakodate.realEstate['本局']['2026-09-28'],'2026-10-05');});
+test('日付の逆転が多ければ系統的異常として公開前に拒否',()=>{const s=makeStores(),j=JURISDICTIONS.find(j=>j.id==='nagoya');s.nagoya.realEstate['本局']={'2026-09-25':'2026-09-24','2026-09-26':'2026-09-24','2026-09-27':'2026-09-24'};assert.throws(()=>validateJurisdiction(s,j),/申請日より前/);});
 test('松山: 隣接2庁が一つの文字列でも日付の列を分離する',()=>{
  const {items}=JSON.parse(fs.readFileSync(new URL('fixtures/matsuyama-20261001.json',import.meta.url)));
  const j=JURISDICTIONS.find(j=>j.id==='matsuyama'),s=makeStores();
