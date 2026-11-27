@@ -1335,6 +1335,25 @@ function validateJurisdiction(stores, jurisdiction) {
   return reversed;
 }
 
+// 一覧ページ（indexLinks）から辿る個別ページは、リンク切れ（404等）が1件あるだけで
+// 法務局全体の取得が失敗しないよう、失敗したページだけを警告してスキップし、残りで続行する。
+// ただし1件も取得できなければ従来どおり例外にする。取得できたページが少なくデータ量が
+// 極端に不足する場合は、validateJurisdiction の minimums 検査で別途失敗する。
+export async function fetchIndexLinkedPages(links, fetchPage) {
+  const pages = [];
+  const failedUrls = [];
+  for (const url of links) {
+    try {
+      pages.push({ url, html: await fetchPage(url) });
+    } catch (e) {
+      failedUrls.push(url);
+      console.warn(`警告: 完了予定日ページの取得に失敗したためスキップしました: ${url}（${e?.message || e}）`);
+    }
+  }
+  if (pages.length === 0) throw new Error(`完了予定日ページを1件も取得できませんでした（全${links.length}件が失敗）。`);
+  return { pages, failedUrls };
+}
+
 async function scrapeJurisdiction(stores, jurisdiction, diagnostics) {
   console.log(`\n${jurisdiction.label}を取得中…`);
   const sourcePages = [];
@@ -1349,8 +1368,8 @@ async function scrapeJurisdiction(stores, jurisdiction, diagnostics) {
     const links = [...new Set(extractLinks(idx, jurisdiction))];
     if (links.length === 0) throw new Error("完了予定日ページが見つかりません。");
     console.log(`完了予定日ページ ${links.length} 件`);
-    for (const url of links) {
-      const html = dec(await getBuf(url));
+    const { pages } = await fetchIndexLinkedPages(links, async (url) => dec(await getBuf(url)));
+    for (const { url, html } of pages) {
       parseHtmlTables(html, stores, jurisdiction);
       sourcePages.push(url);
       process.stdout.write(".");
