@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { JURISDICTIONS, makeStores, parseMatrixCoordinateItems, parseOfficeCoordinateItems, validateJurisdiction, extractPdfLink, parseHtmlSequentialOfficeTables } from '../scraper/scrape.mjs';
+import { JURISDICTIONS, makeStores, parseMatrixCoordinateItems, parseOfficeCoordinateItems, validateJurisdiction, extractPdfLink, parseHtmlSequentialOfficeTables, fetchIndexLinkedPages } from '../scraper/scrape.mjs';
 const parse = id => {
  const j=JURISDICTIONS.find(j=>j.id===id), s=makeStores();
  const {items}=JSON.parse(fs.readFileSync(new URL(`fixtures/${id}-20260928.json`,import.meta.url)));
@@ -57,4 +57,14 @@ test('松山: 隣接2庁が一つの文字列でも日付の列を分離する',
  assert.equal(s.matsuyama.commercial['本局']['2026-10-01'],'2026-10-06');
  const incomplete=items.filter(i=>!(i.x===494.38 && i.y===694.54));
  assert.throws(()=>parseMatrixCoordinateItems(incomplete,makeStores(),j),/結合された庁名/);
+});
+test('一覧ページのリンク先に404があっても、そのページだけスキップして残りを取得できる',async()=>{
+ const links=['https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00181.htm','https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00182.htm','https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00183.htm'];
+ const {pages,failedUrls}=await fetchIndexLinkedPages(links,async url=>{if(url.includes('00181'))throw new Error(`404 ${url}`);return `<html>${url}</html>`;});
+ assert.deepEqual(failedUrls,[links[0]]);
+ assert.deepEqual(pages.map(p=>p.url),[links[1],links[2]]);
+ assert.equal(pages[0].html,`<html>${links[1]}</html>`);
+});
+test('一覧ページのリンク先が全件失敗したら例外にする',async()=>{
+ await assert.rejects(()=>fetchIndexLinkedPages(['https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00181.htm'],async url=>{throw new Error(`404 ${url}`);}),/1件も取得できませんでした/);
 });
