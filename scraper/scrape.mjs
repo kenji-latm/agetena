@@ -868,17 +868,26 @@ async function pdfLines(buf) {
   for (let pageNo = 1; pageNo <= pdf.numPages; pageNo++) {
     const page = await pdf.getPage(pageNo);
     const content = await page.getTextContent();
-    const byLine = new Map();
+    // 同じ見た目の行でも、pdfjs のテキスト要素の y は庁ごとに ±1pt 前後ぶれる
+    // （例: 高知PDFの完了日行は 667.3〜669.0 に分散し、Math.round では3行に割れて
+    // 1行あたりの日付が庁数に満たず読取不能になった）。y の隙間が 2pt 以内の要素は
+    // 同じ行とみなして束ねる。表の行間は 8pt 以上あるため、別行が混ざることはない。
+    const items = [];
     for (const item of content.items) {
       if (!item.str || !item.str.trim()) continue;
-      const y = Math.round(item.transform[5]);
-      const row = byLine.get(y) || [];
-      row.push({ x: item.transform[4], text: item.str });
-      byLine.set(y, row);
+      items.push({ x: item.transform[4], y: item.transform[5], text: item.str });
     }
-    for (const [, row] of [...byLine.entries()].sort((a, b) => b[0] - a[0])) {
-      lines.push(row.sort((a, b) => a.x - b.x).map((item) => item.text).join(" "));
+    items.sort((a, b) => b.y - a.y);
+    let row = [];
+    const flush = () => {
+      if (row.length) lines.push(row.sort((a, b) => a.x - b.x).map((item) => item.text).join(" "));
+      row = [];
+    };
+    for (const item of items) {
+      if (row.length && row[0].y - item.y > 2) flush();
+      row.push(item);
     }
+    flush();
   }
   return lines.map(cleanText).filter(Boolean);
 }
@@ -1737,5 +1746,5 @@ async function main() {
   }
 }
 
-export { JURISDICTIONS, makeStores, parseOfficeCoordinateItems, parseMatrixCoordinateItems, parsePdfMatrixCoordinates, parseHtmlSequentialOfficeTables, validateJurisdiction, extractPdfLink, pdfTextItems, buildOutput };
+export { JURISDICTIONS, makeStores, parseOfficeCoordinateItems, parseMatrixCoordinateItems, parsePdfMatrixRows, parsePdfMatrixCoordinates, parseHtmlSequentialOfficeTables, validateJurisdiction, extractPdfLink, pdfTextItems, buildOutput };
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

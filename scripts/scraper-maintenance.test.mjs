@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { JURISDICTIONS, makeStores, parseMatrixCoordinateItems, parseOfficeCoordinateItems, validateJurisdiction, extractPdfLink, parseHtmlSequentialOfficeTables, fetchIndexLinkedPages } from '../scraper/scrape.mjs';
+import { JURISDICTIONS, makeStores, parseMatrixCoordinateItems, parseOfficeCoordinateItems, parsePdfMatrixRows, validateJurisdiction, extractPdfLink, parseHtmlSequentialOfficeTables, fetchIndexLinkedPages } from '../scraper/scrape.mjs';
 const parse = id => {
  const j=JURISDICTIONS.find(j=>j.id===id), s=makeStores();
  const {items}=JSON.parse(fs.readFileSync(new URL(`fixtures/${id}-20260928.json`,import.meta.url)));
@@ -67,4 +67,24 @@ test('一覧ページのリンク先に404があっても、そのページだ�
 });
 test('一覧ページのリンク先が全件失敗したら例外にする',async()=>{
  await assert.rejects(()=>fetchIndexLinkedPages(['https://houmukyoku.moj.go.jp/tokyo/static/kanryoyotei_00181.htm'],async url=>{throw new Error(`404 ${url}`);}),/1件も取得できませんでした/);
+});
+test('高知: 完了日行の y が ±1pt ぶれて行が割れても全5庁・全申請日を読む',async()=>{
+ const buf=Buffer.from(fs.readFileSync(new URL('fixtures/kochi-20261127.pdf.b64',import.meta.url),'utf8').replace(/\s+/g,''),'base64');
+ const j=JURISDICTIONS.find(j=>j.id==='kochi'),s=makeStores();
+ await parsePdfMatrixRows(buf,s,j);validateJurisdiction(s,j);
+ // 公式PDFの座標から読み取った期待値。完了日行は y=667.3〜669.0 に分散する。
+ const applications=['2026-11-20','2026-11-24','2026-11-25','2026-11-26','2026-11-27'];
+ const rows=[
+  ['2026-11-26','2026-11-30','2026-11-26','2026-11-27','2026-11-27'],
+  ['2026-11-27','2026-12-01','2026-11-27','2026-11-30','2026-11-30'],
+  ['2026-12-01','2026-12-02','2026-12-01','2026-12-01','2026-12-01'],
+  ['2026-12-02','2026-12-03','2026-12-02','2026-12-02','2026-12-02'],
+  ['2026-12-02','2026-12-04','2026-12-03','2026-12-03','2026-12-03'],
+ ];
+ const offices=['本局','香美支局','須崎支局','安芸支局','四万十支局'];
+ const expected={realEstate:{},commercial:{本局:{}}};
+ offices.forEach((office,c)=>expected.realEstate[office]=Object.fromEntries(applications.map((a,r)=>[a,rows[r][c]])));
+ const commercial=['2026-11-26','2026-11-27','2026-11-30','2026-12-01','2026-12-02'];
+ applications.forEach((a,r)=>expected.commercial.本局[a]=commercial[r]);
+ assert.deepEqual(s.kochi,expected);
 });
